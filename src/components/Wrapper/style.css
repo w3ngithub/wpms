@@ -1,0 +1,14 @@
+.wrapper {
+  background-color: rgba(187, 185, 185, 0.6);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 5px;
+  width: fit-content;
+}
+
+.wrapper:hover {
+  background-color: rgba(169, 169, 169, 0.6);
+  cursor: pointer;
+}
