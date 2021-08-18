@@ -1,0 +1,12 @@
+.container {
+  background-color: #d6d6d6;
+  margin: 0 10px;
+  width: 272px;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.container > h4 {
+  color: #29296b;
+  padding: 0 5px;
+}
