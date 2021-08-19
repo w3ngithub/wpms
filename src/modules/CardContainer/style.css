@@ -4,6 +4,7 @@
   width: 272px;
   border-radius: 5px;
   padding: 8px;
+  height: fit-content;
 }
 
 .container > h4 {

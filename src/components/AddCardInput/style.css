@@ -1,0 +1,20 @@
+.cardinput {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px 8px;
+}
+
+.cardinput > p {
+  color: #777474;
+}
+
+.cardinput:hover {
+  background-color: #c1bfbf;
+
+  border-radius: 5px;
+}
+
+.icon {
+  color: #777474 !important;
+}
