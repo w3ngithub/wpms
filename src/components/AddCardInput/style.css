@@ -18,3 +18,15 @@
 .icon {
   color: #777474 !important;
 }
+
+.cardtextfield {
+  white-space: normal;
+}
+
+.button {
+  margin: 5px 0 !important;
+}
+
+.textfield {
+  margin: 10px 0 !important;
+}
