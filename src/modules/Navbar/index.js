@@ -50,7 +50,12 @@ function Navbar() {
         >
           PM
         </Avatar>
-        <MenuList open={openAccountMenuList} handleClose={handleClose} />
+        <MenuList
+          open={openAccountMenuList}
+          handleClose={handleClose}
+          items={["Profile", "My Account", "Logout"]}
+          css={{ top: "30px !important" }}
+        />
       </div>
     </nav>
   );

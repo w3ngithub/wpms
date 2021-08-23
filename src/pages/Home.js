@@ -32,7 +32,7 @@ function Home() {
   return (
     <>
       <Navbar />
-      <ProjectDetailsNavbar />
+      <ProjectDetailsNavbar projectTitle={data?.data?.title} />
 
       <Board
         data={{ lanes: data?.data?.lanes || [] }}

@@ -6,3 +6,17 @@
 .App {
   height: 100vh;
 }
+
+.comPlainTextContentEditable {
+  outline: none;
+}
+
+.sc-cBoqAE {
+  background-color: rgb(10 123 189) !important;
+  border: none;
+}
+
+.sc-ciSkZP {
+  border: none;
+  background: #ff3838 !important;
+}

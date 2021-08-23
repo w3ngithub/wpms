@@ -2,6 +2,16 @@
   padding: 10px 8px;
   display: flex;
   align-items: center;
-  width: 30%;
+  /* width: 30%; */
   justify-content: space-between;
+}
+
+.projectdetailsnavbar__front {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0.3;
+}
+
+.projectdetailsnavbar__last {
 }
