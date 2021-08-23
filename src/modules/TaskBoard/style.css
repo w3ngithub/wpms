@@ -1,7 +1,0 @@
-.taskboard {
-  max-height: 620px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  display: flex;
-}

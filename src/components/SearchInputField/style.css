@@ -1,0 +1,34 @@
+.search__container {
+  display: flex;
+  align-items: center;
+  cursor: text;
+}
+
+.search__container > p {
+  width: 164px;
+}
+
+input::placeholder {
+  color: white;
+}
+
+.input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 0px 3px;
+  padding-top: 2px;
+  color: white;
+}
+
+.jsCtAf {
+  background-color: rgba(187, 185, 185, 0.6) !important;
+}
+
+.jsCtAf:hover {
+  background-color: rgba(169, 169, 169, 0.6) !important;
+}
+.jsCtAf > button {
+  background: none;
+}
