@@ -20,7 +20,9 @@ function MenuList({ open, handleClose, items, css }) {
       className={classes.menu}
     >
       {items.map((item) => (
-        <MenuItem onClick={handleClose}>{item}</MenuItem>
+        <MenuItem onClick={handleClose} key={item}>
+          {item}
+        </MenuItem>
       ))}
     </Menu>
   );
