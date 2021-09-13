@@ -10,8 +10,5 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex: 0.3;
-}
-
-.projectdetailsnavbar__last {
+  flex: 0.34;
 }

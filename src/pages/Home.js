@@ -30,7 +30,15 @@ function Home() {
 
   console.log(data);
   return (
-    <>
+    <div
+      style={{
+        // backgroundImage: `url(${img})`,
+        backgroundColor: "rgb(97 102 117)",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+      }}
+    >
       <Navbar />
       <ProjectDetailsNavbar projectTitle={data?.data?.title} />
 
@@ -39,13 +47,13 @@ function Home() {
         draggable
         canAddLanes
         addCardTitle="Add Item"
-        style={{ backgroundColor: "transparent", maxHeight: "619px" }}
+        style={{ backgroundColor: "transparent", maxHeight: "540px" }}
         editable
         onBeforeCardDelete={onConfirmCardDelete}
         onDataChange={onDataChange}
         collapsibleLanes={true}
       />
-    </>
+    </div>
   );
 }
 

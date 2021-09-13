@@ -9,6 +9,7 @@ import SearchInputField from "../../components/SearchInputField";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuList from "../../components/MenuList";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 function Navbar() {
   const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
+  const history = useHistory();
 
   const handleOpenAccountMenu = (event) => {
     setOpenAccountMenuList(event.currentTarget);
@@ -33,6 +35,12 @@ function Navbar() {
   const handleClose = () => {
     setOpenAccountMenuList(null);
   };
+
+  const onLogout = () => {
+    localStorage.removeItem("user");
+    history.push("/login");
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar__front">
@@ -53,7 +61,11 @@ function Navbar() {
         <MenuList
           open={openAccountMenuList}
           handleClose={handleClose}
-          items={["Profile", "My Account", "Logout"]}
+          items={[
+            { name: "Profile", onClick: () => console.log("Profile") },
+            { name: "My Account", onClick: () => console.log("my account") },
+            { name: "Logout", onClick: onLogout },
+          ]}
           css={{ top: "30px !important" }}
         />
       </div>

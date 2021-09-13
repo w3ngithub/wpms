@@ -66,7 +66,12 @@ function ProjectDetailsNavbar({ projectTitle }) {
         <MenuList
           open={openMenu}
           handleClose={handleClose}
-          items={["change Background"]}
+          items={[
+            {
+              name: "change Background",
+              onClick: () => console.log("change background"),
+            },
+          ]}
           css={{ top: "50px !important" }}
         />
       </div>

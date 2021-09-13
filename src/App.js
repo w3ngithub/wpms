@@ -1,24 +1,42 @@
 import "./App.css";
 import img from "./assets/background2.jpg";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 
 function App() {
   console.log(img);
   return (
-    <div
-      className="App"
-      style={{
-        // backgroundImage: `url(${img})`,
-        backgroundColor: "rgb(97 102 117)",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-      }}
-    >
+    <div className="App">
       <Router>
         <Switch>
-          <Route path="/" component={Home} />
+          <Route
+            exact
+            path="/"
+            render={() => {
+              return localStorage.getItem("user") ? (
+                <Redirect to="/home" />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
+          />
+          <Route
+            path="/home"
+            render={() => {
+              return localStorage.getItem("user") ? (
+                <Home />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
+          />
+          <Route path="/login" component={Login} />
         </Switch>
       </Router>
     </div>
