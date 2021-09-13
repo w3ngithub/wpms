@@ -3,9 +3,11 @@ import Navbar from "../modules/Navbar";
 import ProjectDetailsNavbar from "../modules/ProjectDetailsNavbar";
 import Board from "react-trello";
 import { getSingleBoard, updateBoard } from "../api-config/boards";
+import { useParams } from "react-router";
 
-function Home() {
+function SingleBoard() {
   const [data, setData] = useState({ lanes: [] });
+  const { projectId } = useParams();
 
   const onConfirmCardDelete = (params) => {
     const doDelete = window.confirm("Are you sure?");
@@ -15,19 +17,14 @@ function Home() {
   };
 
   const onDataChange = (updatedData) => {
-    console.log(data);
-
-    if (data.id) {
-      updateBoard(data.id, updatedData);
-    }
+    updateBoard(projectId, updatedData);
   };
 
   useEffect(() => {
-    getSingleBoard("pariskrit").then((data) => {
+    getSingleBoard(projectId).then((data) => {
       setData(data);
     });
   }, []);
-
   console.log(data);
   return (
     <div
@@ -40,14 +37,14 @@ function Home() {
       }}
     >
       <Navbar />
-      <ProjectDetailsNavbar projectTitle={data?.data?.title} />
+      <ProjectDetailsNavbar projectTitle={data?.title} />
 
       <Board
-        data={{ lanes: data?.data?.lanes || [] }}
+        data={{ lanes: data?.lanes || [] }}
         draggable
         canAddLanes
         addCardTitle="Add Item"
-        style={{ backgroundColor: "transparent", maxHeight: "540px" }}
+        style={{ backgroundColor: "transparent", maxHeight: "546px" }}
         editable
         onBeforeCardDelete={onConfirmCardDelete}
         onDataChange={onDataChange}
@@ -57,4 +54,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default SingleBoard;

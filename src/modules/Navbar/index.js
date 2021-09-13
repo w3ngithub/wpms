@@ -23,10 +23,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar() {
+function Navbar({ backgroundColor }) {
   const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
   const history = useHistory();
+  const { name } = JSON.parse(localStorage.getItem("user"));
 
   const handleOpenAccountMenu = (event) => {
     setOpenAccountMenuList(event.currentTarget);
@@ -42,9 +43,9 @@ function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={{ backgroundColor }}>
       <div className="navbar__front">
-        <Icon Icon={HomeIcon} />
+        <Icon Icon={HomeIcon} onClick={() => history.push(`/${name}/boards`)} />
         <SearchInputField type="text" />
       </div>
 

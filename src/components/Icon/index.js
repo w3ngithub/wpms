@@ -2,9 +2,9 @@ import React from "react";
 import Wrapper from "../Wrapper";
 import { grey } from "@material-ui/core/colors";
 
-function Icon({ Icon }) {
+function Icon({ Icon, onClick }) {
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick}>
       <Icon style={{ color: grey[50] }} />
     </Wrapper>
   );

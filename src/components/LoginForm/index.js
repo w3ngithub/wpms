@@ -73,8 +73,8 @@ export default function SignIn() {
       return;
     }
 
-    localStorage.setItem("user", true);
-    history.push("/home");
+    localStorage.setItem("user", JSON.stringify({ name: user.username }));
+    history.push(`/${user.username}/boards`);
   };
 
   return (

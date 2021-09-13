@@ -1,17 +1,26 @@
 import { fireStore } from "../firebase/config";
 
-export const getSingleBoard = (userName) =>
+export const getUsersBoards = (name) =>
   fireStore
     .collection("boards")
-    .where("user", "==", userName)
+    .where("user", "==", name)
     .get()
     .then((querySnapshot) => {
-      let data = null;
+      let data = [];
       querySnapshot.forEach((doc) => {
-        data = { id: doc.id, data: doc.data() };
+        data.push({ id: doc.id, data: doc.data() });
       });
 
       return data;
+    });
+
+export const getSingleBoard = (id) =>
+  fireStore
+    .collection("boards")
+    .doc(id)
+    .get()
+    .then((doc) => {
+      return doc.data();
     });
 
 export const updateBoard = (id, updatedData) =>
