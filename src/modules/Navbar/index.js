@@ -45,10 +45,10 @@ function Navbar({ openCreateBoardModal }) {
   };
 
   useEffect(() => {
-    return () => {
+    if (openAccountMenuList) {
       setOpenAccountMenuList(false);
-    };
-  }, []);
+    }
+  }, [location]);
 
   if (location.pathname === "/login") {
     return null;

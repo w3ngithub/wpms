@@ -16,7 +16,7 @@ import { useState } from "react";
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [openModal, setOpenModal] = useState(false);
-  console.log(user);
+
   return (
     <div className="App">
       <Router>

@@ -48,7 +48,7 @@ function BoardsContainer() {
   useEffect(() => {
     fetchBoards();
   }, []);
-
+  console.log("boards rerender");
   return (
     <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>
@@ -76,4 +76,4 @@ function BoardsContainer() {
   );
 }
 
-export default BoardsContainer;
+export default React.memo(BoardsContainer);
