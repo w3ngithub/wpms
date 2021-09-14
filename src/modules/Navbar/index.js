@@ -9,7 +9,8 @@ import SearchInputField from "../../components/SearchInputField";
 import { Avatar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuList from "../../components/MenuList";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -23,11 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar({ backgroundColor }) {
+function Navbar({ openCreateBoardModal }) {
   const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
   const history = useHistory();
-  const { name } = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
+  const location = useLocation();
 
   const handleOpenAccountMenu = (event) => {
     setOpenAccountMenuList(event.currentTarget);
@@ -42,16 +44,36 @@ function Navbar({ backgroundColor }) {
     history.push("/login");
   };
 
+  useEffect(() => {
+    return () => {
+      setOpenAccountMenuList(false);
+    };
+  }, []);
+
+  if (location.pathname === "/login") {
+    return null;
+  }
+
   return (
-    <nav className="navbar" style={{ backgroundColor }}>
+    <nav
+      className="navbar"
+      style={
+        location.pathname.split("/")[2] === "boards"
+          ? { backgroundColor: "#026AA7" }
+          : null
+      }
+    >
       <div className="navbar__front">
-        <Icon Icon={HomeIcon} onClick={() => history.push(`/${name}/boards`)} />
+        <Icon
+          Icon={HomeIcon}
+          onClick={() => history.push(`/${user?.name}/boards`)}
+        />
         <SearchInputField type="text" />
       </div>
 
       <img src={logo} alt="logo" className="navbar__logo" />
       <div className="navbar__last">
-        <Icon Icon={AddIcon} />
+        <Icon Icon={AddIcon} onClick={openCreateBoardModal} />
         <Avatar
           alt="PM"
           className={classes.avatar}

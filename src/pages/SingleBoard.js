@@ -34,9 +34,9 @@ function SingleBoard() {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundSize: "cover",
+        paddingTop: "45px",
       }}
     >
-      <Navbar />
       <ProjectDetailsNavbar projectTitle={data?.title} />
 
       <Board

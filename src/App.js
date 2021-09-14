@@ -9,20 +9,32 @@ import {
 import SingleBoard from "./pages/SingleBoard";
 import Login from "./pages/Login";
 import Boards from "./pages/Boards";
+import Navbar from "./modules/Navbar";
+import CreateBoardModal from "./components/CreateBoardModal";
+import { useState } from "react";
 
 function App() {
-  const { name } = JSON.parse(localStorage.getItem("user"));
-
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [openModal, setOpenModal] = useState(false);
+  console.log(user);
   return (
     <div className="App">
       <Router>
+        {openModal && (
+          <CreateBoardModal
+            open={openModal}
+            handleClose={() => setOpenModal(false)}
+          />
+        )}
+
+        <Navbar openCreateBoardModal={() => setOpenModal(true)} />
         <Switch>
           <Route
             exact
             path="/"
             render={() => {
               return localStorage.getItem("user") ? (
-                <Redirect to={`/${name}/boards`} />
+                <Redirect to={`/${user?.name}/boards`} />
               ) : (
                 <Redirect to="/login" />
               );

@@ -9,7 +9,7 @@ import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    margin: "20px 0",
+    paddingTop: "50px",
   },
   gridRoot: {
     flexGrow: 1,
@@ -50,7 +50,7 @@ function BoardsContainer() {
   }, []);
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>
       <Grid container className={classes.gridRoot}>
         <Grid container justifyContent="flex-start" spacing={4}>
