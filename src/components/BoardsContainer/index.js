@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "@material-ui/core";
+import { Container, Divider } from "@material-ui/core";
 import { getUsersBoards } from "../../api-config/boards";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -52,6 +52,7 @@ function BoardsContainer() {
   return (
     <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>
+      <Divider />
       <Grid container className={classes.gridRoot}>
         <Grid container justifyContent="flex-start" spacing={4}>
           {listOfBoards.map((value) => (
