@@ -65,6 +65,7 @@ function ProjectDetailsNavbar({ projectTitle }) {
     <div className="projectdetailsnavbar">
       <div className="projectdetailsnavbar__front">
         <EditableTextField
+          oldTitle={projectTitle}
           title={editedTitle}
           onChange={onEditedTitleChange}
           save={onSaveEditedTitle}

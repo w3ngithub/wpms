@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import SingleBoard from "./pages/SingleBoard";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Boards from "./pages/Boards";
 import Navbar from "./modules/Navbar";
 import CreateBoardModal from "./components/CreateBoardModal";
@@ -46,6 +47,7 @@ function App() {
             exact
           />
           <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route path="/:userName/boards" component={Boards} exact />
         </Switch>
       </Router>

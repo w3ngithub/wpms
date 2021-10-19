@@ -50,7 +50,7 @@ function Navbar({ openCreateBoardModal }) {
     }
   }, [location]);
 
-  if (location.pathname === "/login") {
+  if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
 
@@ -68,7 +68,6 @@ function Navbar({ openCreateBoardModal }) {
           Icon={HomeIcon}
           onClick={() => history.push(`/${user?.name}/boards`)}
         />
-        <SearchInputField type="text" />
       </div>
 
       <img src={logo} alt="logo" className="navbar__logo" />

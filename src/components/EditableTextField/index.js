@@ -4,8 +4,9 @@ import { useState } from "react";
 import Wrapper from "../Wrapper";
 import "./style.css";
 
-function EditableTextField({ title, onChange, save }) {
+function EditableTextField({ title, oldTitle, onChange, save }) {
   const [isEditable, setIsEditable] = useState(false);
+
   const projectNameFieldCss = {
     padding: "6px 10px",
   };
@@ -16,6 +17,11 @@ function EditableTextField({ title, onChange, save }) {
 
   const onBlur = () => {
     setIsEditable(false);
+
+    if (oldTitle === title) {
+      return;
+    }
+
     save();
   };
 

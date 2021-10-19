@@ -9,10 +9,7 @@
 }
 
 .navbar__front {
-  display: flex;
-  align-items: center;
-  width: 250px;
-  justify-content: space-around;
+  margin: 0 8px;
 }
 
 .navbar__logo {
