@@ -14,3 +14,10 @@ export const getUser = (email) =>
 
       return data;
     });
+
+export const setUser = (userDetail) =>
+  fireStore.collection("users").add({
+    email: userDetail.email.value,
+    password: userDetail.password.value,
+    username: userDetail.username.value,
+  });

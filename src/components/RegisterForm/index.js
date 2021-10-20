@@ -10,6 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import { Email } from "@material-ui/icons";
+import { setUser } from "../../api-config/login";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -18,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const history = useHistory();
+
   const classes = useStyles();
   const [inputDetails, setInputDetails] = React.useState({});
 
@@ -29,7 +33,6 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(inputDetails);
 
     let newInputs = {},
       isEmpty = false;
@@ -66,7 +69,12 @@ export default function SignUp() {
           error: "password must be greater than 8 digits",
         },
       });
+      return;
     }
+    setUser(inputDetails).then(() => {
+      setInputDetails({});
+      history.push("/login");
+    });
   };
   const { username, email, password } = inputDetails;
   return (

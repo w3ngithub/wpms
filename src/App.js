@@ -42,13 +42,12 @@ function App() {
             }}
           />
           <Route exact path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route
             path="/:userName/:projectId/:title"
             component={SingleBoard}
             exact
           />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
           <Route path="/:userName/boards" component={Boards} exact />
         </Switch>
       </Router>

@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 
 function SingleBoard() {
   const [data, setData] = useState({ lanes: [] });
-  const { projectId } = useParams();
+  const { projectId, userName } = useParams();
 
   const onConfirmCardDelete = (params) => {
     const doDelete = window.confirm("Are you sure?");
@@ -35,7 +35,7 @@ function SingleBoard() {
         paddingTop: "45px",
       }}
     >
-      <ProjectDetailsNavbar projectTitle={data?.title} />
+      <ProjectDetailsNavbar projectTitle={data?.title} user={userName} />
 
       <Board
         data={{ lanes: data?.lanes || [] }}

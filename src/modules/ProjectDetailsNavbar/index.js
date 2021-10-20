@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProjectDetailsNavbar({ projectTitle }) {
+function ProjectDetailsNavbar({ projectTitle, user }) {
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(null);
   const [editedTitle, setEditedTitle] = useState(projectTitle);
@@ -74,7 +74,7 @@ function ProjectDetailsNavbar({ projectTitle }) {
         <Icon Icon={StarBorderIcon} />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <ProjectNameField
-          title="Pariskrit's workspace"
+          title={`${user}'s workspace`}
           customCss={projectNameFieldCss}
         />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
