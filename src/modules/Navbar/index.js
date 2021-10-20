@@ -27,7 +27,8 @@ function Navbar({ backgroundColor }) {
   const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
   const history = useHistory();
-  const { name } = JSON.parse(localStorage.getItem("user"));
+  // const { name } = JSON.parse(localStorage.getItem("user"));
+  const name = "";
 
   const handleOpenAccountMenu = (event) => {
     setOpenAccountMenuList(event.currentTarget);

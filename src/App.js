@@ -11,8 +11,6 @@ import Login from "./pages/Login";
 import Boards from "./pages/Boards";
 
 function App() {
-  const { name } = JSON.parse(localStorage.getItem("user"));
-
   return (
     <div className="App">
       <Router>
@@ -22,18 +20,22 @@ function App() {
             path="/"
             render={() => {
               return localStorage.getItem("user") ? (
-                <Redirect to={`/${name}/boards`} />
+                <Redirect
+                  to={`/${
+                    JSON.parse(localStorage.getItem("user")).name
+                  }/boards`}
+                />
               ) : (
                 <Redirect to="/login" />
               );
             }}
           />
+          <Route exact path="/login" component={Login} />
           <Route
             path="/:userName/:projectId/:title"
             component={SingleBoard}
             exact
           />
-          <Route path="/login" component={Login} />
           <Route path="/:userName/boards" component={Boards} exact />
         </Switch>
       </Router>

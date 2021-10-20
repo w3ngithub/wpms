@@ -61,7 +61,7 @@ export default function SignIn() {
 
     const { email, password } = loginDetails;
 
-    const user = await getUser(email);
+    const user = await getUser(email || "");
 
     if (user === null) {
       alert("No user found");

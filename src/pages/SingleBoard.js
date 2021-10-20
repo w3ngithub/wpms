@@ -24,8 +24,7 @@ function SingleBoard() {
     getSingleBoard(projectId).then((data) => {
       setData(data);
     });
-  }, []);
-  console.log(data);
+  }, [projectId]);
   return (
     <div
       style={{

@@ -38,15 +38,22 @@ function BoardsContainer() {
   const [listOfBoards, setListOfBoards] = useState([]);
   const classes = useStyles();
   const history = useHistory();
+
   const { name } = JSON.parse(localStorage.getItem("user"));
 
   const fetchBoards = async () => {
     const result = await getUsersBoards(name);
+    console.log(result);
     setListOfBoards(result);
   };
 
   useEffect(() => {
     fetchBoards();
+    // setListOfBoards([
+    //   { id: 1, data: { title: "Project One" } },
+    //   { id: 2, data: { title: "Project One" } },
+    //   { id: 3, data: { title: "Project One" } },
+    // ]);
   }, []);
 
   return (
