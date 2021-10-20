@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../modules/Navbar";
 import ProjectDetailsNavbar from "../modules/ProjectDetailsNavbar";
 import Board from "react-trello";
 import { getSingleBoard, updateBoard } from "../api-config/boards";
@@ -17,7 +16,7 @@ function SingleBoard() {
   };
 
   const onDataChange = (updatedData) => {
-    updateBoard(projectId, updatedData);
+    updateBoard(projectId, "lanes", updatedData.lanes);
   };
 
   useEffect(() => {
@@ -33,9 +32,9 @@ function SingleBoard() {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         backgroundSize: "cover",
+        paddingTop: "45px",
       }}
     >
-      <Navbar />
       <ProjectDetailsNavbar projectTitle={data?.title} />
 
       <Board
@@ -53,4 +52,4 @@ function SingleBoard() {
   );
 }
 
-export default SingleBoard;
+export default React.memo(SingleBoard);

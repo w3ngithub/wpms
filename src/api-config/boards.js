@@ -25,5 +25,11 @@ export const getSingleBoard = (id) =>
       return doc.data();
     });
 
-export const updateBoard = (id, updatedData) =>
-  fireStore.collection("boards").doc(id).update({ lanes: updatedData.lanes });
+export const updateBoard = (id, field, updatedData) =>
+  fireStore
+    .collection("boards")
+    .doc(id)
+    .update({ [field]: updatedData });
+
+export const createBoard = (title, username) =>
+  fireStore.collection("boards").add({ title, user: username });

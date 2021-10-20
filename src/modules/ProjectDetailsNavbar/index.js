@@ -8,6 +8,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Avatar } from "@material-ui/core";
 import Button from "../../components/Button";
 import MenuList from "../../components/MenuList";
+import EditableTextField from "../../components/EditableTextField";
+import { useEffect } from "react";
+import { updateBoard } from "../../api-config/boards";
+import { useParams } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 function ProjectDetailsNavbar({ projectTitle }) {
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(null);
+  const [editedTitle, setEditedTitle] = useState(projectTitle);
+  const { projectId } = useParams();
 
   const handleOpenMenu = (event) => {
     setOpenMenu(event.currentTarget);
@@ -38,17 +44,33 @@ function ProjectDetailsNavbar({ projectTitle }) {
     setOpenMenu(null);
   };
 
+  const onEditedTitleChange = (e) => setEditedTitle(e.target.value);
+
+  const onSaveEditedTitle = () => {
+    console.log(editedTitle, projectId);
+
+    updateBoard(projectId, "title", editedTitle);
+  };
+
   const projectNameFieldCss = {
     padding: "6px 10px",
   };
+
+  useEffect(() => {
+    if (projectTitle) {
+      setEditedTitle(projectTitle);
+    }
+  }, [projectTitle]);
   return (
     <div className="projectdetailsnavbar">
       <div className="projectdetailsnavbar__front">
-        <ProjectNameField
-          customCss={projectNameFieldCss}
-          isBold={true}
-          title={projectTitle}
+        <EditableTextField
+          oldTitle={projectTitle}
+          title={editedTitle}
+          onChange={onEditedTitleChange}
+          save={onSaveEditedTitle}
         />
+
         <Icon Icon={StarBorderIcon} />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <ProjectNameField

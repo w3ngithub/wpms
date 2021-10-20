@@ -8,23 +8,34 @@ import {
 } from "react-router-dom";
 import SingleBoard from "./pages/SingleBoard";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Boards from "./pages/Boards";
+import Navbar from "./modules/Navbar";
+import CreateBoardModal from "./components/CreateBoardModal";
+import { useState } from "react";
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <div className="App">
       <Router>
+        {openModal && (
+          <CreateBoardModal
+            open={openModal}
+            handleClose={() => setOpenModal(false)}
+          />
+        )}
+
+        <Navbar openCreateBoardModal={() => setOpenModal(true)} />
         <Switch>
           <Route
             exact
             path="/"
             render={() => {
               return localStorage.getItem("user") ? (
-                <Redirect
-                  to={`/${
-                    JSON.parse(localStorage.getItem("user")).name
-                  }/boards`}
-                />
+                <Redirect to={`/${user?.name}/boards`} />
               ) : (
                 <Redirect to="/login" />
               );
@@ -36,6 +47,8 @@ function App() {
             component={SingleBoard}
             exact
           />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
           <Route path="/:userName/boards" component={Boards} exact />
         </Switch>
       </Router>

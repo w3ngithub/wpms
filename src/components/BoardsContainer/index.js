@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "@material-ui/core";
+import { Container, Divider } from "@material-ui/core";
 import { getUsersBoards } from "../../api-config/boards";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -9,7 +9,7 @@ import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    margin: "20px 0",
+    paddingTop: "50px",
   },
   gridRoot: {
     flexGrow: 1,
@@ -55,10 +55,11 @@ function BoardsContainer() {
     //   { id: 3, data: { title: "Project One" } },
     // ]);
   }, []);
-
+  console.log("boards rerender");
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>
+      <Divider />
       <Grid container className={classes.gridRoot}>
         <Grid container justifyContent="flex-start" spacing={4}>
           {listOfBoards.map((value) => (
@@ -83,4 +84,4 @@ function BoardsContainer() {
   );
 }
 
-export default BoardsContainer;
+export default React.memo(BoardsContainer);
