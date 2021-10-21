@@ -47,8 +47,6 @@ function ProjectDetailsNavbar({ projectTitle, user }) {
   const onEditedTitleChange = (e) => setEditedTitle(e.target.value);
 
   const onSaveEditedTitle = () => {
-    console.log(editedTitle, projectId);
-
     updateBoard(projectId, "title", editedTitle);
   };
 
