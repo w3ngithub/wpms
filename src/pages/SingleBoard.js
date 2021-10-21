@@ -5,12 +5,20 @@ import { getSingleBoard, updateBoard } from "../api-config/boards";
 import { useParams } from "react-router";
 import Modal from "@material-ui/core/Modal";
 import Circle from "@uiw/react-color-circle";
+import { fireStore } from "../firebase/config";
+
+const labelColor = {
+  backgroundColor: "#fff",
+  position: "absolute",
+  top: "40%",
+  left: "30%",
+  padding: "30px",
+};
 
 function SingleBoard() {
   const [data, setData] = useState({ lanes: [] });
   const { projectId, userName } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
-  const [laneData, setLaneData] = useState();
 
   const onConfirmCardDelete = (params) => {
     const doDelete = window.confirm("Are you sure?");
@@ -23,29 +31,30 @@ function SingleBoard() {
     updateBoard(
       projectId,
       "lanes",
-      laneData.map((lane, i) => {
-        if (i === laneData.length - 1) {
+      data?.lanes?.map((lane, i) => {
+        if (i === data.lanes.length - 1) {
           return { ...lane, style: { backgroundColor: color.hex } };
         }
         return lane;
       })
     );
     setModelOpen(false);
-    getSingleBoard(projectId).then((data) => {
-      setData(data);
-    });
   };
 
   const onDataChange = (updatedData) => {
-    setLaneData(updatedData.lanes);
+    setData(updatedData);
     updateBoard(projectId, "lanes", updatedData.lanes);
   };
 
   useEffect(() => {
-    getSingleBoard(projectId).then((data) => {
-      setData(data);
-    });
+    fireStore
+      .collection("boards")
+      .doc(projectId)
+      .onSnapshot((doc) => {
+        setData(doc.data());
+      });
   }, [projectId]);
+
   return (
     <div
       style={{
@@ -75,7 +84,8 @@ function SingleBoard() {
         }}
       />
       <Modal open={modelOpen} onClose={() => setModelOpen(false)}>
-        <div>
+        <div style={labelColor}>
+          <h2>Add Label </h2>
           <Circle
             colors={[
               "#F44E3B",
