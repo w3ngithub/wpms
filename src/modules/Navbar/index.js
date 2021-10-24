@@ -78,7 +78,7 @@ function Navbar({ openCreateBoardModal }) {
           className={classes.avatar}
           onClick={handleOpenAccountMenu}
         >
-          PM
+          {user?.name[0]?.toUpperCase()}
         </Avatar>
         <MenuList
           open={openAccountMenuList}

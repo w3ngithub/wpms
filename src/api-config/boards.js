@@ -1,3 +1,4 @@
+import firebase from "firebase/app";
 import { fireStore } from "../firebase/config";
 
 export const getUsersBoards = (name) =>
@@ -33,3 +34,9 @@ export const updateBoard = (id, field, updatedData) =>
 
 export const createBoard = (title, username) =>
   fireStore.collection("boards").add({ title, user: username });
+
+export const addNewMemberToBoard = (id, member) =>
+  fireStore
+    .collection("boards")
+    .doc(id)
+    .update({ members: firebase.firestore.FieldValue.arrayUnion(member) });

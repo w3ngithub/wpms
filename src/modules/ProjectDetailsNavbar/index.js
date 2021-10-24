@@ -3,7 +3,12 @@ import Icon from "../../components/Icon";
 import ProjectNameField from "../../components/ProjectNameField";
 import "./style.css";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-import { Divider } from "@material-ui/core";
+import {
+  Divider,
+  Popover,
+  TextField,
+  Button as MuiButton,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar } from "@material-ui/core";
 import Button from "../../components/Button";
@@ -12,6 +17,7 @@ import EditableTextField from "../../components/EditableTextField";
 import { useEffect } from "react";
 import { updateBoard } from "../../api-config/boards";
 import { useParams } from "react-router";
+import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,11 +36,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProjectDetailsNavbar({ projectTitle, user }) {
+function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
+  console.log(user, members, boardUser);
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(null);
   const [editedTitle, setEditedTitle] = useState(projectTitle);
+  const [createLink, setCreateLink] = useState(false);
+  const [inviteLink, setInviteLink] = useState("");
   const { projectId } = useParams();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClickPopOver = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopOver = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   const handleOpenMenu = (event) => {
     setOpenMenu(event.currentTarget);
@@ -50,9 +72,23 @@ function ProjectDetailsNavbar({ projectTitle, user }) {
     updateBoard(projectId, "title", editedTitle);
   };
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(inviteLink);
+  };
+
+  const handleCreateLink = () => {
+    setCreateLink(!createLink);
+  };
+
   const projectNameFieldCss = {
     padding: "6px 10px",
   };
+
+  useEffect(() => {
+    if (createLink) {
+      setInviteLink(`http://localhost:3000/invite/${projectId}`);
+    }
+  }, [createLink, projectId]);
 
   useEffect(() => {
     if (projectTitle) {
@@ -76,10 +112,115 @@ function ProjectDetailsNavbar({ projectTitle, user }) {
           customCss={projectNameFieldCss}
         />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
-        <Avatar alt="PM" className={classes.avatar}>
-          PM
-        </Avatar>
-        <Button>Invite</Button>
+        {[{ name: boardUser }, ...members].map(({ name }) => (
+          <Avatar alt={name} className={classes.avatar}>
+            {name[0].toUpperCase()}
+          </Avatar>
+        ))}
+
+        <Button
+          aria-describedby={id}
+          variant="contained"
+          onClick={handleClickPopOver}
+        >
+          Invite
+        </Button>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClosePopOver}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <div style={{ width: "300px", padding: "10px" }}>
+            <div
+              style={{
+                textAlign: "center",
+                borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
+                marginBottom: "15px",
+                padding: "0 10px 10px 0",
+              }}
+            >
+              <p>Invite to board</p>
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                top: "5px",
+                right: "9px",
+                fontSize: "20px",
+                cursor: "pointer",
+              }}
+              onClick={handleClosePopOver}
+            >
+              x
+            </div>
+            <TextField
+              id="outlined-basic"
+              label="Email Address"
+              variant="outlined"
+              fullWidth
+            />
+            <div
+              style={{
+                align: "center",
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "20px",
+              }}
+            >
+              <div style={{ align: "center", display: "flex" }}>
+                <InsertInvitationIcon />
+                <p> Invite with Link</p>
+              </div>
+              <div
+                style={{
+                  color: "#0079bf",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+                onClick={handleCreateLink}
+              >
+                Create link
+              </div>
+            </div>
+            <div style={{ fontSize: "12px", color: "#5e6c84" }}>
+              Anyone with link can join as board member
+            </div>
+            {createLink && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  marginTop: "10px",
+                }}
+              >
+                <TextField
+                  autoFocus
+                  variant="outlined"
+                  size="small"
+                  value={inviteLink}
+                />
+                <MuiButton
+                  color="primary"
+                  variant="contained"
+                  onClick={handleCopyLink}
+                >
+                  Copy
+                </MuiButton>
+              </div>
+            )}
+            <div style={{ marginTop: "50px" }}>
+              <MuiButton variant="contained" fullWidth color="primary">
+                Send Invitation
+              </MuiButton>
+            </div>
+          </div>
+        </Popover>
       </div>
       <div className="projectdetailsnavbar__last">
         <Button onClick={handleOpenMenu}>Show Menu</Button>

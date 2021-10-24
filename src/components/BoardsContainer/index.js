@@ -68,9 +68,7 @@ function BoardsContainer() {
                 className={classes.paper}
                 elevation={0}
                 variant="outlined"
-                onClick={() =>
-                  history.push(`/${name}/${value.id}/${value.data.title}`)
-                }
+                onClick={() => history.push(`/${name}/${value.id}`)}
               >
                 <div className="paper">
                   <p className="title">{value.data.title}</p>

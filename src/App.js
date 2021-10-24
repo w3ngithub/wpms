@@ -13,6 +13,7 @@ import Boards from "./pages/Boards";
 import Navbar from "./modules/Navbar";
 import CreateBoardModal from "./components/CreateBoardModal";
 import { useState } from "react";
+import Invite from "./pages/Invite";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -44,11 +45,18 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route
-            path="/:userName/:projectId/:title"
-            component={SingleBoard}
             exact
+            path="/invite/:id"
+            render={() => {
+              return localStorage.getItem("user") ? (
+                <Invite />
+              ) : (
+                <Redirect to="/login" />
+              );
+            }}
           />
           <Route path="/:userName/boards" component={Boards} exact />
+          <Route path="/:userName/:projectId/" component={SingleBoard} exact />
         </Switch>
       </Router>
     </div>

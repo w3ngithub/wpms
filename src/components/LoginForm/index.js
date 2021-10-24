@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { getUser } from "../../api-config/login";
-import { useHistory } from "react-router";
+import { useHistory, useLocation, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 
 function Copyright() {
@@ -50,6 +50,8 @@ export default function SignIn() {
   const classes = useStyles();
   const [loginDetails, setLoginDetails] = useState({});
   const history = useHistory();
+  const location = useLocation();
+  console.log(history, location, useRouteMatch());
 
   const onInputChange = (e) =>
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
@@ -71,7 +73,10 @@ export default function SignIn() {
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify({ name: user.username }));
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ name: user.username, email: user.email })
+    );
     history.push(`/${user.username}/boards`);
   };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProjectDetailsNavbar from "../modules/ProjectDetailsNavbar";
 import Board from "react-trello";
-import { getSingleBoard, updateBoard } from "../api-config/boards";
+import { updateBoard } from "../api-config/boards";
 import { useParams } from "react-router";
 import Modal from "@material-ui/core/Modal";
 import Circle from "@uiw/react-color-circle";
@@ -17,6 +17,7 @@ const labelColor = {
 
 function SingleBoard() {
   const [data, setData] = useState({ lanes: [] });
+  const [dataTopass, setDatatoPass] = useState(null);
   const { projectId, userName } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
 
@@ -52,8 +53,10 @@ function SingleBoard() {
       .doc(projectId)
       .onSnapshot((doc) => {
         setData(doc.data());
+        setDatatoPass(doc.data());
       });
   }, [projectId]);
+  console.log(data);
 
   return (
     <div
@@ -66,7 +69,13 @@ function SingleBoard() {
         paddingTop: "45px",
       }}
     >
-      <ProjectDetailsNavbar projectTitle={data?.title} user={userName} />
+      <ProjectDetailsNavbar
+        projectTitle={dataTopass?.title}
+        user={userName}
+        projectId={projectId}
+        members={dataTopass.members || []}
+        boardUser={dataTopass.user}
+      />
 
       <Board
         data={{ lanes: data?.lanes || [] }}
