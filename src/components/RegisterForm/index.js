@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Email } from "@material-ui/icons";
 import { setUser } from "../../api-config/login";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -151,6 +152,11 @@ export default function SignUp() {
             Sign Up
           </Button>
         </Box>
+        <Grid container>
+          <Grid item>
+            <Link to="/login">{"Sign In"}</Link>
+          </Grid>
+        </Grid>
       </Box>
     </Container>
   );
