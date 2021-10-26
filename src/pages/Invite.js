@@ -10,9 +10,7 @@ function Invite() {
   const { id } = useParams();
   const { push } = useHistory();
   const handleJoinBoard = () => {
-    addNewMemberToBoard(id, { name: name, email: email }).then(
-      push(`/${name}/${id}`)
-    );
+    addNewMemberToBoard(id, name).then(push(`/${name}/${id}`));
   };
   return (
     <div

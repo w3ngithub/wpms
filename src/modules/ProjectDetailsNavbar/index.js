@@ -112,7 +112,7 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
           customCss={projectNameFieldCss}
         />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
-        {[{ name: boardUser }, ...members].map(({ name }) => (
+        {[boardUser, ...members].map((name) => (
           <Avatar alt={name} className={classes.avatar}>
             {name?.[0].toUpperCase()}
           </Avatar>

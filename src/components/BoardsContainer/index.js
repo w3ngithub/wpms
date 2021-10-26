@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Divider } from "@material-ui/core";
-import { getUsersBoards } from "../../api-config/boards";
+import { getUsersBoards, getUsersInvitesBoards } from "../../api-config/boards";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -42,20 +42,16 @@ function BoardsContainer() {
   const { name } = JSON.parse(localStorage.getItem("user"));
 
   const fetchBoards = async () => {
-    const result = await getUsersBoards(name);
-    console.log(result);
-    setListOfBoards(result);
+    const result = await Promise.all([
+      getUsersBoards(name),
+      getUsersInvitesBoards(name),
+    ]);
+    setListOfBoards([...result.flat()]);
   };
 
   useEffect(() => {
     fetchBoards();
-    // setListOfBoards([
-    //   { id: 1, data: { title: "Project One" } },
-    //   { id: 2, data: { title: "Project One" } },
-    //   { id: 3, data: { title: "Project One" } },
-    // ]);
   }, []);
-  console.log("boards rerender");
   return (
     <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>

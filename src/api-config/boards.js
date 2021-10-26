@@ -16,6 +16,21 @@ export const getUsersBoards = (name) =>
       return data;
     });
 
+export const getUsersInvitesBoards = (name) =>
+  fireStore
+    .collection("boards")
+    .where("members", "array-contains", name)
+    .get()
+    .then((querySnapshot) => {
+      let data = [];
+      querySnapshot.forEach((doc) => {
+        console.log("from database raw data", doc.data());
+        data.push({ id: doc.id, data: doc.data() });
+      });
+
+      return data;
+    });
+
 export const getSingleBoard = (id) =>
   fireStore
     .collection("boards")
