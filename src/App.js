@@ -58,7 +58,13 @@ function App() {
               return <Redirect to="/login" />;
             }}
           />
-          <Route path="/:userName/boards" component={Boards} exact />
+          <Route
+            path="/:userName/boards"
+            render={() => (
+              <Boards openCreateBoardModal={() => setOpenModal(true)} />
+            )}
+            exact
+          />
           <Route path="/:userName/:projectId/" component={SingleBoard} exact />
         </Switch>
       </Router>

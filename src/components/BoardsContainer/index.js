@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BoardsContainer() {
+function BoardsContainer({ openCreateBoardModal }) {
   const [listOfBoards, setListOfBoards] = useState([]);
   const [listOfFavouriteBoards, setListOfFavouriteBoards] = useState([]);
   const classes = useStyles();
@@ -100,6 +100,18 @@ function BoardsContainer() {
               </Paper>
             </Grid>
           ))}
+          <Grid key={"add"} item>
+            <Paper
+              className={classes.paper}
+              elevation={0}
+              variant="outlined"
+              onClick={openCreateBoardModal}
+            >
+              <div className="paper">
+                <p className="title">Create New Board</p>
+              </div>
+            </Paper>
+          </Grid>
         </Grid>
       </Grid>
     </Container>

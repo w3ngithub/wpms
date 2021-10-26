@@ -2,10 +2,10 @@ import React from "react";
 import Navbar from "../modules/Navbar";
 import BoardsContainer from "../components/BoardsContainer";
 
-function Boards() {
+function Boards({ openCreateBoardModal }) {
   return (
     <>
-      <BoardsContainer />
+      <BoardsContainer openCreateBoardModal={openCreateBoardModal} />
     </>
   );
 }
