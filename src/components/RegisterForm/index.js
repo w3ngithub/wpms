@@ -9,10 +9,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import { Email } from "@material-ui/icons";
-import { setUser } from "../../api-config/login";
+import { setUser, setUserFormGoogleSignUp } from "../../api-config/login";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -77,6 +77,27 @@ export default function SignUp() {
       history.push("/login");
     });
   };
+
+  const responseGoogle = (res) => {
+    setUserFormGoogleSignUp({
+      name: res.profileObj.name,
+      email: res.profileObj.email,
+    })
+      .then(() => {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: res.profileObj.name,
+            email: res.profileObj.email,
+          })
+        );
+        history.push(`/${res.profileObj.name}/boards`);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+  };
+
   const { username, email, password } = inputDetails;
   return (
     <Container component="main" maxWidth="xs">
@@ -152,6 +173,15 @@ export default function SignUp() {
             Sign Up
           </Button>
         </Box>
+        <h4>OR</h4>
+        <GoogleLogin
+          disabled={false}
+          clientId={process.env.REACT_APP_CLIENT_ID}
+          buttonText="Sign Up With Goolge"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
         <Grid container>
           <Grid item>
             <Link to="/login">{"Sign In"}</Link>

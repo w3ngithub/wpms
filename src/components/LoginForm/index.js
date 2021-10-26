@@ -14,6 +14,7 @@ import Container from "@material-ui/core/Container";
 import { getUser } from "../../api-config/login";
 import { useHistory, useLocation, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
+import GoogleLogin from "react-google-login";
 
 function Copyright() {
   return (
@@ -85,6 +86,26 @@ export default function SignIn() {
     }
   };
 
+  const responseGoogle = async (res) => {
+    const user = await getUser(res.profileObj.email || "");
+
+    if (user === null) {
+      alert("No user found");
+      return;
+    }
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ name: user.username, email: user.email })
+    );
+    if (localStorage.getItem("invite")) {
+      history.push(`${JSON.parse(localStorage.getItem("invite"))}`);
+      localStorage.removeItem("invite");
+    } else {
+      history.push(`/${user.username}/boards`);
+    }
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -136,6 +157,19 @@ export default function SignIn() {
           >
             Sign In
           </Button>
+
+          <div style={{ textAlign: "center" }}>
+            {" "}
+            <h4>OR</h4>
+            <GoogleLogin
+              disabled={false}
+              clientId={process.env.REACT_APP_CLIENT_ID}
+              buttonText="Log In With Goolge"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
+          </div>
           <Grid container>
             <Grid item>
               <Link to="/register">{"Sign Up"}</Link>

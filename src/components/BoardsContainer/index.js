@@ -32,6 +32,21 @@ const useStyles = makeStyles((theme) => ({
     },
     color: "white",
   },
+  paperCreateBoard: {
+    height: 100,
+    width: 150,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    background: "#FAFBFC",
+    transition: "0.2s",
+    "&:hover": {
+      opacity: "0.6",
+      background: "#97a0af",
+    },
+    color: "#172b4d",
+  },
   control: {
     padding: theme.spacing(2),
   },
@@ -102,7 +117,7 @@ function BoardsContainer({ openCreateBoardModal }) {
           ))}
           <Grid key={"add"} item>
             <Paper
-              className={classes.paper}
+              className={classes.paperCreateBoard}
               elevation={0}
               variant="outlined"
               onClick={openCreateBoardModal}

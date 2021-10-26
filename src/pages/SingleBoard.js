@@ -74,6 +74,7 @@ function SingleBoard() {
         projectId={projectId}
         members={dataTopass?.members || []}
         boardUser={dataTopass?.user}
+        favourite={dataTopass?.favourite || []}
       />
 
       <Board

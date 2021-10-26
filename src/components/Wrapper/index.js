@@ -1,9 +1,14 @@
 import React from "react";
 import "./style.css";
 
-function Wrapper({ customCss = null, onClick, children }) {
+function Wrapper({ customCss = null, onClick, children, ...rest }) {
   return (
-    <div className="wrapper" style={customCss && customCss} onClick={onClick}>
+    <div
+      className="wrapper"
+      style={customCss && customCss}
+      onClick={onClick}
+      {...rest}
+    >
       {children}
     </div>
   );

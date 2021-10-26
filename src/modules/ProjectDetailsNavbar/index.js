@@ -108,7 +108,11 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
           save={onSaveEditedTitle}
         />
 
-        <Icon Icon={StarBorderIcon} onClick={handleFavouriteBoard} />
+        <Icon
+          Icon={StarBorderIcon}
+          style={{ backgroundColor: "lightblue" }}
+          onClick={handleFavouriteBoard}
+        />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <ProjectNameField
           title={`${user}'s workspace`}

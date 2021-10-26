@@ -21,3 +21,6 @@ export const setUser = (userDetail) =>
     password: userDetail.password.value,
     username: userDetail.username.value,
   });
+
+export const setUserFormGoogleSignUp = (user) =>
+  fireStore.collection("users").add({ email: user.email, username: user.name });
