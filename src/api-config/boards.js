@@ -16,10 +16,10 @@ export const getUsersBoards = (name) =>
       return data;
     });
 
-export const getUsersInvitesBoards = (name) =>
+export const getUsersFromFeatureBoards = (field, name) =>
   fireStore
     .collection("boards")
-    .where("members", "array-contains", name)
+    .where(field, "array-contains", name)
     .get()
     .then((querySnapshot) => {
       let data = [];
@@ -55,3 +55,9 @@ export const addNewMemberToBoard = (id, member) =>
     .collection("boards")
     .doc(id)
     .update({ members: firebase.firestore.FieldValue.arrayUnion(member) });
+
+export const addFavouriteBoard = (id, user) =>
+  fireStore
+    .collection("boards")
+    .doc(id)
+    .update({ favourite: firebase.firestore.FieldValue.arrayUnion(user) });

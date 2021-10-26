@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Container, Divider } from "@material-ui/core";
-import { getUsersBoards, getUsersInvitesBoards } from "../../api-config/boards";
+import {
+  getUsersBoards,
+  getUsersFromFeatureBoards,
+} from "../../api-config/boards";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -36,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 function BoardsContainer() {
   const [listOfBoards, setListOfBoards] = useState([]);
+  const [listOfFavouriteBoards, setListOfFavouriteBoards] = useState([]);
   const classes = useStyles();
   const history = useHistory();
 
@@ -44,9 +48,11 @@ function BoardsContainer() {
   const fetchBoards = async () => {
     const result = await Promise.all([
       getUsersBoards(name),
-      getUsersInvitesBoards(name),
+      getUsersFromFeatureBoards("members", name),
     ]);
+    const favouriteBoards = await getUsersFromFeatureBoards("favourite", name);
     setListOfBoards([...result.flat()]);
+    setListOfFavouriteBoards(favouriteBoards);
   };
 
   useEffect(() => {
@@ -57,6 +63,28 @@ function BoardsContainer() {
       <h1 className="boards__header">Boards</h1>
       <Divider />
       <Grid container className={classes.gridRoot}>
+        {listOfFavouriteBoards.length !== 0 && (
+          <>
+            <h2 className="boards__header">Your Favourites</h2>
+            <Grid container justifyContent="flex-start" spacing={4}>
+              {listOfFavouriteBoards.map((value) => (
+                <Grid key={value.id} item>
+                  <Paper
+                    className={classes.paper}
+                    elevation={0}
+                    variant="outlined"
+                    onClick={() => history.push(`/${name}/${value.id}`)}
+                  >
+                    <div className="paper">
+                      <p className="title">{value.data.title}</p>
+                    </div>
+                  </Paper>
+                </Grid>
+              ))}
+            </Grid>
+          </>
+        )}
+        <h2 className="boards__header">Your WorkSpaces</h2>
         <Grid container justifyContent="flex-start" spacing={4}>
           {listOfBoards.map((value) => (
             <Grid key={value.id} item>

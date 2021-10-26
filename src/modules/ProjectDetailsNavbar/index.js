@@ -15,7 +15,7 @@ import Button from "../../components/Button";
 import MenuList from "../../components/MenuList";
 import EditableTextField from "../../components/EditableTextField";
 import { useEffect } from "react";
-import { updateBoard } from "../../api-config/boards";
+import { addFavouriteBoard, updateBoard } from "../../api-config/boards";
 import { useParams } from "react-router";
 import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 
@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
-  console.log(user, members, boardUser);
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(null);
   const [editedTitle, setEditedTitle] = useState(projectTitle);
@@ -80,6 +79,10 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
     setCreateLink(!createLink);
   };
 
+  const handleFavouriteBoard = () => {
+    addFavouriteBoard(projectId, user);
+  };
+
   const projectNameFieldCss = {
     padding: "6px 10px",
   };
@@ -105,7 +108,7 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
           save={onSaveEditedTitle}
         />
 
-        <Icon Icon={StarBorderIcon} />
+        <Icon Icon={StarBorderIcon} onClick={handleFavouriteBoard} />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <ProjectNameField
           title={`${user}'s workspace`}

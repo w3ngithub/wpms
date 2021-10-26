@@ -6,7 +6,7 @@ import { useHistory, useParams } from "react-router";
 import { addNewMemberToBoard } from "../api-config/boards";
 
 function Invite() {
-  const { name, email } = JSON.parse(localStorage.getItem("user"));
+  const { name } = JSON.parse(localStorage.getItem("user"));
   const { id } = useParams();
   const { push } = useHistory();
   const handleJoinBoard = () => {

@@ -56,7 +56,6 @@ function SingleBoard() {
         setDatatoPass(doc.data());
       });
   }, [projectId]);
-  console.log(data);
 
   return (
     <div
