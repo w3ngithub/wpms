@@ -86,7 +86,7 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
 
   useEffect(() => {
     if (createLink) {
-      setInviteLink(`http://localhost:3000/invite/${projectId}`);
+      setInviteLink(`${process.env.REACT_APP_BASE_URL}/invite/${projectId}`);
     }
   }, [createLink, projectId]);
 
@@ -114,7 +114,7 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         {[{ name: boardUser }, ...members].map(({ name }) => (
           <Avatar alt={name} className={classes.avatar}>
-            {name[0].toUpperCase()}
+            {name?.[0].toUpperCase()}
           </Avatar>
         ))}
 
@@ -184,7 +184,7 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
                 }}
                 onClick={handleCreateLink}
               >
-                Create link
+                {!createLink ? "Create link" : "Disable link"}
               </div>
             </div>
             <div style={{ fontSize: "12px", color: "#5e6c84" }}>

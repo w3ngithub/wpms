@@ -47,12 +47,15 @@ function App() {
           <Route
             exact
             path="/invite/:id"
-            render={() => {
-              return localStorage.getItem("user") ? (
-                <Invite />
-              ) : (
-                <Redirect to="/login" />
+            render={(props) => {
+              if (localStorage.getItem("user")) {
+                return <Invite />;
+              }
+              localStorage.setItem(
+                "invite",
+                JSON.stringify(props.location.pathname)
               );
+              return <Redirect to="/login" />;
             }}
           />
           <Route path="/:userName/boards" component={Boards} exact />

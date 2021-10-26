@@ -73,8 +73,8 @@ function SingleBoard() {
         projectTitle={dataTopass?.title}
         user={userName}
         projectId={projectId}
-        members={dataTopass.members || []}
-        boardUser={dataTopass.user}
+        members={dataTopass?.members || []}
+        boardUser={dataTopass?.user}
       />
 
       <Board
@@ -94,6 +94,13 @@ function SingleBoard() {
       />
       <Modal open={modelOpen} onClose={() => setModelOpen(false)}>
         <div style={labelColor}>
+          <div
+            style={{ textAlign: "right", fontSize: "24px", cursor: "pointer" }}
+            onClick={() => setModelOpen(false)}
+          >
+            X
+          </div>
+
           <h2>Add Label </h2>
           <Circle
             colors={[

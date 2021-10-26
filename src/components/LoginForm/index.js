@@ -77,7 +77,12 @@ export default function SignIn() {
       "user",
       JSON.stringify({ name: user.username, email: user.email })
     );
-    history.push(`/${user.username}/boards`);
+    if (localStorage.getItem("invite")) {
+      history.push(`${JSON.parse(localStorage.getItem("invite"))}`);
+      localStorage.removeItem("invite");
+    } else {
+      history.push(`/${user.username}/boards`);
+    }
   };
 
   return (

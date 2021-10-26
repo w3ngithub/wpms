@@ -28,9 +28,8 @@ function CreateBoardModal({ open, handleClose }) {
       res.get().then((data) => {
         handleClose();
         setLoading(false);
-        const { title } = data.data();
 
-        history.push(`/${name}/${res.id}/${title}`);
+        history.push(`/${name}/${res.id}`);
       });
     });
   };
