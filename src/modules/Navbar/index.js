@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar({ openCreateBoardModal }) {
+function Navbar({ openCreateBoardModal, setSearchBoard }) {
   const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
   const history = useHistory();
@@ -72,6 +72,11 @@ function Navbar({ openCreateBoardModal }) {
 
       <img src={logo} alt="logo" className="navbar__logo" />
       <div className="navbar__last">
+        <SearchInputField
+          onChange={(e) => {
+            setSearchBoard(e.target.value);
+          }}
+        />
         <Icon Icon={AddIcon} onClick={openCreateBoardModal} />
         <Avatar
           alt="PM"

@@ -21,6 +21,6 @@
 .navbar__last {
   display: flex;
   align-items: center;
-  width: 83px;
-  justify-content: space-around;
+  gap: 10px;
+  margin-right: 5px;
 }

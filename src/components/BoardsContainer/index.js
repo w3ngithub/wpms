@@ -52,9 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BoardsContainer({ openCreateBoardModal }) {
+function BoardsContainer({ openCreateBoardModal, searchBoard }) {
   const [listOfBoards, setListOfBoards] = useState([]);
   const [listOfFavouriteBoards, setListOfFavouriteBoards] = useState([]);
+  const [searchListOfBoard, setSearchListOfBoards] = useState([]);
   const classes = useStyles();
   const history = useHistory();
 
@@ -71,64 +72,94 @@ function BoardsContainer({ openCreateBoardModal }) {
   };
 
   useEffect(() => {
+    setSearchListOfBoards(
+      listOfBoards.filter((board) =>
+        board.data.title.toUpperCase().includes(searchBoard.toUpperCase())
+      )
+    );
+  }, [searchBoard, listOfBoards]);
+
+  useEffect(() => {
     fetchBoards();
   }, []);
+
   return (
     <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>
       <Divider />
-      <Grid container className={classes.gridRoot}>
-        {listOfFavouriteBoards.length !== 0 && (
-          <>
-            <h2 className="boards__header">Your Favourites</h2>
-            <Grid container justifyContent="flex-start" spacing={4}>
-              {listOfFavouriteBoards.map((value) => (
-                <Grid key={value.id} item>
-                  <Paper
-                    className={classes.paper}
-                    elevation={0}
-                    variant="outlined"
-                    onClick={() => history.push(`/${name}/${value.id}`)}
-                  >
-                    <div className="paper">
-                      <p className="title">{value.data.title}</p>
-                    </div>
-                  </Paper>
-                </Grid>
-              ))}
-            </Grid>
-          </>
-        )}
-        <h2 className="boards__header">Your WorkSpaces</h2>
-        <Grid container justifyContent="flex-start" spacing={4}>
-          {listOfBoards.map((value) => (
-            <Grid key={value.id} item>
+      {searchBoard ? (
+        <Grid container className={classes.gridRoot}>
+          <Grid container justifyContent="flex-start" spacing={4}>
+            {searchListOfBoard.map((value) => (
+              <Grid key={value.id} item>
+                <Paper
+                  className={classes.paper}
+                  elevation={0}
+                  variant="outlined"
+                  onClick={() => history.push(`/${name}/${value.id}`)}
+                >
+                  <div className="paper">
+                    <p className="title">{value.data.title}</p>
+                  </div>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid container className={classes.gridRoot}>
+          {listOfFavouriteBoards.length !== 0 && (
+            <>
+              <h2 className="boards__header">Your Favourites</h2>
+              <Grid container justifyContent="flex-start" spacing={4}>
+                {listOfFavouriteBoards.map((value) => (
+                  <Grid key={value.id} item>
+                    <Paper
+                      className={classes.paper}
+                      elevation={0}
+                      variant="outlined"
+                      onClick={() => history.push(`/${name}/${value.id}`)}
+                    >
+                      <div className="paper">
+                        <p className="title">{value.data.title}</p>
+                      </div>
+                    </Paper>
+                  </Grid>
+                ))}
+              </Grid>
+            </>
+          )}
+          <h2 className="boards__header">Your WorkSpaces</h2>
+          <Grid container justifyContent="flex-start" spacing={4}>
+            {listOfBoards.map((value) => (
+              <Grid key={value.id} item>
+                <Paper
+                  className={classes.paper}
+                  elevation={0}
+                  variant="outlined"
+                  onClick={() => history.push(`/${name}/${value.id}`)}
+                >
+                  <div className="paper">
+                    <p className="title">{value.data.title}</p>
+                  </div>
+                </Paper>
+              </Grid>
+            ))}
+            <Grid key={"add"} item>
               <Paper
-                className={classes.paper}
+                className={classes.paperCreateBoard}
                 elevation={0}
                 variant="outlined"
-                onClick={() => history.push(`/${name}/${value.id}`)}
+                onClick={openCreateBoardModal}
               >
                 <div className="paper">
-                  <p className="title">{value.data.title}</p>
+                  <p className="title">Create New Board</p>
                 </div>
               </Paper>
             </Grid>
-          ))}
-          <Grid key={"add"} item>
-            <Paper
-              className={classes.paperCreateBoard}
-              elevation={0}
-              variant="outlined"
-              onClick={openCreateBoardModal}
-            >
-              <div className="paper">
-                <p className="title">Create New Board</p>
-              </div>
-            </Paper>
           </Grid>
         </Grid>
-      </Grid>
+      )}
     </Container>
   );
 }

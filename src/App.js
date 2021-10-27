@@ -1,5 +1,4 @@
 import "./App.css";
-import img from "./assets/background2.jpg";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,6 +17,7 @@ import Invite from "./pages/Invite";
 function App() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [openModal, setOpenModal] = useState(false);
+  const [searchBoard, setSearchBoard] = useState("");
 
   return (
     <div className="App">
@@ -29,7 +29,10 @@ function App() {
           />
         )}
 
-        <Navbar openCreateBoardModal={() => setOpenModal(true)} />
+        <Navbar
+          openCreateBoardModal={() => setOpenModal(true)}
+          setSearchBoard={setSearchBoard}
+        />
         <Switch>
           <Route
             exact
@@ -61,7 +64,10 @@ function App() {
           <Route
             path="/:userName/boards"
             render={() => (
-              <Boards openCreateBoardModal={() => setOpenModal(true)} />
+              <Boards
+                openCreateBoardModal={() => setOpenModal(true)}
+                searchBoard={searchBoard}
+              />
             )}
             exact
           />

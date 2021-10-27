@@ -13,7 +13,7 @@ function SearchInputField(props) {
         className="search__container"
         onClick={() => setShowInputField(true)}
       >
-        <input {...props} className="input" placeholder="Enter text.." />
+        <input {...props} className="input" placeholder="Search" />
         <SearchIcon style={{ color: grey[50] }} />
         {/* {showInputField ? (
           // <input {...props} className="input" placeholder="Enter text.." />

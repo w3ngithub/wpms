@@ -1,11 +1,13 @@
 import React from "react";
-import Navbar from "../modules/Navbar";
 import BoardsContainer from "../components/BoardsContainer";
 
-function Boards({ openCreateBoardModal }) {
+function Boards({ openCreateBoardModal, searchBoard }) {
   return (
     <>
-      <BoardsContainer openCreateBoardModal={openCreateBoardModal} />
+      <BoardsContainer
+        openCreateBoardModal={openCreateBoardModal}
+        searchBoard={searchBoard}
+      />
     </>
   );
 }
