@@ -9,10 +9,16 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import { setUser, setUserFormGoogleSignUp } from "../../api-config/login";
+import {
+  getUser,
+  setUser,
+  setUserFormSocialSignUp,
+} from "../../api-config/login";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import GoogleLogin from "react-google-login";
+import { firebase } from "../../firebase/config";
+import GitHubIcon from "@material-ui/icons/GitHub";
+import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -77,23 +83,58 @@ export default function SignUp() {
       history.push("/login");
     });
   };
+  const AfterSocialLogIn = async (res, socialPlatform) => {
+    const {
+      user: { email, displayName },
+      additionalUserInfo: { username },
+    } = res;
+    const user = await getUser(email);
+    if (user === null) {
+      await setUserFormSocialSignUp({
+        email: email,
+        username: socialPlatform === "github" ? username : displayName,
+      });
+    }
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        email: email,
+        name: socialPlatform === "github" ? username : displayName,
+      })
+    );
+    if (localStorage.getItem("invite")) {
+      history.push(`${JSON.parse(localStorage.getItem("invite"))}`);
+      localStorage.removeItem("invite");
+    } else {
+      history.push(
+        `/${socialPlatform === "github" ? username : displayName}/boards`
+      );
+    }
+  };
 
-  const responseGoogle = (res) => {
-    setUserFormGoogleSignUp({
-      name: res.profileObj.name,
-      email: res.profileObj.email,
-    })
-      .then(() => {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            name: res.profileObj.name,
-            email: res.profileObj.email,
-          })
-        );
-        history.push(`/${res.profileObj.name}/boards`);
+  const handleLogInwithGithub = () => {
+    firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GithubAuthProvider())
+      .then(async (res) => {
+        AfterSocialLogIn(res, "github");
       })
       .catch((err) => {
+        console.log("error", err);
+        alert(err.message);
+      });
+  };
+
+  const handleLogInwithGoogle = () => {
+    firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((res) => {
+        AfterSocialLogIn(res, "google");
+      })
+      .catch((err) => {
+        alert(err.message);
+
         console.log("error", err);
       });
   };
@@ -172,16 +213,38 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
+          <div
+            style={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
+            <h4>OR</h4>
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleLogInwithGithub}
+              endIcon={<GitHubIcon />}
+            >
+              Sign Up with Github
+            </Button>
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleLogInwithGoogle}
+              endIcon={<FcGoogle />}
+            >
+              Sign Up with Google
+            </Button>
+          </div>
         </Box>
-        <h4>OR</h4>
-        <GoogleLogin
-          disabled={false}
-          clientId={process.env.REACT_APP_CLIENT_ID}
-          buttonText="Sign Up With Goolge"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
+
         <Grid container>
           <Grid item>
             <Link to="/login">{"Sign In"}</Link>

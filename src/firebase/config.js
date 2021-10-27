@@ -1,5 +1,6 @@
-import "firebase/firestore";
 import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -25,4 +26,4 @@ const fireStore = firebase.firestore();
 
 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
-export { fireStore, timestamp };
+export { fireStore, timestamp, firebase };

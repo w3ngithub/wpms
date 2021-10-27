@@ -11,10 +11,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { getUser } from "../../api-config/login";
-import { useHistory, useLocation, useRouteMatch } from "react-router";
+import { getUser, setUserFormSocialSignUp } from "../../api-config/login";
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import GoogleLogin from "react-google-login";
+import GitHubIcon from "@material-ui/icons/GitHub";
+import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
+import { firebase } from "../../firebase/config";
 
 function Copyright() {
   return (
@@ -51,8 +53,6 @@ export default function SignIn() {
   const classes = useStyles();
   const [loginDetails, setLoginDetails] = useState({});
   const history = useHistory();
-  const location = useLocation();
-  console.log(history, location, useRouteMatch());
 
   const onInputChange = (e) =>
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
@@ -86,24 +86,60 @@ export default function SignIn() {
     }
   };
 
-  const responseGoogle = async (res) => {
-    const user = await getUser(res.profileObj.email || "");
-
+  const AfterSocialLogIn = async (res, socialPlatform) => {
+    const {
+      user: { email, displayName },
+      additionalUserInfo: { username },
+    } = res;
+    const user = await getUser(email);
     if (user === null) {
-      alert("No user found");
-      return;
+      await setUserFormSocialSignUp({
+        email: email,
+        username: socialPlatform === "github" ? username : displayName,
+      });
     }
-
     localStorage.setItem(
       "user",
-      JSON.stringify({ name: user.username, email: user.email })
+      JSON.stringify({
+        email: email,
+        name: socialPlatform === "github" ? username : displayName,
+      })
     );
     if (localStorage.getItem("invite")) {
       history.push(`${JSON.parse(localStorage.getItem("invite"))}`);
       localStorage.removeItem("invite");
     } else {
-      history.push(`/${user.username}/boards`);
+      history.push(
+        `/${socialPlatform === "github" ? username : displayName}/boards`
+      );
     }
+  };
+
+  const handleLogInwithGithub = () => {
+    firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GithubAuthProvider())
+      .then(async (res) => {
+        AfterSocialLogIn(res, "github");
+      })
+      .catch((err) => {
+        console.log("error", err);
+        alert(err.message);
+      });
+  };
+
+  const handleLogInwithGoogle = () => {
+    firebase
+      .auth()
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((res) => {
+        AfterSocialLogIn(res, "google");
+      })
+      .catch((err) => {
+        alert(err.message);
+
+        console.log("error", err);
+      });
   };
 
   return (
@@ -158,17 +194,36 @@ export default function SignIn() {
             Sign In
           </Button>
 
-          <div style={{ textAlign: "center" }}>
+          <div
+            style={{
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
             {" "}
             <h4>OR</h4>
-            <GoogleLogin
-              disabled={false}
-              clientId={process.env.REACT_APP_CLIENT_ID}
-              buttonText="Log In With Goolge"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={"single_host_origin"}
-            />
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleLogInwithGithub}
+              endIcon={<GitHubIcon />}
+            >
+              Log In with Github
+            </Button>
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              color="primary"
+              onClick={handleLogInwithGoogle}
+              endIcon={<FcGoogle />}
+            >
+              Log In with Google
+            </Button>
           </div>
           <Grid container>
             <Grid item>

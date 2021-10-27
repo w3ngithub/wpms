@@ -22,5 +22,5 @@ export const setUser = (userDetail) =>
     username: userDetail.username.value,
   });
 
-export const setUserFormGoogleSignUp = (user) =>
-  fireStore.collection("users").add({ email: user.email, username: user.name });
+export const setUserFormSocialSignUp = (user) =>
+  fireStore.collection("users").add(user);
