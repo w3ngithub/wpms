@@ -20,6 +20,8 @@ function SingleBoard() {
   const [dataTopass, setDatatoPass] = useState(null);
   const { projectId, userName } = useParams();
   const [modelOpen, setModelOpen] = useState(false);
+  const [cardModelOPen, setCardModelOpen] = useState(false);
+  const [cardToAddDetail, setCardToAddDetail] = useState({});
 
   const onConfirmCardDelete = (params) => {
     const doDelete = window.confirm("Are you sure?");
@@ -40,6 +42,29 @@ function SingleBoard() {
       })
     );
     setModelOpen(false);
+  };
+
+  const handleSetCardColor = async (color) => {
+    await updateBoard(
+      projectId,
+      "lanes",
+      data?.lanes?.map((lane) => {
+        if (lane.id === cardToAddDetail.laneId) {
+          return {
+            ...lane,
+            cards: lane.cards.map((card) => {
+              if (card.id === cardToAddDetail.card.id) {
+                return { ...card, style: { backgroundColor: color.hex } };
+              }
+              return card;
+            }),
+          };
+        }
+        return lane;
+      })
+    );
+    setCardModelOpen(false);
+    setCardToAddDetail({});
   };
 
   const onDataChange = (updatedData) => {
@@ -91,6 +116,11 @@ function SingleBoard() {
         onLaneAdd={(e) => {
           setModelOpen(true);
         }}
+        onCardAdd={(card, laneId) => {
+          setCardModelOpen(true);
+          setCardToAddDetail({ card, laneId });
+          console.log("card added", card, laneId);
+        }}
       />
       <Modal open={modelOpen} onClose={() => setModelOpen(false)}>
         <div style={labelColor}>
@@ -118,6 +148,35 @@ function SingleBoard() {
               "#DBDF00",
             ]}
             onChange={(color) => handleSetLaneColor(color)}
+          />
+        </div>
+      </Modal>
+      <Modal open={cardModelOPen} onClose={() => setCardModelOpen(false)}>
+        <div style={labelColor}>
+          <div
+            style={{ textAlign: "right", fontSize: "24px", cursor: "pointer" }}
+            onClick={() => setCardModelOpen(false)}
+          >
+            X
+          </div>
+
+          <h2>Add Label </h2>
+          <Circle
+            colors={[
+              "#F44E3B",
+              "#FE9200",
+              "#FCDC00",
+              "#DBDF00",
+              "#F44E3B",
+              "#FE9200",
+              "#FCDC00",
+              "#DBDF00",
+              "#F44E3B",
+              "#FE9200",
+              "#FCDC00",
+              "#DBDF00",
+            ]}
+            onChange={(color) => handleSetCardColor(color)}
           />
         </div>
       </Modal>
