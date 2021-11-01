@@ -4,7 +4,7 @@ import { useState } from "react";
 import Wrapper from "../Wrapper";
 import "./style.css";
 
-function EditableTextField({ title, oldTitle, onChange, save }) {
+function EditableTextField({ title, oldTitle, onChange, save, style }) {
   const [isEditable, setIsEditable] = useState(false);
 
   const projectNameFieldCss = {
@@ -40,7 +40,7 @@ function EditableTextField({ title, oldTitle, onChange, save }) {
       className="editInput"
       type="text"
       value={title}
-      style={inputWidth}
+      style={{ ...inputWidth, ...style }}
       onChange={onChange}
       onBlur={onBlur}
     />

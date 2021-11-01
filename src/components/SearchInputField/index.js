@@ -3,16 +3,11 @@ import Wrapper from "../Wrapper";
 import SearchIcon from "@material-ui/icons/Search";
 import "./style.css";
 import { grey } from "@material-ui/core/colors";
-import { Input, InputAdornment } from "@material-ui/core";
 
 function SearchInputField(props) {
-  const [showInputField, setShowInputField] = useState(false);
   return (
     <Wrapper>
-      <div
-        className="search__container"
-        onClick={() => setShowInputField(true)}
-      >
+      <div className="search__container">
         <input {...props} className="input" placeholder="Search" />
         <SearchIcon style={{ color: grey[50] }} />
         {/* {showInputField ? (
