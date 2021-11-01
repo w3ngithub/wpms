@@ -9,9 +9,19 @@ import { fireStore } from "../firebase/config";
 import { MdSubtitles } from "@react-icons/all-files/md/MdSubtitles";
 import { CgDetailsMore } from "@react-icons/all-files/cg/CgDetailsMore";
 import { MdLocalActivity } from "@react-icons/all-files/md/MdLocalActivity";
+import { ImAttachment } from "@react-icons/all-files/im/ImAttachment";
 import EditableTextField from "../components/EditableTextField";
-import { Avatar, Button } from "@material-ui/core";
+import { Avatar, Button, styled } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import { uploadFile } from "../api-config/uploadFile";
+dayjs.extend(relativeTime);
+
+const Input = styled("input")({
+  display: "none",
+});
 
 const labelColor = {
   backgroundColor: "#fff",
@@ -32,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
 }));
+
+const CustomCard = () => (
+  <div>
+    <h3>custom card</h3>
+  </div>
+);
 
 function SingleBoard() {
   const classes = useStyles();
@@ -96,11 +112,32 @@ function SingleBoard() {
     setCardToAddDetail({});
   };
 
-  const handleCardClick = (cardId, meta, laneId) => {
-    const card = data.lanes
-      .find((lane) => lane.id === laneId)
-      .cards.find((c) => c.id === cardId);
-    setClickedCardDetail({ ...card, modelOpen: true });
+  const handleCardClick = (
+    cardId,
+    meta,
+    laneId,
+    handleCardClickFrom = "normal"
+  ) => {
+    if (handleCardClickFrom === "normal") {
+      const card = data.lanes
+        .find((lane) => lane.id === laneId)
+        .cards.find((c) => c.id === cardId);
+      setClickedCardDetail({ ...card, modelOpen: true });
+    } else {
+      fireStore
+        .collection("boards")
+        .doc(projectId)
+        .get()
+        .then((doc) => {
+          setData(doc.data());
+          setDatatoPass(doc.data());
+          const card = doc
+            .data()
+            .lanes.find((lane) => lane.id === laneId)
+            .cards.find((c) => c.id === cardId);
+          setClickedCardDetail({ ...card, modelOpen: true });
+        });
+    }
   };
 
   const onDataChange = (updatedData) => {
@@ -169,14 +206,59 @@ function SingleBoard() {
     );
     await updateBoard(projectId, "lanes", updatedCardData);
     document.getElementById("commentForm").reset();
-    handleCardClick(clickedCardDetail.id, null, clickedCardDetail.laneId);
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
   };
 
-  useEffect(() => {
-    if (data.length) {
-      handleCardClick(clickedCardDetail.id, null, clickedCardDetail.laneId);
-    }
-  }, [data, clickedCardDetail.id, null, clickedCardDetail.laneId]);
+  const handleUploadFile = (e) => {
+    const upload = uploadFile(e.target.files[0]);
+    upload.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      },
+      (error) => {
+        // Handle unsuccessful uploads
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        upload.snapshot.ref.getDownloadURL().then(async (downloadURL) => {
+          console.log("File available at", downloadURL);
+          const updatedCardData = data.lanes.map((lane) =>
+            lane.id === clickedCardDetail.laneId
+              ? {
+                  ...lane,
+                  cards: lane.cards.map((card) =>
+                    card.id === clickedCardDetail.id
+                      ? {
+                          ...card,
+                          attachments: [
+                            ...(card.attachments || ""),
+                            { downloadURL, name: e.target.files[0].name },
+                          ],
+                        }
+                      : card
+                  ),
+                }
+              : lane
+          );
+          await updateBoard(projectId, "lanes", updatedCardData);
+          handleCardClick(
+            clickedCardDetail.id,
+            null,
+            clickedCardDetail.laneId,
+            "special"
+          );
+        });
+      }
+    );
+  };
 
   useEffect(() => {
     fireStore
@@ -229,6 +311,7 @@ function SingleBoard() {
         onCardClick={(cardid, meta, laneId) =>
           handleCardClick(cardid, meta, laneId)
         }
+        // components={{ Card: CustomCard }}
       />
       <Modal
         open={modelOpen}
@@ -326,7 +409,7 @@ function SingleBoard() {
               <p>
                 in list{" "}
                 {
-                  data.lanes.find(
+                  data?.lanes?.find(
                     (lane) => lane.id === clickedCardDetail?.laneId
                   )?.title
                 }
@@ -348,6 +431,22 @@ function SingleBoard() {
               />
             </div>
           </div>
+          {clickedCardDetail.attachments &&
+            clickedCardDetail.attachments.length && (
+              <div>
+                <h3>
+                  <ImAttachment />
+                  Attachment
+                </h3>
+                {clickedCardDetail?.attachments?.map((file) => (
+                  <li key={file.downloadURL}>
+                    <a href={file.downloadURL} target="_blank">
+                      {file.name}
+                    </a>
+                  </li>
+                ))}
+              </div>
+            )}
           <div
             style={{
               display: "flex",
@@ -367,7 +466,11 @@ function SingleBoard() {
                 </Avatar>
                 <form
                   onSubmit={handleSubmitComment}
-                  style={{ display: "flex", gap: "10px" }}
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    flexDirection: "column",
+                  }}
                   id="commentForm"
                 >
                   <textarea
@@ -379,9 +482,23 @@ function SingleBoard() {
                     // onBlur={() => setShowSaveComment(false)}
                   />
                   {showSaveComment && (
-                    <Button color="primary" variant="contained" type="submit">
-                      Save
-                    </Button>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                      <Button color="primary" variant="contained" type="submit">
+                        Save
+                      </Button>
+                      <label htmlFor="contained-button-file">
+                        <Input
+                          id="contained-button-file"
+                          type="file"
+                          onChange={(e) => {
+                            handleUploadFile(e);
+                          }}
+                        />
+                        <Button variant="contained" component="span">
+                          Add Attachment
+                        </Button>
+                      </label>
+                    </div>
                   )}
                 </form>
               </div>
@@ -400,7 +517,10 @@ function SingleBoard() {
                     </Avatar>
 
                     <div>
-                      <h4>{comment.commentBy}</h4>
+                      <div style={{ display: "flex", gap: "20px" }}>
+                        <h4>{comment.commentBy}</h4>
+                        <small>{dayjs(comment.id).from(new Date())}</small>
+                      </div>
                       <textarea
                         style={{ minWidth: "300px", padding: "5px" }}
                         disable={true}
