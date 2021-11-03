@@ -1,0 +1,14 @@
+.showAttachments {
+  padding: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 5px;
+}
+
+.showAttachments p {
+  text-decoration: underline;
+}
+.showAttachments:hover {
+  background-color: #e2e4e9;
+}
