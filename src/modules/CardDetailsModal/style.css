@@ -12,3 +12,25 @@
 .showAttachments:hover {
   background-color: #e2e4e9;
 }
+.modal_container {
+  display: flex;
+  gap: 20px;
+}
+
+.card_options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.add_to_cart {
+  padding: 10px;
+  background-color: #091e420a;
+  transition: all 0.3s;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.add_to_cart:hover {
+  background-color: #e4f0f6;
+}
