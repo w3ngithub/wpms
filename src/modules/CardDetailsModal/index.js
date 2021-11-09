@@ -16,14 +16,16 @@ import { CgDetailsMore } from "@react-icons/all-files/cg/CgDetailsMore";
 import { ImAttachment } from "@react-icons/all-files/im/ImAttachment";
 import { GoChecklist } from "@react-icons/all-files/go/GoChecklist";
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
+import { AiOutlineShareAlt } from "@react-icons/all-files/ai/AiOutlineShareAlt";
+import { BsCardChecklist } from "@react-icons/all-files/bs/BsCardChecklist";
+import { BsFillPeopleFill } from "@react-icons/all-files/bs/BsFillPeopleFill";
 import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
-import "./style.css";
 import Notification from "../../components/Notification";
-import { CheckBox } from "@material-ui/icons";
+import "./style.css";
 
 dayjs.extend(relativeTime);
 
@@ -74,6 +76,7 @@ function CardDetailsModal({
   const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorE2, setAnchorE2] = useState(null);
 
   const handleClickPopOver = (event) => {
     setAnchorEl(event.currentTarget);
@@ -83,8 +86,18 @@ function CardDetailsModal({
     setAnchorEl(null);
   };
 
+  const handleClickSharePopOver = (event) => {
+    setAnchorE2(event.currentTarget);
+  };
+
+  const handleCloseSharePopOver = () => {
+    setAnchorE2(null);
+  };
+
   const open = Boolean(anchorEl);
+  const openShare = Boolean(anchorE2);
   const id = open ? "simple-popover" : undefined;
+  const idShare = openShare ? "simple-popover" : undefined;
 
   const onSaveeditCardTitle = () => {
     const updatedCardData = data.lanes.map((lane) =>
@@ -536,9 +549,11 @@ function CardDetailsModal({
                     </div>
                     <ProgressBar
                       completed={
-                        (list.list.filter((l) => l.check === true).length /
-                          list.list.length) *
-                        100
+                        list.list.length !== 0
+                          ? (list?.list.filter((l) => l.check === true).length /
+                              list?.list?.length) *
+                            100
+                          : 0
                       }
                       bgColor="#61BD4F"
                       height="12px"
@@ -700,10 +715,28 @@ function CardDetailsModal({
           />
         </div>
         <div className="card_options">
-          <h5>Add to cart</h5>
-          <div className="add_to_cart">Labels</div>
-          <div className="add_to_cart" id={id} onClick={handleClickPopOver}>
-            CheckList
+          <div className="card_options">
+            <h5>Add to cart</h5>
+            <div className="add_to_cart">
+              <BsCardChecklist />
+              <span>Labels</span>
+            </div>
+            <div className="add_to_cart" id={id} onClick={handleClickPopOver}>
+              <BsCardChecklist />
+              CheckList
+              <span></span>{" "}
+            </div>
+          </div>
+          <div className="card_options">
+            <h5>Actions</h5>
+            <div
+              className="add_to_cart"
+              id={handleClickSharePopOver}
+              onClick={handleClickSharePopOver}
+            >
+              <AiOutlineShareAlt />
+              <span>Share</span>
+            </div>
           </div>
         </div>
       </div>
@@ -761,6 +794,59 @@ function CardDetailsModal({
               Add
             </Button>
           </form>
+        </div>
+      </Popover>
+      <Popover
+        id={idShare}
+        open={openShare}
+        anchorEl={anchorE2}
+        onClose={handleCloseSharePopOver}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div
+          style={{
+            width: "300px",
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
+              marginBottom: "15px",
+              padding: "0 10px 10px 0",
+            }}
+          >
+            <p>Share and more...</p>
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              top: "5px",
+              right: "9px",
+              fontSize: "20px",
+              cursor: "pointer",
+            }}
+            onClick={handleCloseSharePopOver}
+          >
+            x
+          </div>
+          <p>
+            <strong>Share link to this card</strong>
+            <BsFillPeopleFill />
+          </p>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            fullWidth
+            value="https://trello.com/c/yhBgSWFC"
+          />
         </div>
       </Popover>
     </>
