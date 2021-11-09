@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import {
   Avatar,
   Button,
+  Checkbox,
+  FormControlLabel,
   makeStyles,
   Popover,
   styled,
@@ -12,12 +14,16 @@ import { MdSubtitles } from "@react-icons/all-files/md/MdSubtitles";
 import EditableTextField from "../../components/EditableTextField";
 import { CgDetailsMore } from "@react-icons/all-files/cg/CgDetailsMore";
 import { ImAttachment } from "@react-icons/all-files/im/ImAttachment";
+import { GoChecklist } from "@react-icons/all-files/go/GoChecklist";
+import { MdCancel } from "@react-icons/all-files/md/MdCancel";
+import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import "./style.css";
 import Notification from "../../components/Notification";
+import { CheckBox } from "@material-ui/icons";
 
 dayjs.extend(relativeTime);
 
@@ -62,6 +68,7 @@ function CardDetailsModal({
 
   const [showAllAttachments, setShowAllAttachments] = useState(false);
   const [validFile, setValidFile] = useState(false);
+  const [checklistIdToaddItem, sertCheckListToaddItem] = useState("");
 
   const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
   const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
@@ -145,6 +152,40 @@ function CardDetailsModal({
     );
   };
 
+  const handleSubmitCheckListTitle = async (e) => {
+    e.preventDefault();
+    const title = e.target.checklistTitle.value;
+    if (title) {
+      const updatedCardData = data.lanes.map((lane) =>
+        lane.id === clickedCardDetail.laneId
+          ? {
+              ...lane,
+              cards: lane.cards.map((card) =>
+                card.id === clickedCardDetail.id
+                  ? {
+                      ...card,
+                      checklist: [
+                        ...(card.checklist || ""),
+                        { id: Date.now(), title: title, list: [] },
+                      ],
+                    }
+                  : card
+              ),
+            }
+          : lane
+      );
+      await updateBoard(projectId, "lanes", updatedCardData);
+      handleCardClick(
+        clickedCardDetail.id,
+        null,
+        clickedCardDetail.laneId,
+        "special"
+      );
+      document.getElementById("checklisttitle").reset();
+      handleClosePopOver();
+    }
+  };
+
   const handleUploadFile = (e) => {
     const validFiles = ["application", "image", "video"];
     if (validFiles.includes(e.target.files[0].type.split("/")[0])) {
@@ -224,6 +265,115 @@ function CardDetailsModal({
         "special"
       );
     });
+  };
+
+  const handleClickAddListItem = (checklistId) => {
+    sertCheckListToaddItem(checklistId);
+  };
+
+  const handleSubmitAddItemTocheckList = async (e) => {
+    e.preventDefault();
+    const item = e.target.checklistitem.value;
+    if (item) {
+      const updatedCardData = data.lanes.map((lane) =>
+        lane.id === clickedCardDetail.laneId
+          ? {
+              ...lane,
+              cards: lane.cards.map((card) =>
+                card.id === clickedCardDetail.id
+                  ? {
+                      ...card,
+                      checklist: card.checklist.map((check) =>
+                        check.id === checklistIdToaddItem
+                          ? {
+                              ...check,
+                              list: [
+                                ...(check.list || ""),
+                                { item: item, check: false, id: Date.now() },
+                              ],
+                            }
+                          : check
+                      ),
+                    }
+                  : card
+              ),
+            }
+          : lane
+      );
+      await updateBoard(projectId, "lanes", updatedCardData);
+      e.target.checklistitem.value = "";
+      handleCardClick(
+        clickedCardDetail.id,
+        null,
+        clickedCardDetail.laneId,
+        "special"
+      );
+    }
+  };
+
+  const handleDeleteCheckList = async (checklistId) => {
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    checklist: card.checklist.filter(
+                      (check) => check.id !== checklistId
+                    ),
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    await updateBoard(projectId, "lanes", updatedCardData);
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
+  };
+
+  const handleChangeCheckListItemChecked = async (
+    checked,
+    itemId,
+    checkListId
+  ) => {
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    checklist: card.checklist.map((c) =>
+                      c.id === checkListId
+                        ? {
+                            ...c,
+                            list: c.list.map((l) =>
+                              l.id === itemId ? { ...l, check: checked } : l
+                            ),
+                          }
+                        : c
+                    ),
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    await updateBoard(projectId, "lanes", updatedCardData);
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
   };
 
   return (
@@ -343,6 +493,120 @@ function CardDetailsModal({
                     </Button>
                   </label>
                 </div>
+              </div>
+            )}
+
+          {clickedCardDetail.checklist &&
+            clickedCardDetail.checklist.length !== 0 && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "15px",
+                }}
+              >
+                {clickedCardDetail.checklist.map((list) => (
+                  <div
+                    key={list.id}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "15px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <h3>
+                        <GoChecklist />
+                        {list.title}
+                      </h3>
+                      <div
+                        className="add_to_cart"
+                        style={{
+                          maxWidth: "80px",
+                        }}
+                        onClick={() => handleDeleteCheckList(list.id)}
+                      >
+                        Delete
+                      </div>
+                    </div>
+                    <ProgressBar
+                      completed={
+                        (list.list.filter((l) => l.check === true).length /
+                          list.list.length) *
+                        100
+                      }
+                      bgColor="#61BD4F"
+                      height="12px"
+                    />
+                    {list?.list?.map?.((item) => (
+                      <FormControlLabel
+                        key={item.id}
+                        control={
+                          <Checkbox
+                            checked={item.check}
+                            onChange={() =>
+                              handleChangeCheckListItemChecked(
+                                !item.check,
+                                item.id,
+                                list.id
+                              )
+                            }
+                          />
+                        }
+                        label={item.item}
+                      />
+                    ))}
+                    {list.id !== checklistIdToaddItem ? (
+                      <div
+                        className="add_to_cart"
+                        style={{ maxWidth: "110px" }}
+                        onClick={() => handleClickAddListItem(list.id)}
+                      >
+                        Add an item
+                      </div>
+                    ) : (
+                      <form onSubmit={handleSubmitAddItemTocheckList}>
+                        <TextField
+                          id="outlined-basic"
+                          label="Add an Item"
+                          variant="outlined"
+                          name="checklistitem"
+                          fullWidth
+                        />
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "20px",
+                            alignItems: "center",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            color="primary"
+                            type="submit"
+                          >
+                            Add
+                          </Button>
+                          <div
+                            style={{ cursor: "pointer" }}
+                            onClick={() => sertCheckListToaddItem("")}
+                          >
+                            <h3>
+                              <MdCancel />
+                            </h3>
+                          </div>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           <div
@@ -485,15 +749,18 @@ function CardDetailsModal({
             x
           </div>
           <p>Title</p>
-          <TextField
-            id="outlined-basic"
-            label="Checklist"
-            variant="outlined"
-            fullWidth
-          />
-          <Button variant="contained" fullWidth color="primary">
-            Add
-          </Button>
+          <form onSubmit={handleSubmitCheckListTitle} id="checklisttitle">
+            <TextField
+              id="outlined-basic"
+              label="Checklist"
+              variant="outlined"
+              name="checklistTitle"
+              fullWidth
+            />
+            <Button variant="contained" fullWidth color="primary" type="submit">
+              Add
+            </Button>
+          </form>
         </div>
       </Popover>
     </>
