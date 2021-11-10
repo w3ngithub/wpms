@@ -19,12 +19,14 @@ import { MdCancel } from "@react-icons/all-files/md/MdCancel";
 import { AiOutlineShareAlt } from "@react-icons/all-files/ai/AiOutlineShareAlt";
 import { BsCardChecklist } from "@react-icons/all-files/bs/BsCardChecklist";
 import { BsFillPeopleFill } from "@react-icons/all-files/bs/BsFillPeopleFill";
+import { GrAdd } from "@react-icons/all-files/gr/GrAdd";
 import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import Notification from "../../components/Notification";
+import Circle from "@uiw/react-color-circle";
 import "./style.css";
 
 dayjs.extend(relativeTime);
@@ -77,6 +79,10 @@ function CardDetailsModal({
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
+  const [anchorE3, setAnchorE3] = useState(null);
+  const [labelToSearch, setLabelToSearch] = useState("");
+  const [newLabel, setNewLabel] = useState(false);
+  const [newlabelColor, setLabelColor] = useState({ hex: "#C0C6CF" });
 
   const handleClickPopOver = (event) => {
     setAnchorEl(event.currentTarget);
@@ -94,10 +100,20 @@ function CardDetailsModal({
     setAnchorE2(null);
   };
 
+  const handleClickLabelPopOver = (event) => {
+    setAnchorE3(event.currentTarget);
+  };
+
+  const handleCloseLabelPopOver = () => {
+    setAnchorE3(null);
+  };
+
   const open = Boolean(anchorEl);
   const openShare = Boolean(anchorE2);
+  const openLabel = Boolean(anchorE3);
   const id = open ? "simple-popover" : undefined;
   const idShare = openShare ? "simple-popover" : undefined;
+  const idLabel = openLabel ? "simple-popover" : undefined;
 
   const onSaveeditCardTitle = () => {
     const updatedCardData = data.lanes.map((lane) =>
@@ -389,6 +405,38 @@ function CardDetailsModal({
     );
   };
 
+  const handleSubmitNewLabel = async (e) => {
+    e.preventDefault();
+    const newLabel = e.target.newLabelName.value;
+    console.log(newLabel, newlabelColor.hex);
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    labels: [
+                      ...(card.labels || ""),
+                      { name: newLabel, color: newlabelColor?.hex },
+                    ],
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    await updateBoard(projectId, "lanes", updatedCardData);
+    handleCloseLabelPopOver();
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
+  };
+
   return (
     <>
       <div className="modal_container" style={{ ...labelColor }}>
@@ -421,6 +469,48 @@ function CardDetailsModal({
               </p>
             </div>
           </div>
+          {clickedCardDetail.labels && clickedCardDetail.labels.length !== 0 && (
+            <div>
+              <p>Labels</p>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "5px",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                {clickedCardDetail.labels.map((label, i) => (
+                  <div
+                    style={{
+                      padding: "10px",
+                      backgroundColor: label.color,
+                      borderRadius: "8px",
+                      display: "inline-block",
+                      height: "40px",
+                    }}
+                    key={i}
+                  >
+                    {label.name}
+                  </div>
+                ))}
+                <div
+                  className="add_to_cart"
+                  style={{
+                    padding: "10px",
+                    borderRadius: "8px",
+                    display: "inline-block",
+                    height: "40px",
+                    cursor: "pointer",
+                  }}
+                  id={idLabel}
+                  onClick={handleClickLabelPopOver}
+                >
+                  <GrAdd />
+                </div>
+              </div>
+            </div>
+          )}
           <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
             <div>
               <CgDetailsMore style={{ fontSize: "24px" }} />
@@ -717,7 +807,11 @@ function CardDetailsModal({
         <div className="card_options">
           <div className="card_options">
             <h5>Add to cart</h5>
-            <div className="add_to_cart">
+            <div
+              className="add_to_cart"
+              id={idLabel}
+              onClick={handleClickLabelPopOver}
+            >
               <BsCardChecklist />
               <span>Labels</span>
             </div>
@@ -845,8 +939,124 @@ function CardDetailsModal({
             id="outlined-basic"
             variant="outlined"
             fullWidth
+            autoFocus
             value="https://trello.com/c/yhBgSWFC"
           />
+        </div>
+      </Popover>
+      <Popover
+        id={idLabel}
+        open={openLabel}
+        anchorEl={anchorE3}
+        onClose={handleCloseLabelPopOver}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div
+          style={{
+            width: "300px",
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
+              marginBottom: "15px",
+              padding: "0 10px 10px 0",
+            }}
+          >
+            <p>Labels</p>
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              top: "5px",
+              right: "9px",
+              fontSize: "20px",
+              cursor: "pointer",
+            }}
+            onClick={handleCloseLabelPopOver}
+          >
+            x
+          </div>
+          {newLabel ? (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                gap: "15px",
+              }}
+            >
+              <form onSubmit={handleSubmitNewLabel}>
+                <div>
+                  <p>Name</p>
+                  <TextField
+                    id="outlined-basic"
+                    variant="outlined"
+                    fullWidth
+                    name="newLabelName"
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <p>Select a color</p>
+                  <Circle
+                    colors={[
+                      "#F44E3B",
+                      "#FE9200",
+                      "#FCDC00",
+                      "#DBDF00",
+                      "#F44E3B",
+                      "#FE9200",
+                      "#FCDC00",
+                      "#DBDF00",
+                      "#F44E3B",
+                      "#FE9200",
+                      "#FCDC00",
+                      "#DBDF00",
+                      "#C0C6CF",
+                    ]}
+                    onChange={(color) => setLabelColor(color)}
+                  />
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    color="primary"
+                    type="submit"
+                  >
+                    Create
+                  </Button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <>
+              <TextField
+                id="outlined-basic"
+                variant="outlined"
+                label="Search labels"
+                fullWidth
+                name="searchLabel"
+                value={labelToSearch}
+                onChange={(e) => setLabelToSearch(e.target.value)}
+              />
+              <p>Labels</p>
+              <div
+                className="add_to_cart"
+                style={{ justifyContent: "center" }}
+                onClick={() => setNewLabel(true)}
+              >
+                Create new label
+              </div>
+            </>
+          )}
         </div>
       </Popover>
     </>
