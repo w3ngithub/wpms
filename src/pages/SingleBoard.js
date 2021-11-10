@@ -245,6 +245,7 @@ function SingleBoard() {
           seteditCardTitle={seteditCardTitle}
           editCardDetail={editCardDetail}
           seteditCardDetail={seteditCardDetail}
+          boardLabels={dataTopass?.labels}
         />
       </Modal>
     </div>

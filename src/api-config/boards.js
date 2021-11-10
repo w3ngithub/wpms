@@ -59,3 +59,9 @@ export const addFavouriteBoard = (id, user) =>
     .collection("boards")
     .doc(id)
     .update({ favourite: firebase.firestore.FieldValue.arrayUnion(user) });
+
+export const addNewLabelsToBoard = (id, label) =>
+  fireStore
+    .collection("boards")
+    .doc(id)
+    .update({ labels: firebase.firestore.FieldValue.arrayUnion(label) });

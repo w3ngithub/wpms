@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Button,
@@ -23,7 +23,7 @@ import { GrAdd } from "@react-icons/all-files/gr/GrAdd";
 import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { updateBoard } from "../../api-config/boards";
+import { addNewLabelsToBoard, updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import Notification from "../../components/Notification";
 import Circle from "@uiw/react-color-circle";
@@ -65,6 +65,7 @@ function CardDetailsModal({
   seteditCardDetail,
   editCardTitle,
   editCardDetail,
+  boardLabels,
 }) {
   const classes = useStyles();
 
@@ -83,6 +84,18 @@ function CardDetailsModal({
   const [labelToSearch, setLabelToSearch] = useState("");
   const [newLabel, setNewLabel] = useState(false);
   const [newlabelColor, setLabelColor] = useState({ hex: "#C0C6CF" });
+  const [filteredBoardLabels, setFilteredBoardLables] = useState([]);
+
+  useEffect(() => {
+    if (labelToSearch) {
+      setFilteredBoardLables(
+        boardLabels?.filter((label) => label?.name?.includes(labelToSearch)) ||
+          []
+      );
+    } else {
+      setFilteredBoardLables(boardLabels);
+    }
+  }, [labelToSearch, boardLabels]);
 
   const handleClickPopOver = (event) => {
     setAnchorEl(event.currentTarget);
@@ -428,6 +441,39 @@ function CardDetailsModal({
         : lane
     );
     await updateBoard(projectId, "lanes", updatedCardData);
+    addNewLabelsToBoard(projectId, {
+      name: newLabel || "",
+      color: newlabelColor.hex,
+    });
+
+    handleCloseLabelPopOver();
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
+    setNewLabel(false);
+  };
+
+  const handleAddLabelFromBoardLabel = async (label) => {
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    labels: [...(card.labels || ""), label],
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    await updateBoard(projectId, "lanes", updatedCardData);
+
     handleCloseLabelPopOver();
     handleCardClick(
       clickedCardDetail.id,
@@ -1048,6 +1094,22 @@ function CardDetailsModal({
                 onChange={(e) => setLabelToSearch(e.target.value)}
               />
               <p>Labels</p>
+              {boardLabels &&
+                boardLabels.length &&
+                filteredBoardLabels.map((label, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      backgroundColor: label.color,
+                      borderRadius: "5px",
+                      padding: "10px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleAddLabelFromBoardLabel(label)}
+                  >
+                    {label.name}
+                  </div>
+                ))}
               <div
                 className="add_to_cart"
                 style={{ justifyContent: "center" }}
