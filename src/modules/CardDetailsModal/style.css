@@ -16,6 +16,8 @@
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .card_options {
@@ -37,4 +39,14 @@
 
 .add_to_cart:hover {
   background-color: #e4f0f6;
+}
+
+.cover_image {
+  object-fit: contain;
+  width: 100%;
+  position: absolute;
+  height: 300px;
+  left: 0;
+  right: 0;
+  top: 0;
 }

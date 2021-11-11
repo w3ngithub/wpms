@@ -36,11 +36,14 @@ function CustomTrelloLaneCard(props) {
             <div
               style={{
                 backgroundColor: label.color,
-                borderRadius: "3px",
+                borderRadius: "6px",
                 padding: "2px 5px 2px 5px",
                 boxShadow: " 0 1px 0 #091e4240",
                 minWidth: "50px",
                 height: "20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
               key={i}
             >

@@ -167,8 +167,8 @@ function SingleBoard() {
           handleCardClick(cardid, meta, laneId);
         }}
         components={{
-          Card: (a) => {
-            return <CustomTrelloLaneCard {...a} />;
+          Card: (Cardprops) => {
+            return <CustomTrelloLaneCard {...Cardprops} />;
           },
         }}
       />
