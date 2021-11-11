@@ -7,6 +7,7 @@ import Modal from "@material-ui/core/Modal";
 import Circle from "@uiw/react-color-circle";
 import { fireStore } from "../firebase/config";
 import CardDetailsModal from "../modules/CardDetailsModal";
+import CustomTrelloLaneCard from "../components/CustomTrelloLaneCard";
 
 const labelColor = {
   backgroundColor: "#fff",
@@ -125,10 +126,12 @@ function SingleBoard() {
       style={{
         // backgroundImage: `url(${img})`,
         backgroundColor: "rgb(97 102 117)",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
+        // backgroundRepeat: "no-repeat",
+        // backgroundPosition: "center",
+        // backgroundSize: "cover",
         paddingTop: "45px",
+        paddingBottom: "30px",
+        // height: "100vh",
       }}
     >
       <ProjectDetailsNavbar
@@ -145,7 +148,7 @@ function SingleBoard() {
         draggable
         canAddLanes
         addCardTitle="Add Item"
-        style={{ backgroundColor: "transparent", maxHeight: "546px" }}
+        style={{ backgroundColor: "transparent" }}
         editable
         onBeforeCardDelete={onConfirmCardDelete}
         onDataChange={onDataChange}
@@ -155,13 +158,19 @@ function SingleBoard() {
           setModelOpen(true);
         }}
         onCardAdd={(card, laneId) => {
+          console.log("card add from lane");
           setCardModelOpen(true);
           setCardToAddDetail({ card, laneId });
         }}
-        onCardClick={(cardid, meta, laneId) =>
-          handleCardClick(cardid, meta, laneId)
-        }
-        // components={{ Card: CustomCard }}
+        onCardClick={(cardid, meta, laneId) => {
+          console.log("card click");
+          handleCardClick(cardid, meta, laneId);
+        }}
+        components={{
+          Card: (a) => {
+            return <CustomTrelloLaneCard {...a} />;
+          },
+        }}
       />
       <Modal
         open={modelOpen}

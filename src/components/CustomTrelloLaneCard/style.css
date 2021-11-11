@@ -1,0 +1,15 @@
+.card_container {
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  width: 250px;
+  height: auto;
+}
+
+.card_footer {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 5px 0 5px 0;
+}

@@ -15,6 +15,7 @@
 .modal_container {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .card_options {

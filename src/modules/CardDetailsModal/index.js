@@ -75,16 +75,17 @@ function CardDetailsModal({
   const [validFile, setValidFile] = useState(false);
   const [checklistIdToaddItem, sertCheckListToaddItem] = useState("");
 
-  const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
-  const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
   const [anchorE3, setAnchorE3] = useState(null);
+
   const [labelToSearch, setLabelToSearch] = useState("");
   const [newLabel, setNewLabel] = useState(false);
   const [newlabelColor, setLabelColor] = useState({ hex: "#C0C6CF" });
   const [filteredBoardLabels, setFilteredBoardLables] = useState([]);
+
+  const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
+  const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
 
   useEffect(() => {
     if (labelToSearch) {
@@ -1096,7 +1097,7 @@ function CardDetailsModal({
               <p>Labels</p>
               {boardLabels &&
                 boardLabels.length &&
-                filteredBoardLabels.map((label, i) => (
+                filteredBoardLabels?.map((label, i) => (
                   <div
                     key={i}
                     style={{
