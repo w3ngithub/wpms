@@ -23,24 +23,14 @@ import { GrAdd } from "@react-icons/all-files/gr/GrAdd";
 import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import calendar from "dayjs/plugin/calendar";
 import { addNewLabelsToBoard, updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import Notification from "../../components/Notification";
 import Circle from "@uiw/react-color-circle";
-import "./style.css";
 import AttachmentDetail from "../../components/Attachment";
+import "./style.css";
 
 dayjs.extend(relativeTime);
-dayjs.extend(calendar);
-
-const labelColor = {
-  backgroundColor: "#fff",
-  position: "absolute",
-  top: "10%",
-  left: "30%",
-  padding: "30px",
-};
 
 const Input = styled("input")({
   display: "none",
@@ -69,6 +59,7 @@ function CardDetailsModal({
   editCardTitle,
   editCardDetail,
   boardLabels,
+  onClose,
 }) {
   const classes = useStyles();
 
@@ -434,7 +425,6 @@ function CardDetailsModal({
   const handleSubmitNewLabel = async (e) => {
     e.preventDefault();
     const newLabel = e.target.newLabelName.value;
-    console.log(newLabel, newlabelColor.hex);
     const updatedCardData = data.lanes.map((lane) =>
       lane.id === clickedCardDetail.laneId
         ? {
@@ -548,26 +538,20 @@ function CardDetailsModal({
 
   return (
     <>
-      <div className="modal_container" style={{ ...labelColor }}>
-        {clickedCardDetail.coverImage &&
-          clickedCardDetail.coverImage !== "" && (
+      <div className="modal_container">
+        <div className="modal_close" onClick={onClose}>
+          X
+        </div>
+        {clickedCardDetail.coverImage && clickedCardDetail.coverImage !== "" && (
+          <div style={{ width: "100%" }}>
             <img
               className="cover_image"
               src={clickedCardDetail.coverImage}
               alt="Card Cover"
             />
-          )}
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            paddingTop:
-              typeof clickedCardDetail.coverImage !== "undefined" ||
-              clickedCardDetail?.coverImage !== ""
-                ? "300px"
-                : "0",
-          }}
-        >
+          </div>
+        )}
+        <div className="card_content">
           <div
             style={{
               display: "flex",

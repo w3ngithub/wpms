@@ -255,6 +255,11 @@ function SingleBoard() {
           editCardDetail={editCardDetail}
           seteditCardDetail={seteditCardDetail}
           boardLabels={dataTopass?.labels}
+          onClose={() => {
+            setClickedCardDetail({ openModal: false });
+            seteditCardTitle("");
+            seteditCardDetail("");
+          }}
         />
       </Modal>
     </div>

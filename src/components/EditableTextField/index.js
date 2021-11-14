@@ -33,7 +33,7 @@ function EditableTextField({ title, oldTitle, onChange, save, style }) {
     }
   }, [isEditable]);
 
-  const inputWidth = { width: (title?.length + 1) * 6.5 + "px" };
+  const inputWidth = { width: (title?.length + 2) * 12 + "px" };
 
   return isEditable ? (
     <input

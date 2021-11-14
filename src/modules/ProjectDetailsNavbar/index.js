@@ -119,11 +119,13 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
           customCss={projectNameFieldCss}
         />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
-        {[boardUser, ...members].map((name) => (
-          <Avatar key={name} alt={name} className={classes.avatar}>
-            {name?.[0].toUpperCase()}
-          </Avatar>
-        ))}
+        <div className="project_memebers">
+          {[boardUser, ...members].map((name) => (
+            <Avatar key={name} alt={name} className={classes.avatar}>
+              {name?.[0].toUpperCase()}
+            </Avatar>
+          ))}
+        </div>
 
         <Button
           aria-describedby={id}

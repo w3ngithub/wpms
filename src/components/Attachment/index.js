@@ -1,6 +1,10 @@
-import dayjs from "dayjs";
 import React from "react";
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+
 import "./style.css";
+
+dayjs.extend(LocalizedFormat);
 
 function AttachmentDetail({
   file,
@@ -14,7 +18,7 @@ function AttachmentDetail({
       <a href={file.downloadURL} target="_blank">
         <p>{file.name}</p>
       </a>
-      <small>Added {dayjs().calendar(dayjs(file.uploadedDate))}</small>
+      <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
       <span> - </span>
       <span
         style={{

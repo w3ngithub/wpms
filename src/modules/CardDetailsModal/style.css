@@ -13,11 +13,16 @@
   background-color: #e2e4e9;
 }
 .modal_container {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
   border-radius: 5px;
   overflow: hidden;
+  max-width: 700px;
+  background-color: #fff;
+  position: absolute;
+  top: 10%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card_options {
@@ -44,9 +49,26 @@
 .cover_image {
   object-fit: contain;
   width: 100%;
+}
+
+.card_content {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+}
+
+.modal_close {
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.122);
   position: absolute;
-  height: 300px;
-  left: 0;
-  right: 0;
-  top: 0;
+  top: 1%;
+  right: 2%;
+  border-radius: 50%;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.modal_close:hover {
+  background-color: rgba(0, 0, 0, 0.306);
+  transform: scale(1.1);
 }

@@ -2,13 +2,17 @@
   padding: 10px 8px;
   display: flex;
   align-items: center;
-  /* width: 30%; */
   justify-content: space-between;
 }
 
 .projectdetailsnavbar__front {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex: 0.34;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project_memebers {
+  display: flex;
+  align-items: center;
 }
