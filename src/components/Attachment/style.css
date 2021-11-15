@@ -5,4 +5,11 @@
   display: flex;
   gap: 10px;
   align-items: center;
+  border-radius: 5px;
+}
+
+.attachment_actions {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
 }

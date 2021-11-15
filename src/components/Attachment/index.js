@@ -60,10 +60,7 @@ function AttachmentDetail({
       </div>
       <span> - </span>
       <span
-        style={{
-          textDecoration: "underline",
-          cursor: "pointer",
-        }}
+        className="attachment_actions"
         onClick={() => handleDeleteFile(file)}
       >
         Delete
@@ -75,7 +72,7 @@ function AttachmentDetail({
               <span> - </span>
               <span
                 onClick={() => handleMakeCover(file)}
-                style={{ cursor: "pointer", textDecoration: "underline" }}
+                className="attachment_actions"
               >
                 Make cover
               </span>
@@ -85,7 +82,7 @@ function AttachmentDetail({
               <span> - </span>
               <span
                 onClick={() => handleRemoveCover(file)}
-                style={{ cursor: "pointer", textDecoration: "underline" }}
+                className="attachment_actions"
               >
                 Remove cover
               </span>

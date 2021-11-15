@@ -695,7 +695,12 @@ function CardDetailsModal({
                       </p>
                     </div>
                   )}
-                  <div style={{ marginTop: "10px" }}>
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      display: "inline-block",
+                    }}
+                  >
                     <label htmlFor="contained-button-file">
                       <Input
                         id="contained-button-file"
@@ -704,9 +709,7 @@ function CardDetailsModal({
                           handleUploadFile(e);
                         }}
                       />
-                      <Button variant="contained" component="span">
-                        Add Attachment
-                      </Button>
+                      <div className="add_to_cart">Add an Attachment</div>
                     </label>
                   </div>
                 </div>
