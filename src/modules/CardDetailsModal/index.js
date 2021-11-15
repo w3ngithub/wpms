@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(4),
     fontSize: "15px",
     fontWeight: "600",
-    backgroundColor: "#f3f1f1",
+    backgroundColor: "#fff",
     color: "black",
     cursor: "pointer",
   },
@@ -560,7 +560,7 @@ function CardDetailsModal({
             }}
           >
             <div
-              style={{ display: "flex", alignItems: "baseline", gap: "10px" }}
+              style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}
             >
               <div>
                 <MdSubtitles style={{ fontSize: "24px" }} />
@@ -584,49 +584,53 @@ function CardDetailsModal({
               </div>
             </div>
             {clickedCardDetail.labels && clickedCardDetail.labels.length !== 0 && (
-              <div>
-                <p>Labels</p>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "5px",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {clickedCardDetail.labels.map((label, i) => (
+              <div
+                style={{ display: "flex", alignItems: "baseline", gap: "10px" }}
+              >
+                <div>
+                  <p>Labels</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "5px",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {clickedCardDetail.labels.map((label, i) => (
+                      <div
+                        style={{
+                          padding: "10px",
+                          backgroundColor: label.color,
+                          borderRadius: "8px",
+                          display: "inline-block",
+                          height: "40px",
+                        }}
+                        key={i}
+                      >
+                        {label.name}
+                      </div>
+                    ))}
                     <div
+                      className="add_to_cart"
                       style={{
                         padding: "10px",
-                        backgroundColor: label.color,
                         borderRadius: "8px",
                         display: "inline-block",
                         height: "40px",
+                        cursor: "pointer",
                       }}
-                      key={i}
+                      id={idLabel}
+                      onClick={handleClickLabelPopOver}
                     >
-                      {label.name}
+                      <GrAdd />
                     </div>
-                  ))}
-                  <div
-                    className="add_to_cart"
-                    style={{
-                      padding: "10px",
-                      borderRadius: "8px",
-                      display: "inline-block",
-                      height: "40px",
-                      cursor: "pointer",
-                    }}
-                    id={idLabel}
-                    onClick={handleClickLabelPopOver}
-                  >
-                    <GrAdd />
                   </div>
                 </div>
               </div>
             )}
             <div
-              style={{ display: "flex", alignItems: "baseline", gap: "10px" }}
+              style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}
             >
               <div>
                 <CgDetailsMore style={{ fontSize: "24px" }} />
@@ -645,10 +649,17 @@ function CardDetailsModal({
             {clickedCardDetail.attachments &&
               clickedCardDetail.attachments.length !== 0 && (
                 <div>
-                  <h3>
+                  <h4
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "10px",
+                      marginBottom: "10px",
+                    }}
+                  >
                     <ImAttachment />
-                    Attachment
-                  </h3>
+                    <span>Attachment</span>
+                  </h4>
                   {showAllAttachments
                     ? clickedCardDetail?.attachments?.map((file) => (
                         <AttachmentDetail
@@ -684,7 +695,7 @@ function CardDetailsModal({
                       </p>
                     </div>
                   )}
-                  <div style={{ marginTop: "20px" }}>
+                  <div style={{ marginTop: "10px" }}>
                     <label htmlFor="contained-button-file">
                       <Input
                         id="contained-button-file"
@@ -723,12 +734,19 @@ function CardDetailsModal({
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
+                          alignItems: "center",
                         }}
                       >
-                        <h3>
-                          <GoChecklist />
-                          {list.title}
-                        </h3>
+                        <h4
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            gap: "10px",
+                          }}
+                        >
+                          <GoChecklist style={{ fontSize: "22px" }} />
+                          <span>{list.title}</span>
+                        </h4>
                         <div
                           className="add_to_cart"
                           style={{
@@ -885,7 +903,12 @@ function CardDetailsModal({
                   .reverse()
                   .map?.((comment) => (
                     <div
-                      style={{ display: "flex", gap: "10px" }}
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "flex-start",
+                        marginBottom: "10px",
+                      }}
                       key={comment.id}
                     >
                       <Avatar alt="PM" className={classes.avatar}>
@@ -894,14 +917,10 @@ function CardDetailsModal({
 
                       <div>
                         <div style={{ display: "flex", gap: "20px" }}>
-                          <h4>{comment.commentBy}</h4>
+                          <h5>{comment.commentBy}</h5>
                           <small>{dayjs(comment.id).from(new Date())}</small>
                         </div>
-                        <textarea
-                          style={{ minWidth: "300px", padding: "5px" }}
-                          disable={true}
-                          value={comment.comment}
-                        />
+                        <div className="comment">{comment.comment}</div>
                       </div>
                     </div>
                   ))}

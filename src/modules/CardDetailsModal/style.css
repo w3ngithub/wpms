@@ -16,7 +16,7 @@
   border-radius: 5px;
   overflow: hidden;
   max-width: 700px;
-  background-color: #fff;
+  background-color: #f4f5f7;
   position: absolute;
   top: 10%;
   left: 0;
@@ -71,4 +71,11 @@
 .modal_close:hover {
   background-color: rgba(0, 0, 0, 0.306);
   transform: scale(1.1);
+}
+
+.comment {
+  background-color: #fff;
+  width: 300px;
+  padding: 6px;
+  border-radius: 5px;
 }
