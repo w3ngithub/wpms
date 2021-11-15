@@ -16,9 +16,48 @@ function AttachmentDetail({
   return (
     <div className="attachment_file">
       <a href={file.downloadURL} target="_blank">
-        <p>{file.name}</p>
+        {file.isImage ? (
+          <img
+            src={file.downloadURL}
+            alt=""
+            style={{
+              objectFit: "contain",
+              height: "70px",
+              width: "100px",
+              borderRadius: "10px",
+              overflow: "hidden",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              height: "70px",
+              backgroundColor: "#ffff",
+              borderRadius: "10px",
+              padding: "5px",
+              width: "100px",
+              textDecoration: "none",
+              color: "black",
+              textAlign: "center",
+              fontSize: "14px",
+            }}
+          >
+            {file.name}
+          </div>
+        )}
       </a>
-      <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <a href={file.downloadURL} target="_blank">
+          {file.name}
+        </a>
+        <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
+      </div>
       <span> - </span>
       <span
         style={{

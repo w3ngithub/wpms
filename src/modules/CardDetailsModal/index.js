@@ -230,8 +230,8 @@ function CardDetailsModal({
       upload.on(
         "state_changed",
         (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          // const progress =
+          //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         },
         (error) => {
           // Handle unsuccessful uploads
@@ -867,7 +867,7 @@ function CardDetailsModal({
                       type="text"
                       name="comment"
                       placeholder="Write a comment..."
-                      style={{ minWidth: "300px", padding: "5px" }}
+                      className="comment"
                       onFocus={() => setShowSaveComment(true)}
                       // onBlur={() => setShowSaveComment(false)}
                     />
