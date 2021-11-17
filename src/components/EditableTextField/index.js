@@ -46,7 +46,9 @@ function EditableTextField({ title, oldTitle, onChange, save, style }) {
     />
   ) : (
     <Wrapper customCss={projectNameFieldCss} onClick={onTextClick}>
-      <h5 className="projectName">{title}</h5>
+      <h5 className="projectName" style={{ ...style }}>
+        {title}
+      </h5>
     </Wrapper>
   );
 }

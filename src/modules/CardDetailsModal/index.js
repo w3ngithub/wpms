@@ -77,6 +77,7 @@ function CardDetailsModal({
   const [newLabel, setNewLabel] = useState(false);
   const [newlabelColor, setLabelColor] = useState({ hex: "#C0C6CF" });
   const [filteredBoardLabels, setFilteredBoardLables] = useState([]);
+  const [commentToEdit, setCommentToEdit] = useState({ editComment: false });
 
   const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
   const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
@@ -187,6 +188,67 @@ function CardDetailsModal({
       clickedCardDetail.laneId,
       "special"
     );
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    comments: card?.comments.filter(
+                      (comment) => comment.id !== commentId
+                    ),
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    await updateBoard(projectId, "lanes", updatedCardData);
+    document.getElementById("commentForm").reset();
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
+  };
+
+  const handleEditComment = async () => {
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    comments: card?.comments.map((cmt) =>
+                      cmt.id === commentToEdit.id
+                        ? {
+                            ...cmt,
+                            comment: commentToEdit.comment,
+                          }
+                        : cmt
+                    ),
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    await updateBoard(projectId, "lanes", updatedCardData);
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
+    setCommentToEdit({ editComment: false });
   };
 
   const handleSubmitCheckListTitle = async (e) => {
@@ -571,7 +633,7 @@ function CardDetailsModal({
                   title={editCardTitle || clickedCardDetail.title}
                   onChange={oneditCardTitleChange}
                   save={onSaveeditCardTitle}
-                  style={{ minWidth: "230px" }}
+                  style={{ minWidth: "230px", color: "#000" }}
                 />
                 <p>
                   in list{" "}
@@ -630,7 +692,12 @@ function CardDetailsModal({
               </div>
             )}
             <div
-              style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "10px",
+                marginBottom: "10px",
+              }}
             >
               <div>
                 <CgDetailsMore style={{ fontSize: "24px" }} />
@@ -642,7 +709,12 @@ function CardDetailsModal({
                   title={editCardDetail || clickedCardDetail.description}
                   onChange={oneEditCardDetailChange}
                   save={onSaveeditCardDetail}
-                  style={{ minWidth: "230px" }}
+                  style={{
+                    minWidth: "230px",
+                    fontSize: "14px",
+                    color: "#000",
+                    fontWeight: "400",
+                  }}
                 />
               </div>
             </div>
@@ -690,8 +762,10 @@ function CardDetailsModal({
                     >
                       <p>
                         {showAllAttachments
-                          ? "show fewer attachments"
-                          : "view all attachments"}
+                          ? "Show fewer attachments"
+                          : `View all attachments (${
+                              clickedCardDetail?.attachments?.length - 2
+                            } hidden)`}
                       </p>
                     </div>
                   )}
@@ -844,16 +918,26 @@ function CardDetailsModal({
                 alignItems: "baseline",
                 gap: "10px",
                 flexDirection: "column",
+                // width: "100%",
               }}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
               >
                 <MdLocalActivity style={{ fontSize: "24px" }} />
                 <h4>Activity</h4>
               </div>
-              <div>
-                <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{ width: "100%" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                  }}
+                >
                   <Avatar alt="PM" className={classes.avatar}>
                     {user?.name[0]?.toUpperCase()}
                   </Avatar>
@@ -863,6 +947,7 @@ function CardDetailsModal({
                       display: "flex",
                       gap: "10px",
                       flexDirection: "column",
+                      flex: "1",
                     }}
                     id="commentForm"
                   >
@@ -900,7 +985,7 @@ function CardDetailsModal({
                   </form>
                 </div>
               </div>
-              <div>
+              <div style={{ width: "100%" }}>
                 {clickedCardDetail?.comments
                   ?.slice()
                   .reverse()
@@ -918,12 +1003,81 @@ function CardDetailsModal({
                         {comment?.commentBy[0]?.toUpperCase()}
                       </Avatar>
 
-                      <div>
-                        <div style={{ display: "flex", gap: "20px" }}>
+                      <div style={{ flex: "1" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "20px",
+                            marginBottom: "5px",
+                          }}
+                        >
                           <h5>{comment.commentBy}</h5>
                           <small>{dayjs(comment.id).from(new Date())}</small>
                         </div>
-                        <div className="comment">{comment.comment}</div>
+                        {commentToEdit.editComment &&
+                        commentToEdit.id === comment.id ? (
+                          <div className="edit_comment_form">
+                            <textarea
+                              className="comment"
+                              type="text"
+                              value={commentToEdit.comment}
+                              onChange={(e) =>
+                                setCommentToEdit({
+                                  ...commentToEdit,
+                                  comment: e.target.value,
+                                })
+                              }
+                            />
+                            <div
+                              style={{
+                                display: "flex",
+                                gap: "10px",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Button
+                                variant="contained"
+                                type="button"
+                                color="primary"
+                                onClick={handleEditComment}
+                              >
+                                Save
+                              </Button>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={() =>
+                                  setCommentToEdit({ editComment: false })
+                                }
+                              >
+                                X
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="comment">{comment.comment}</div>
+                            <div>
+                              <span
+                                className="comment_action"
+                                onClick={() =>
+                                  setCommentToEdit({
+                                    ...comment,
+                                    editComment: true,
+                                  })
+                                }
+                              >
+                                Edit
+                              </span>{" "}
+                              -{" "}
+                              <span
+                                className="comment_action"
+                                onClick={() => handleDeleteComment(comment.id)}
+                              >
+                                Delete
+                              </span>
+                            </div>
+                          </>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -1008,7 +1162,11 @@ function CardDetailsModal({
             x
           </div>
           <p>Title</p>
-          <form onSubmit={handleSubmitCheckListTitle} id="checklisttitle">
+          <form
+            onSubmit={handleSubmitCheckListTitle}
+            id="checklisttitle"
+            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+          >
             <TextField
               id="outlined-basic"
               label="Checklist"
@@ -1137,7 +1295,14 @@ function CardDetailsModal({
                     size="small"
                   />
                 </div>
-                <div>
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
                   <p>Select a color</p>
                   <Circle
                     colors={[

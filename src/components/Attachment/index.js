@@ -57,39 +57,41 @@ function AttachmentDetail({
           {file.name}
         </a>
         <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
-      </div>
-      <span> - </span>
-      <span
-        className="attachment_actions"
-        onClick={() => handleDeleteFile(file)}
-      >
-        Delete
-      </span>
-      {file.isImage && (
-        <span>
-          {file.downloadURL !== cover ? (
-            <>
-              <span> - </span>
-              <span
-                onClick={() => handleMakeCover(file)}
-                className="attachment_actions"
-              >
-                Make cover
-              </span>
-            </>
-          ) : (
-            <>
-              <span> - </span>
-              <span
-                onClick={() => handleRemoveCover(file)}
-                className="attachment_actions"
-              >
-                Remove cover
-              </span>
-            </>
+        <div>
+          {" "}
+          <span
+            className="attachment_actions"
+            onClick={() => handleDeleteFile(file)}
+          >
+            Delete
+          </span>
+          {file.isImage && (
+            <span>
+              {file.downloadURL !== cover ? (
+                <>
+                  <span> - </span>
+                  <span
+                    onClick={() => handleMakeCover(file)}
+                    className="attachment_actions"
+                  >
+                    Make cover
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span> - </span>
+                  <span
+                    onClick={() => handleRemoveCover(file)}
+                    className="attachment_actions"
+                  >
+                    Remove cover
+                  </span>
+                </>
+              )}
+            </span>
           )}
-        </span>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
