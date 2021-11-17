@@ -58,7 +58,7 @@ function AttachmentDetail({
           <a href={file.downloadURL} target="_blank">
             {file.name}
           </a>
-          <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
+          <small> Added {dayjs(file.uploadedDate).format("LLL")}</small>
           <span> - </span>
           <span
             className="attachment_actions"

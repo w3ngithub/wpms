@@ -6,7 +6,6 @@ import { BsFolderCheck } from "@react-icons/all-files/bs/BsFolderCheck";
 import "./style.css";
 
 function CustomTrelloLaneCard(props) {
-  console.log(props);
   const {
     style: { backgroundColor = "#FFFFFF" } = {},
     title,

@@ -260,6 +260,7 @@ function SingleBoard() {
             seteditCardTitle("");
             seteditCardDetail("");
           }}
+          members={dataTopass?.members}
         />
       </Modal>
     </div>

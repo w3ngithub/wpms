@@ -46,6 +46,15 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     cursor: "pointer",
   },
+  Memberavatar: {
+    width: theme.spacing(4),
+    height: theme.spacing(4),
+    fontSize: "15px",
+    fontWeight: "600",
+    backgroundColor: "#E0E0DE",
+    color: "black",
+    cursor: "pointer",
+  },
 }));
 
 function CardDetailsModal({
@@ -60,6 +69,7 @@ function CardDetailsModal({
   editCardDetail,
   boardLabels,
   onClose,
+  members = [],
 }) {
   const classes = useStyles();
 
@@ -72,6 +82,7 @@ function CardDetailsModal({
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
   const [anchorE3, setAnchorE3] = useState(null);
+  const [anchorE4, setAnchorE4] = useState(null);
 
   const [labelToSearch, setLabelToSearch] = useState("");
   const [newLabel, setNewLabel] = useState(false);
@@ -116,13 +127,21 @@ function CardDetailsModal({
   const handleCloseLabelPopOver = () => {
     setAnchorE3(null);
   };
+  const handleClickAddMemberPopOver = (e) => {
+    setAnchorE4(e.currentTarget);
+  };
+  const handleCloseAddMemberPopOver = () => {
+    setAnchorE4(null);
+  };
 
   const open = Boolean(anchorEl);
   const openShare = Boolean(anchorE2);
   const openLabel = Boolean(anchorE3);
+  const openMember = Boolean(anchorE4);
   const id = open ? "simple-popover" : undefined;
   const idShare = openShare ? "simple-popover" : undefined;
   const idLabel = openLabel ? "simple-popover" : undefined;
+  const idMember = openMember ? "simple-popover" : undefined;
 
   const onSaveeditCardTitle = () => {
     const updatedCardData = data.lanes.map((lane) =>
@@ -600,6 +619,15 @@ function CardDetailsModal({
     );
   };
 
+  const handleCommentToShowMember = (e) => {
+    const commentInput = e.target.value.split(" ");
+    const hasSpecialLletter = commentInput.some((val) => val[0] === "@");
+    console.log(hasSpecialLletter);
+    if (hasSpecialLletter) {
+      handleClickAddMemberPopOver(e);
+    }
+  };
+
   return (
     <>
       <div className="modal_container">
@@ -652,7 +680,7 @@ function CardDetailsModal({
                 style={{ display: "flex", alignItems: "baseline", gap: "10px" }}
               >
                 <div>
-                  <p>Labels</p>
+                  <p style={{ marginBottom: "5px" }}>Labels</p>
                   <div
                     style={{
                       display: "flex",
@@ -706,7 +734,7 @@ function CardDetailsModal({
                 <CgDetailsMore style={{ fontSize: "24px" }} />
               </div>
               <div>
-                <h4>Description</h4>
+                <h4 style={{ marginBottom: "5px" }}>Description</h4>
                 <EditableTextField
                   oldTitle={clickedCardDetail.description}
                   title={editCardDetail || clickedCardDetail.description}
@@ -960,6 +988,8 @@ function CardDetailsModal({
                       placeholder="Write a comment..."
                       className="comment"
                       onFocus={() => setShowSaveComment(true)}
+                      onChange={(e) => handleCommentToShowMember(e)}
+                      id={idMember}
                       // onBlur={() => setShowSaveComment(false)}
                     />
                     {showSaveComment && (
@@ -1373,6 +1403,62 @@ function CardDetailsModal({
               </div>
             </>
           )}
+        </div>
+      </Popover>
+      <Popover
+        id={idMember}
+        open={openMember}
+        anchorEl={anchorE4}
+        onClose={handleCloseAddMemberPopOver}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div
+          style={{
+            width: "300px",
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <div
+            style={{
+              textAlign: "center",
+              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
+              marginBottom: "15px",
+              padding: "0 10px 10px 0",
+            }}
+          >
+            <p>Mentions...</p>
+          </div>
+          <div
+            style={{
+              position: "absolute",
+              top: "5px",
+              right: "9px",
+              fontSize: "20px",
+              cursor: "pointer",
+            }}
+            onClick={handleCloseAddMemberPopOver}
+          >
+            x
+          </div>
+          {[user?.name, ...members].map((member) => (
+            <div
+              className="add_to_cart"
+              style={{
+                padding: "5px",
+              }}
+            >
+              <Avatar alt="PM" className={classes.Memberavatar}>
+                {member[0]}
+              </Avatar>
+              <span>{member}</span>
+            </div>
+          ))}
         </div>
       </Popover>
     </>
