@@ -487,38 +487,40 @@ function CardDetailsModal({
   const handleSubmitNewLabel = async (e) => {
     e.preventDefault();
     const newLabel = e.target.newLabelName.value;
-    const updatedCardData = data.lanes.map((lane) =>
-      lane.id === clickedCardDetail.laneId
-        ? {
-            ...lane,
-            cards: lane.cards.map((card) =>
-              card.id === clickedCardDetail.id
-                ? {
-                    ...card,
-                    labels: [
-                      ...(card.labels || ""),
-                      { name: newLabel, color: newlabelColor?.hex },
-                    ],
-                  }
-                : card
-            ),
-          }
-        : lane
-    );
-    await updateBoard(projectId, "lanes", updatedCardData);
-    addNewLabelsToBoard(projectId, {
-      name: newLabel || "",
-      color: newlabelColor.hex,
-    });
+    if (newLabel) {
+      const updatedCardData = data.lanes.map((lane) =>
+        lane.id === clickedCardDetail.laneId
+          ? {
+              ...lane,
+              cards: lane.cards.map((card) =>
+                card.id === clickedCardDetail.id
+                  ? {
+                      ...card,
+                      labels: [
+                        ...(card.labels || ""),
+                        { name: newLabel, color: newlabelColor?.hex },
+                      ],
+                    }
+                  : card
+              ),
+            }
+          : lane
+      );
+      await updateBoard(projectId, "lanes", updatedCardData);
+      addNewLabelsToBoard(projectId, {
+        name: newLabel || "",
+        color: newlabelColor.hex,
+      });
 
-    handleCloseLabelPopOver();
-    handleCardClick(
-      clickedCardDetail.id,
-      null,
-      clickedCardDetail.laneId,
-      "special"
-    );
-    setNewLabel(false);
+      handleCloseLabelPopOver();
+      handleCardClick(
+        clickedCardDetail.id,
+        null,
+        clickedCardDetail.laneId,
+        "special"
+      );
+      setNewLabel(false);
+    }
   };
 
   const handleAddLabelFromBoardLabel = async (label) => {
@@ -697,6 +699,7 @@ function CardDetailsModal({
                 alignItems: "flex-start",
                 gap: "10px",
                 marginBottom: "10px",
+                marginTop: "5px",
               }}
             >
               <div>

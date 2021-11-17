@@ -53,23 +53,25 @@ function AttachmentDetail({
           justifyContent: "center",
         }}
       >
-        <a href={file.downloadURL} target="_blank">
-          {file.name}
-        </a>
-        <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
         <div>
           {" "}
+          <a href={file.downloadURL} target="_blank">
+            {file.name}
+          </a>
+          <small>Added {dayjs(file.uploadedDate).format("LLL")}</small>
+          <span> - </span>
           <span
             className="attachment_actions"
             onClick={() => handleDeleteFile(file)}
           >
             Delete
           </span>
+        </div>
+        <div>
           {file.isImage && (
             <span>
               {file.downloadURL !== cover ? (
                 <>
-                  <span> - </span>
                   <span
                     onClick={() => handleMakeCover(file)}
                     className="attachment_actions"
@@ -79,7 +81,6 @@ function AttachmentDetail({
                 </>
               ) : (
                 <>
-                  <span> - </span>
                   <span
                     onClick={() => handleRemoveCover(file)}
                     className="attachment_actions"
