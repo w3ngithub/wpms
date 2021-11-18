@@ -68,9 +68,9 @@ function Navbar({ openCreateBoardModal, setSearchBoard }) {
           Icon={HomeIcon}
           onClick={() => history.push(`/${user?.name}/boards`)}
         />
+        <img src={logo} alt="logo" className="navbar__logo" />
       </div>
 
-      <img src={logo} alt="logo" className="navbar__logo" />
       <div className="navbar__last">
         <SearchInputField
           onChange={(e) => {
@@ -88,11 +88,7 @@ function Navbar({ openCreateBoardModal, setSearchBoard }) {
         <MenuList
           open={openAccountMenuList}
           handleClose={handleClose}
-          items={[
-            { name: "Profile", onClick: () => console.log("Profile") },
-            { name: "My Account", onClick: () => console.log("my account") },
-            { name: "Logout", onClick: onLogout },
-          ]}
+          items={[{ name: "Logout", onClick: onLogout }]}
           css={{ top: "30px !important" }}
         />
       </div>

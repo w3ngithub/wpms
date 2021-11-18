@@ -225,9 +225,10 @@ export default function SignIn() {
               Log In with Google
             </Button>
           </div>
+          <br />
           <Grid container>
             <Grid item>
-              <Link to="/register">{"Sign Up"}</Link>
+              Create your account <Link to="/register">{"Sign Up"}</Link>
             </Grid>
           </Grid>
         </form>

@@ -68,12 +68,12 @@ export default function SignUp() {
       return;
     }
 
-    if (inputDetails["password"].value.length <= 8) {
+    if (inputDetails["password"].value.length < 7) {
       setInputDetails({
         ...inputDetails,
         password: {
           ...inputDetails["password"],
-          error: "password must be greater than 8 digits",
+          error: "password must be atleast 8 digits",
         },
       });
       return;
@@ -244,10 +244,10 @@ export default function SignUp() {
             </Button>
           </div>
         </Box>
-
+        <br />
         <Grid container>
           <Grid item>
-            <Link to="/login">{"Sign In"}</Link>
+            Already have an account ? <Link to="/login">{"Sign In"}</Link>
           </Grid>
         </Grid>
       </Box>

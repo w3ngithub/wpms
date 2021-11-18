@@ -9,14 +9,17 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import "./style.css";
 import { useHistory } from "react-router";
+import Loader from "../Loader";
 
 const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: "50px",
+    textAlign: "center",
   },
   gridRoot: {
     flexGrow: 1,
     margin: "30px 0",
+    marginBottom: "30px",
   },
   paper: {
     height: 100,
@@ -56,12 +59,14 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
   const [listOfBoards, setListOfBoards] = useState([]);
   const [listOfFavouriteBoards, setListOfFavouriteBoards] = useState([]);
   const [searchListOfBoard, setSearchListOfBoards] = useState([]);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const history = useHistory();
 
   const { name } = JSON.parse(localStorage.getItem("user"));
 
   const fetchBoards = async () => {
+    setLoading(true);
     const result = await Promise.all([
       getUsersBoards(name),
       getUsersFromFeatureBoards("members", name),
@@ -69,6 +74,7 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
     const favouriteBoards = await getUsersFromFeatureBoards("favourite", name);
     setListOfBoards([...result.flat()]);
     setListOfFavouriteBoards(favouriteBoards);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -87,32 +93,14 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
     <Container maxWidth="sm" className={classes.container}>
       <h1 className="boards__header">Boards</h1>
       <Divider />
-      {searchBoard ? (
-        <Grid container className={classes.gridRoot}>
-          <Grid container justifyContent="flex-start" spacing={4}>
-            {searchListOfBoard.map((value) => (
-              <Grid key={value.id} item>
-                <Paper
-                  className={classes.paper}
-                  elevation={0}
-                  variant="outlined"
-                  onClick={() => history.push(`/${name}/${value.id}`)}
-                >
-                  <div className="paper">
-                    <p className="title">{value.data.title}</p>
-                  </div>
-                </Paper>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
+      {loading ? (
+        <Loader />
       ) : (
-        <Grid container className={classes.gridRoot}>
-          {listOfFavouriteBoards.length !== 0 && (
-            <>
-              <h2 className="boards__header">Your Favourites</h2>
-              <Grid container justifyContent="flex-start" spacing={4}>
-                {listOfFavouriteBoards.map((value) => (
+        <div>
+          {searchBoard ? (
+            <Grid container className={classes.gridRoot}>
+              <Grid container justifyContent="center" spacing={4}>
+                {searchListOfBoard.map((value) => (
                   <Grid key={value.id} item>
                     <Paper
                       className={classes.paper}
@@ -127,38 +115,64 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                   </Grid>
                 ))}
               </Grid>
-            </>
-          )}
-          <h2 className="boards__header">Your WorkSpaces</h2>
-          <Grid container justifyContent="flex-start" spacing={4}>
-            {listOfBoards.map((value) => (
-              <Grid key={value.id} item>
-                <Paper
-                  className={classes.paper}
-                  elevation={0}
-                  variant="outlined"
-                  onClick={() => history.push(`/${name}/${value.id}`)}
-                >
-                  <div className="paper">
-                    <p className="title">{value.data.title}</p>
-                  </div>
-                </Paper>
-              </Grid>
-            ))}
-            <Grid key={"add"} item>
-              <Paper
-                className={classes.paperCreateBoard}
-                elevation={0}
-                variant="outlined"
-                onClick={openCreateBoardModal}
-              >
-                <div className="paper">
-                  <p className="title">Create New Board</p>
-                </div>
-              </Paper>
             </Grid>
-          </Grid>
-        </Grid>
+          ) : (
+            <Grid container className={classes.gridRoot}>
+              {listOfFavouriteBoards.length !== 0 && (
+                <>
+                  <h2 className="boards__header">Your Favourites</h2>
+                  <Grid container justifyContent="flex-start" spacing={4}>
+                    {listOfFavouriteBoards.map((value) => (
+                      <Grid key={value.id} item>
+                        <Paper
+                          className={classes.paper}
+                          elevation={0}
+                          variant="outlined"
+                          onClick={() => history.push(`/${name}/${value.id}`)}
+                        >
+                          <div className="paper">
+                            <p className="title">{value.data.title}</p>
+                          </div>
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </>
+              )}
+              <h2 className="boards__header" style={{ marginTop: "25px" }}>
+                Your WorkSpaces
+              </h2>
+              <Grid container justifyContent="flex-start" spacing={4}>
+                {listOfBoards.map((value) => (
+                  <Grid key={value.id} item>
+                    <Paper
+                      className={classes.paper}
+                      elevation={0}
+                      variant="outlined"
+                      onClick={() => history.push(`/${name}/${value.id}`)}
+                    >
+                      <div className="paper">
+                        <p className="title">{value.data.title}</p>
+                      </div>
+                    </Paper>
+                  </Grid>
+                ))}
+                <Grid key={"add"} item>
+                  <Paper
+                    className={classes.paperCreateBoard}
+                    elevation={0}
+                    variant="outlined"
+                    onClick={openCreateBoardModal}
+                  >
+                    <div className="paper">
+                      <p className="title">Create New Board</p>
+                    </div>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Grid>
+          )}
+        </div>
       )}
     </Container>
   );
