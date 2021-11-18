@@ -671,7 +671,7 @@ function CardDetailsModal({
                   save={onSaveeditCardTitle}
                   style={{ minWidth: "230px", color: "#000" }}
                 />
-                <p>
+                <p style={{ marginTop: "10px" }}>
                   in list{" "}
                   {
                     data?.lanes?.find(
@@ -963,6 +963,7 @@ function CardDetailsModal({
                   display: "flex",
                   alignItems: "center",
                   gap: "10px",
+                  marginBottom: "10px",
                 }}
               >
                 <MdLocalActivity style={{ fontSize: "24px" }} />
@@ -973,6 +974,7 @@ function CardDetailsModal({
                   style={{
                     display: "flex",
                     gap: "10px",
+                    marginBottom: "15px",
                   }}
                 >
                   <Avatar alt="PM" className={classes.avatar}>
@@ -1047,7 +1049,7 @@ function CardDetailsModal({
                         display: "flex",
                         gap: "10px",
                         alignItems: "flex-start",
-                        marginBottom: "10px",
+                        marginBottom: "20px",
                       }}
                       key={comment.id}
                     >
@@ -1060,7 +1062,7 @@ function CardDetailsModal({
                           style={{
                             display: "flex",
                             gap: "20px",
-                            marginBottom: "5px",
+                            marginBottom: "10px",
                           }}
                         >
                           <h5>{comment.commentBy}</h5>
@@ -1108,7 +1110,7 @@ function CardDetailsModal({
                         ) : (
                           <>
                             <div className="comment">{comment.comment}</div>
-                            <div>
+                            <div style={{ marginTop: "7px" }}>
                               <span
                                 className="comment_action"
                                 onClick={() =>

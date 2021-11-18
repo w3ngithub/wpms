@@ -124,14 +124,8 @@ function SingleBoard() {
   return (
     <div
       style={{
-        // backgroundImage: `url(${img})`,
         backgroundColor: "rgb(97 102 117)",
-        // backgroundRepeat: "no-repeat",
-        // backgroundPosition: "center",
-        // backgroundSize: "cover",
-        paddingTop: "45px",
-        paddingBottom: "30px",
-        // height: "100vh",
+        padding: "45px 25px 30px 20px",
       }}
     >
       <ProjectDetailsNavbar
