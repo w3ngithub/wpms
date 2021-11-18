@@ -28,7 +28,7 @@
 .card_options {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 15px;
 }
 
 .add_to_cart {
@@ -70,7 +70,9 @@
   cursor: pointer;
   height: 40px;
   width: 40px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal_close:hover {

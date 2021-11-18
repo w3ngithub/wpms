@@ -9,6 +9,7 @@ import {
   styled,
   TextField,
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import { MdLocalActivity } from "@react-icons/all-files/md/MdLocalActivity";
 import { MdSubtitles } from "@react-icons/all-files/md/MdSubtitles";
 import EditableTextField from "../../components/EditableTextField";
@@ -637,7 +638,7 @@ function CardDetailsModal({
     <>
       <div className="modal_container">
         <div className="modal_close" onClick={onClose}>
-          X
+          <CloseIcon />
         </div>
         {clickedCardDetail.coverImage && clickedCardDetail.coverImage !== "" && (
           <div style={{ width: "100%" }}>
@@ -740,7 +741,7 @@ function CardDetailsModal({
                 <CgDetailsMore style={{ fontSize: "24px" }} />
               </div>
               <div>
-                <h4 style={{ marginBottom: "5px" }}>Description</h4>
+                <h4 style={{ marginBottom: "10px" }}>Description</h4>
                 <EditableTextField
                   oldTitle={clickedCardDetail.description}
                   title={editCardDetail || clickedCardDetail.description}
@@ -1019,6 +1020,7 @@ function CardDetailsModal({
                           color="primary"
                           variant="contained"
                           type="submit"
+                          size="small"
                         >
                           Save
                         </Button>
@@ -1030,7 +1032,11 @@ function CardDetailsModal({
                               handleUploadFile(e);
                             }}
                           />
-                          <Button variant="contained" component="span">
+                          <Button
+                            variant="contained"
+                            component="span"
+                            size="small"
+                          >
                             Add Attachment
                           </Button>
                         </label>
@@ -1213,14 +1219,14 @@ function CardDetailsModal({
           <div
             style={{
               position: "absolute",
-              top: "5px",
+              top: "7px",
               right: "9px",
               fontSize: "20px",
               cursor: "pointer",
             }}
             onClick={handleClosePopOver}
           >
-            x
+            <CloseIcon />
           </div>
           <p>Title</p>
           <form
@@ -1273,19 +1279,19 @@ function CardDetailsModal({
           <div
             style={{
               position: "absolute",
-              top: "5px",
+              top: "7px",
               right: "9px",
               fontSize: "20px",
               cursor: "pointer",
             }}
             onClick={handleCloseSharePopOver}
           >
-            x
+            <CloseIcon />
           </div>
-          <p>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <strong>Share link to this card</strong>
             <BsFillPeopleFill />
-          </p>
+          </div>
           <TextField
             id="outlined-basic"
             variant="outlined"
@@ -1316,26 +1322,23 @@ function CardDetailsModal({
         >
           <div
             style={{
-              textAlign: "center",
               borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
               marginBottom: "15px",
               padding: "0 10px 10px 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             <p>Labels</p>
+            <div
+              onClick={handleCloseLabelPopOver}
+              style={{ cursor: "pointer" }}
+            >
+              <CloseIcon />
+            </div>
           </div>
-          <div
-            style={{
-              position: "absolute",
-              top: "5px",
-              right: "9px",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-            onClick={handleCloseLabelPopOver}
-          >
-            x
-          </div>
+
           {newLabel ? (
             <div
               style={{
