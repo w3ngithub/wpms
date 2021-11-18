@@ -28,6 +28,7 @@ import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import Notification from "../../components/Notification";
 import Circle from "@uiw/react-color-circle";
 import AttachmentDetail from "../../components/Attachment";
+import CommentPopover from "../../components/Popover";
 import "./style.css";
 
 dayjs.extend(relativeTime);
@@ -43,15 +44,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "15px",
     fontWeight: "600",
     backgroundColor: "#fff",
-    color: "black",
-    cursor: "pointer",
-  },
-  Memberavatar: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-    fontSize: "15px",
-    fontWeight: "600",
-    backgroundColor: "#E0E0DE",
     color: "black",
     cursor: "pointer",
   },
@@ -82,13 +74,16 @@ function CardDetailsModal({
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
   const [anchorE3, setAnchorE3] = useState(null);
-  const [anchorE4, setAnchorE4] = useState(null);
 
   const [labelToSearch, setLabelToSearch] = useState("");
   const [newLabel, setNewLabel] = useState(false);
   const [newlabelColor, setLabelColor] = useState({ hex: "#C0C6CF" });
   const [filteredBoardLabels, setFilteredBoardLables] = useState([]);
   const [commentToEdit, setCommentToEdit] = useState({ editComment: false });
+  const [openCommentAddMemeberModal, setOpenCommentAddMemeberModal] =
+    useState(false);
+  const [commentMemebers, setCommentMemebers] = useState([]);
+  const [commentToAdd, setCommentToAdd] = useState("");
 
   const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
   const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
@@ -127,21 +122,13 @@ function CardDetailsModal({
   const handleCloseLabelPopOver = () => {
     setAnchorE3(null);
   };
-  const handleClickAddMemberPopOver = (e) => {
-    setAnchorE4(e.currentTarget);
-  };
-  const handleCloseAddMemberPopOver = () => {
-    setAnchorE4(null);
-  };
 
   const open = Boolean(anchorEl);
   const openShare = Boolean(anchorE2);
   const openLabel = Boolean(anchorE3);
-  const openMember = Boolean(anchorE4);
   const id = open ? "simple-popover" : undefined;
   const idShare = openShare ? "simple-popover" : undefined;
   const idLabel = openLabel ? "simple-popover" : undefined;
-  const idMember = openMember ? "simple-popover" : undefined;
 
   const onSaveeditCardTitle = () => {
     const updatedCardData = data.lanes.map((lane) =>
@@ -189,7 +176,7 @@ function CardDetailsModal({
                       ...(card?.comments || ""),
                       {
                         commentBy: user?.name,
-                        comment: e.target.comment.value,
+                        comment: commentToAdd,
                         id: Date.now(),
                       },
                     ],
@@ -200,7 +187,7 @@ function CardDetailsModal({
         : lane
     );
     await updateBoard(projectId, "lanes", updatedCardData);
-    document.getElementById("commentForm").reset();
+    setCommentToAdd("");
     handleCardClick(
       clickedCardDetail.id,
       null,
@@ -620,12 +607,30 @@ function CardDetailsModal({
   };
 
   const handleCommentToShowMember = (e) => {
+    setCommentToAdd(e.target.value);
     const commentInput = e.target.value.split(" ");
-    const hasSpecialLletter = commentInput.some((val) => val[0] === "@");
-    console.log(hasSpecialLletter);
-    if (hasSpecialLletter) {
-      handleClickAddMemberPopOver(e);
+    const hasSpecialLletter = commentInput.find((val) => val[0] === "@");
+    if (
+      hasSpecialLletter &&
+      hasSpecialLletter.length > 1 &&
+      [user.name, ...members].filter((name) =>
+        name.includes(hasSpecialLletter.substring(1))
+      ).length > 0
+    ) {
+      setCommentMemebers(
+        [user.name, ...members].filter((name) =>
+          name.includes(hasSpecialLletter.substring(1))
+        )
+      );
+      setOpenCommentAddMemeberModal(true);
+    } else {
+      setOpenCommentAddMemeberModal(false);
     }
+  };
+
+  const handleAddMemberInComment = (comment) => {
+    setCommentToAdd(commentToAdd + comment);
+    setOpenCommentAddMemeberModal(false);
   };
 
   return (
@@ -649,6 +654,7 @@ function CardDetailsModal({
               display: "flex",
               flexDirection: "column",
               gap: "20px",
+              flex: "1",
             }}
           >
             <div
@@ -791,7 +797,7 @@ function CardDetailsModal({
                       className="showAttachments"
                       onClick={() => setShowAllAttachments(!showAllAttachments)}
                     >
-                      <p>
+                      <p style={{ fontSize: "14px" }}>
                         {showAllAttachments
                           ? "Show fewer attachments"
                           : `View all attachments (${
@@ -982,16 +988,29 @@ function CardDetailsModal({
                     }}
                     id="commentForm"
                   >
-                    <textarea
-                      type="text"
-                      name="comment"
-                      placeholder="Write a comment..."
-                      className="comment"
-                      onFocus={() => setShowSaveComment(true)}
-                      onChange={(e) => handleCommentToShowMember(e)}
-                      id={idMember}
-                      // onBlur={() => setShowSaveComment(false)}
-                    />
+                    <div className={"comment_container"}>
+                      {" "}
+                      <textarea
+                        type="text"
+                        name="comment"
+                        placeholder="Write a comment..."
+                        className="comment"
+                        onFocus={() => setShowSaveComment(true)}
+                        onChange={(e) => handleCommentToShowMember(e)}
+                        value={commentToAdd}
+
+                        // onBlur={() => setShowSaveComment(false)}
+                      />
+                      {openCommentAddMemeberModal && (
+                        <CommentPopover
+                          user={user}
+                          members={members}
+                          commentMemebers={commentMemebers}
+                          onClose={() => setOpenCommentAddMemeberModal(false)}
+                          handleAddMemberInComment={handleAddMemberInComment}
+                        />
+                      )}
+                    </div>
                     {showSaveComment && (
                       <div style={{ display: "flex", gap: "10px" }}>
                         <Button
@@ -1129,11 +1148,17 @@ function CardDetailsModal({
                 className="add_to_cart"
                 id={idLabel}
                 onClick={handleClickLabelPopOver}
+                style={{ paddingRight: "30px" }}
               >
                 <BsCardChecklist />
                 <span>Labels</span>
               </div>
-              <div className="add_to_cart" id={id} onClick={handleClickPopOver}>
+              <div
+                className="add_to_cart"
+                id={id}
+                onClick={handleClickPopOver}
+                style={{ paddingRight: "30px" }}
+              >
                 <BsCardChecklist />
                 CheckList
                 <span></span>{" "}
@@ -1145,6 +1170,7 @@ function CardDetailsModal({
                 className="add_to_cart"
                 id={handleClickSharePopOver}
                 onClick={handleClickSharePopOver}
+                style={{ paddingRight: "30px" }}
               >
                 <AiOutlineShareAlt />
                 <span>Share</span>
@@ -1403,62 +1429,6 @@ function CardDetailsModal({
               </div>
             </>
           )}
-        </div>
-      </Popover>
-      <Popover
-        id={idMember}
-        open={openMember}
-        anchorEl={anchorE4}
-        onClose={handleCloseAddMemberPopOver}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-      >
-        <div
-          style={{
-            width: "300px",
-            padding: "10px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
-              marginBottom: "15px",
-              padding: "0 10px 10px 0",
-            }}
-          >
-            <p>Mentions...</p>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              top: "5px",
-              right: "9px",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-            onClick={handleCloseAddMemberPopOver}
-          >
-            x
-          </div>
-          {[user?.name, ...members].map((member) => (
-            <div
-              className="add_to_cart"
-              style={{
-                padding: "5px",
-              }}
-            >
-              <Avatar alt="PM" className={classes.Memberavatar}>
-                {member[0]}
-              </Avatar>
-              <span>{member}</span>
-            </div>
-          ))}
         </div>
       </Popover>
     </>

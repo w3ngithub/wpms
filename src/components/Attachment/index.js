@@ -40,6 +40,9 @@ function AttachmentDetail({
               color: "black",
               textAlign: "center",
               fontSize: "14px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             {file.name}
