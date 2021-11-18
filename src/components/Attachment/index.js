@@ -15,7 +15,7 @@ function AttachmentDetail({
 }) {
   return (
     <div className="attachment_file">
-      <a href={file.downloadURL} target="_blank">
+      <a href={file.downloadURL} target="_blank" rel="noreferrer">
         {file.isImage ? (
           <img
             src={file.downloadURL}
@@ -57,8 +57,7 @@ function AttachmentDetail({
         }}
       >
         <div>
-          {" "}
-          <a href={file.downloadURL} target="_blank">
+          <a href={file.downloadURL} target="_blank" rel="noreferrer">
             {file.name}
           </a>
           <small> Added {dayjs(file.uploadedDate).format("LLL")}</small>

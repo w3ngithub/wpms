@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import Wrapper from "../Wrapper";
+import React from "react";
 import SearchIcon from "@material-ui/icons/Search";
-import "./style.css";
 import { grey } from "@material-ui/core/colors";
+import Wrapper from "../Wrapper";
+import "./style.css";
 
 function SearchInputField(props) {
   return (

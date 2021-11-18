@@ -120,8 +120,8 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
         />
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <div className="project_memebers">
-          {[boardUser, ...members].map((name) => (
-            <Avatar key={name} alt={name} className={classes.avatar}>
+          {[boardUser, ...members].map((name, i) => (
+            <Avatar key={name + i} alt={name} className={classes.avatar}>
               {name?.[0].toUpperCase()}
             </Avatar>
           ))}

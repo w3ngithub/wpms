@@ -1,8 +1,8 @@
 import React from "react";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import "./style.css";
 import { makeStyles } from "@material-ui/core";
+import "./style.css";
 
 function MenuList({ open, handleClose, items, css }) {
   const useStyles = makeStyles({

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Container, Divider } from "@material-ui/core";
 import {
   getUsersBoards,
@@ -65,7 +65,7 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
 
   const { name } = JSON.parse(localStorage.getItem("user"));
 
-  const fetchBoards = async () => {
+  const fetchBoards = useCallback(async () => {
     setLoading(true);
     const result = await Promise.all([
       getUsersBoards(name),
@@ -75,7 +75,7 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
     setListOfBoards([...result.flat()]);
     setListOfFavouriteBoards(favouriteBoards);
     setLoading(false);
-  };
+  }, [name]);
 
   useEffect(() => {
     setSearchListOfBoards(
@@ -87,7 +87,7 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
 
   useEffect(() => {
     fetchBoards();
-  }, []);
+  }, [fetchBoards]);
 
   return (
     <Container maxWidth="sm" className={classes.container}>
