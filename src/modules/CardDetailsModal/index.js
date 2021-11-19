@@ -30,6 +30,7 @@ import Circle from "@uiw/react-color-circle";
 import AttachmentDetail from "../../components/Attachment";
 import CommentPopover from "../../components/Popover";
 import "./style.css";
+import { labelColors } from "../../constants/boardColors";
 
 dayjs.extend(relativeTime);
 
@@ -1380,21 +1381,8 @@ function CardDetailsModal({
                 >
                   <p>Select a color</p>
                   <Circle
-                    colors={[
-                      "#F44E3B",
-                      "#FE9200",
-                      "#FCDC00",
-                      "#DBDF00",
-                      "#F44E3B",
-                      "#FE9200",
-                      "#FCDC00",
-                      "#DBDF00",
-                      "#F44E3B",
-                      "#FE9200",
-                      "#FCDC00",
-                      "#DBDF00",
-                      "#C0C6CF",
-                    ]}
+                    color={newlabelColor.hex}
+                    colors={labelColors}
                     onChange={(color) => setLabelColor(color)}
                   />
                   <Button
