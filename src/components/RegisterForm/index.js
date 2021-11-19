@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import { firebase } from "../../firebase/config";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
+import SocialButton from "../SocialButton";
 
 const useStyles = makeStyles((theme) => ({
   submit: {
@@ -222,26 +223,17 @@ export default function SignUp() {
             }}
           >
             <h4>OR</h4>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              color="primary"
+
+            <SocialButton
+              Icon={<GitHubIcon style={{ fontSize: "24px" }} />}
+              text="Sign Up with Github"
               onClick={handleLogInwithGithub}
-              endIcon={<GitHubIcon />}
-            >
-              Sign Up with Github
-            </Button>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              color="primary"
+            />
+            <SocialButton
+              Icon={<FcGoogle style={{ fontSize: "24px" }} />}
+              text="Sign Up with Google"
               onClick={handleLogInwithGoogle}
-              endIcon={<FcGoogle />}
-            >
-              Sign Up with Google
-            </Button>
+            />
           </div>
         </Box>
         <br />

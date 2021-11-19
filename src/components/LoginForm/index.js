@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
 import { firebase } from "../../firebase/config";
+import SocialButton from "../SocialButton";
 
 function Copyright() {
   return (
@@ -202,28 +203,17 @@ export default function SignIn() {
               gap: "10px",
             }}
           >
-            {" "}
             <h4>OR</h4>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              color="primary"
+            <SocialButton
+              Icon={<GitHubIcon style={{ fontSize: "24px" }} />}
+              text="Log in with Github"
               onClick={handleLogInwithGithub}
-              endIcon={<GitHubIcon />}
-            >
-              Log In with Github
-            </Button>
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              color="primary"
+            />
+            <SocialButton
+              Icon={<FcGoogle style={{ fontSize: "24px" }} />}
+              text="Log in with Google"
               onClick={handleLogInwithGoogle}
-              endIcon={<FcGoogle />}
-            >
-              Log In with Google
-            </Button>
+            />
           </div>
           <br />
           <Grid container>
