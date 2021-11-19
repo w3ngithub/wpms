@@ -125,7 +125,7 @@ function SingleBoard() {
     <div
       style={{
         backgroundColor: "rgb(97 102 117)",
-        padding: "45px 25px 30px 20px",
+        padding: "60px 25px 30px 20px",
       }}
     >
       <ProjectDetailsNavbar

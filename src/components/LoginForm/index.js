@@ -218,7 +218,10 @@ export default function SignIn() {
           <br />
           <Grid container>
             <Grid item>
-              Create your account <Link to="/register">{"Sign Up"}</Link>
+              Create your account
+              <Link to="/register" style={{ color: "#1f80d4" }}>
+                {" Sign Up"}
+              </Link>
             </Grid>
           </Grid>
         </form>

@@ -45,7 +45,7 @@ function Navbar({ openCreateBoardModal, setSearchBoard }) {
       className="navbar"
       style={
         location.pathname.split("/")[2] === "boards"
-          ? { backgroundColor: "#026AA7" }
+          ? { background: "linear-gradient(#337ab7,#5490c3)" }
           : null
       }
     >

@@ -13,7 +13,7 @@ import Loader from "../Loader";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: "50px",
+    paddingTop: "70px",
     textAlign: "center",
   },
   gridRoot: {
@@ -100,20 +100,24 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
           {searchBoard ? (
             <Grid container className={classes.gridRoot}>
               <Grid container justifyContent="center" spacing={4}>
-                {searchListOfBoard.map((value) => (
-                  <Grid key={value.id} item>
-                    <Paper
-                      className={classes.paper}
-                      elevation={0}
-                      variant="outlined"
-                      onClick={() => history.push(`/${name}/${value.id}`)}
-                    >
-                      <div className="paper">
-                        <p className="title">{value.data.title}</p>
-                      </div>
-                    </Paper>
-                  </Grid>
-                ))}
+                {searchListOfBoard.length ? (
+                  searchListOfBoard.map((value) => (
+                    <Grid key={value.id} item>
+                      <Paper
+                        className={classes.paper}
+                        elevation={0}
+                        variant="outlined"
+                        onClick={() => history.push(`/${name}/${value.id}`)}
+                      >
+                        <div className="paper">
+                          <p className="title">{value.data.title}</p>
+                        </div>
+                      </Paper>
+                    </Grid>
+                  ))
+                ) : (
+                  <h4>No boards found</h4>
+                )}
               </Grid>
             </Grid>
           ) : (

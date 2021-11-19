@@ -15,7 +15,7 @@ import {
   setUserFormSocialSignUp,
 } from "../../api-config/login";
 import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { firebase } from "../../firebase/config";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import { FcGoogle } from "@react-icons/all-files/fc/FcGoogle";
@@ -239,7 +239,10 @@ export default function SignUp() {
         <br />
         <Grid container>
           <Grid item>
-            Already have an account ? <Link to="/login">{"Sign In"}</Link>
+            Already have an account ?{" "}
+            <NavLink to="/login" style={{ color: "#1f80d4" }}>
+              {"Sign In"}
+            </NavLink>
           </Grid>
         </Grid>
       </Box>
