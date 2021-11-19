@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
-  Avatar,
   Button,
   Checkbox,
   FormControlLabel,
-  makeStyles,
   Popover,
   styled,
   TextField,
 } from "@material-ui/core";
+import Avatar from "react-avatar";
 import CloseIcon from "@material-ui/icons/Close";
 import { MdLocalActivity } from "@react-icons/all-files/md/MdLocalActivity";
 import { MdSubtitles } from "@react-icons/all-files/md/MdSubtitles";
@@ -38,18 +37,6 @@ const Input = styled("input")({
   display: "none",
 });
 
-const useStyles = makeStyles((theme) => ({
-  avatar: {
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-    fontSize: "15px",
-    fontWeight: "600",
-    backgroundColor: "#fff",
-    color: "black",
-    cursor: "pointer",
-  },
-}));
-
 function CardDetailsModal({
   clickedCardDetail,
   data,
@@ -64,8 +51,6 @@ function CardDetailsModal({
   onClose,
   members = [],
 }) {
-  const classes = useStyles();
-
   const [showSaveComment, setShowSaveComment] = useState(false);
 
   const [showAllAttachments, setShowAllAttachments] = useState(false);
@@ -993,9 +978,7 @@ function CardDetailsModal({
                     marginBottom: "15px",
                   }}
                 >
-                  <Avatar alt="PM" className={classes.avatar}>
-                    {user?.name[0]?.toUpperCase()}
-                  </Avatar>
+                  <Avatar name={user?.name} size={30} round />
                   <form
                     onSubmit={handleSubmitComment}
                     style={{
@@ -1074,9 +1057,7 @@ function CardDetailsModal({
                       }}
                       key={comment.id}
                     >
-                      <Avatar alt="PM" className={classes.avatar}>
-                        {comment?.commentBy[0]?.toUpperCase()}
-                      </Avatar>
+                      <Avatar name={comment?.commentBy} size={30} round />
 
                       <div style={{ flex: "1" }}>
                         <div
