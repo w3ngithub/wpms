@@ -743,7 +743,7 @@ function CardDetailsModal({
               <div>
                 <CgDetailsMore style={{ fontSize: "24px" }} />
               </div>
-              <div>
+              <div style={{ width: "100%" }}>
                 <h4 style={{ marginBottom: "10px" }}>Description</h4>
                 <EditableTextField
                   oldTitle={clickedCardDetail.description}
@@ -751,11 +751,13 @@ function CardDetailsModal({
                   onChange={oneEditCardDetailChange}
                   save={onSaveeditCardDetail}
                   style={{
-                    minWidth: "230px",
+                    // minWidth: "230px",
+                    width: "100%",
                     fontSize: "14px",
                     color: "#000",
                     fontWeight: "400",
                   }}
+                  bigInput={true}
                 />
               </div>
             </div>
