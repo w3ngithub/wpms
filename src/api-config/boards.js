@@ -45,8 +45,11 @@ export const updateBoard = (id, field, updatedData) =>
     .doc(id)
     .update({ [field]: updatedData });
 
-export const createBoard = (title, username) =>
-  fireStore.collection("boards").add({ title, user: username });
+export const createBoard = (title, username, boardColor) =>
+  fireStore.collection("boards").add({ title, user: username, boardColor });
+
+export const removeBoard = (boardId) =>
+  fireStore.collection("boards").doc(boardId).delete();
 
 export const addNewMemberToBoard = (id, member) =>
   fireStore

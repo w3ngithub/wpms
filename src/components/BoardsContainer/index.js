@@ -3,6 +3,7 @@ import { Container, Divider } from "@material-ui/core";
 import {
   getUsersBoards,
   getUsersFromFeatureBoards,
+  removeBoard,
 } from "../../api-config/boards";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -10,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import "./style.css";
 import { useHistory } from "react-router";
 import Loader from "../Loader";
+import BoardCard from "../BoardCard";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,20 +22,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     margin: "30px 0",
     marginBottom: "30px",
-  },
-  paper: {
-    height: 100,
-    width: 150,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    background: "gray",
-    transition: "0.2s",
-    "&:hover": {
-      opacity: "0.5",
-    },
-    color: "white",
   },
   paperCreateBoard: {
     height: 100,
@@ -77,6 +65,13 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
     setLoading(false);
   }, [name]);
 
+  const handleRemoveBoard = async (boardId) => {
+    await removeBoard(boardId);
+    const removeBoardFormList = (board) => board.id !== boardId;
+    setListOfFavouriteBoards(listOfFavouriteBoards.filter(removeBoardFormList));
+    setListOfBoards(listOfBoards.filter(removeBoardFormList));
+  };
+
   useEffect(() => {
     setSearchListOfBoards(
       listOfBoards.filter((board) =>
@@ -103,16 +98,12 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                 {searchListOfBoard.length ? (
                   searchListOfBoard.map((value) => (
                     <Grid key={value.id} item>
-                      <Paper
-                        className={classes.paper}
-                        elevation={0}
-                        variant="outlined"
+                      <BoardCard
+                        name={value.data.title}
+                        backgroundColor={value?.data?.boardColor}
                         onClick={() => history.push(`/${name}/${value.id}`)}
-                      >
-                        <div className="paper">
-                          <p className="title">{value.data.title}</p>
-                        </div>
-                      </Paper>
+                        removeCard={() => handleRemoveBoard(value.id)}
+                      />
                     </Grid>
                   ))
                 ) : (
@@ -128,16 +119,12 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                   <Grid container justifyContent="flex-start" spacing={4}>
                     {listOfFavouriteBoards.map((value) => (
                       <Grid key={value.id} item>
-                        <Paper
-                          className={classes.paper}
-                          elevation={0}
-                          variant="outlined"
+                        <BoardCard
+                          name={value.data.title}
+                          backgroundColor={value?.data?.boardColor}
                           onClick={() => history.push(`/${name}/${value.id}`)}
-                        >
-                          <div className="paper">
-                            <p className="title">{value.data.title}</p>
-                          </div>
-                        </Paper>
+                          removeCard={() => handleRemoveBoard(value.id)}
+                        />
                       </Grid>
                     ))}
                   </Grid>
@@ -149,24 +136,19 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
               <Grid container justifyContent="flex-start" spacing={4}>
                 {listOfBoards.map((value) => (
                   <Grid key={value.id} item>
-                    <Paper
-                      className={classes.paper}
-                      elevation={0}
-                      variant="outlined"
+                    <BoardCard
                       onClick={() => history.push(`/${name}/${value.id}`)}
-                    >
-                      <div className="paper">
-                        <p className="title">{value.data.title}</p>
-                      </div>
-                    </Paper>
+                      name={value.data.title}
+                      backgroundColor={value?.data?.boardColor}
+                      removeCard={() => handleRemoveBoard(value.id)}
+                    />
                   </Grid>
                 ))}
                 <Grid key={"add"} item>
                   <Paper
-                    className={classes.paperCreateBoard}
-                    elevation={0}
-                    variant="outlined"
                     onClick={openCreateBoardModal}
+                    className={classes.paperCreateBoard}
+                    variant="outlined"
                   >
                     <div className="paper">
                       <p className="title">Create New Board</p>

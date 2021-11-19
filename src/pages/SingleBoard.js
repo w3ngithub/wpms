@@ -124,7 +124,7 @@ function SingleBoard() {
   return (
     <div
       style={{
-        backgroundColor: "rgb(97 102 117)",
+        backgroundColor: dataTopass?.boardColor,
         padding: "60px 25px 30px 20px",
       }}
     >

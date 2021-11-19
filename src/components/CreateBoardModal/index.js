@@ -8,6 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { createBoard } from "../../api-config/boards";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { useHistory } from "react-router";
+import { boardColor } from "../../constants/boardColors";
 
 function CreateBoardModal({ open, handleClose }) {
   const [title, setTitle] = useState("");
@@ -24,7 +25,10 @@ function CreateBoardModal({ open, handleClose }) {
     }
 
     setLoading(true);
-    createBoard(title, name).then((res) => {
+    const boardBackColor =
+      boardColor[Math.floor(Math.random() * boardColor.length)];
+
+    createBoard(title, name, boardBackColor).then((res) => {
       res.get().then((data) => {
         handleClose();
         setLoading(false);
