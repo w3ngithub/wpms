@@ -6,7 +6,8 @@ import AddIcon from "@material-ui/icons/Add";
 import Icon from "../../components/Icon";
 import logo from "../../assets/logo.png";
 import SearchInputField from "../../components/SearchInputField";
-import { Avatar } from "@material-ui/core";
+// import { Avatar } from "@material-ui/core";
+import Avatar from "react-avatar";
 import { makeStyles } from "@material-ui/core/styles";
 import MenuList from "../../components/MenuList";
 import { useHistory, useLocation } from "react-router";
@@ -80,11 +81,10 @@ function Navbar({ openCreateBoardModal, setSearchBoard }) {
         <Icon Icon={AddIcon} onClick={openCreateBoardModal} />
         <Avatar
           alt="PM"
-          className={classes.avatar}
+          // className={classes.avatar}
+          name="foo"
           onClick={handleOpenAccountMenu}
-        >
-          {user?.name[0]?.toUpperCase()}
-        </Avatar>
+        ></Avatar>
         <MenuList
           open={openAccountMenuList}
           handleClose={handleClose}
