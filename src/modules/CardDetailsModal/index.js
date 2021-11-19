@@ -40,6 +40,7 @@ const Input = styled("input")({
 function CardDetailsModal({
   clickedCardDetail,
   data,
+  boardUser,
   handleCardClick,
   projectId,
   user,
@@ -605,13 +606,15 @@ function CardDetailsModal({
     if (
       hasSpecialLletter &&
       hasSpecialLletter.length > 1 &&
-      [user.name, ...members].filter((name) =>
+      [boardUser, ...members].filter((name) =>
         name.includes(hasSpecialLletter.substring(1))
       ).length > 0
     ) {
       setCommentMemebers(
-        [user.name, ...members].filter((name) =>
-          name.includes(hasSpecialLletter.substring(1))
+        [...members, boardUser].filter((name) =>
+          name
+            .toLowerCase()
+            .includes(hasSpecialLletter.substring(1).toLowerCase())
         )
       );
       setOpenCommentAddMemeberModal(true);

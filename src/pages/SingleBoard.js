@@ -105,6 +105,7 @@ function SingleBoard() {
         });
     }
   };
+  console.log(dataTopass);
 
   const onDataChange = (updatedData) => {
     setData(updatedData);
@@ -152,7 +153,6 @@ function SingleBoard() {
           setModelOpen(true);
         }}
         onCardAdd={(card, laneId) => {
-          console.log("card add from lane");
           setCardModelOpen(true);
           setCardToAddDetail({ card, laneId });
         }}
@@ -241,6 +241,7 @@ function SingleBoard() {
           data={data}
           clickedCardDetail={clickedCardDetail}
           user={user}
+          boardUser={dataTopass?.user}
           projectId={projectId}
           handleCardClick={handleCardClick}
           editCardTitle={editCardTitle}
