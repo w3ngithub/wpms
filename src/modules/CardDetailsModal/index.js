@@ -85,6 +85,7 @@ function CardDetailsModal({
     useState(false);
   const [commentMemebers, setCommentMemebers] = useState([]);
   const [commentToAdd, setCommentToAdd] = useState("");
+  const [tagToAdd, setTagToAdd] = useState([]);
 
   const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
   const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
@@ -179,6 +180,7 @@ function CardDetailsModal({
                         commentBy: user?.name,
                         comment: commentToAdd,
                         id: Date.now(),
+                        tags: [...tagToAdd],
                       },
                     ],
                   }
@@ -189,6 +191,7 @@ function CardDetailsModal({
     );
     await updateBoard(projectId, "lanes", updatedCardData);
     setCommentToAdd("");
+    setTagToAdd([]);
     handleCardClick(
       clickedCardDetail.id,
       null,
@@ -639,6 +642,10 @@ function CardDetailsModal({
         .map((c) => (c[0] === "@" ? c[0] : c))
         .join(" ") + comment.split(" ").join("")
     );
+    setTagToAdd([
+      ...tagToAdd,
+      { user: comment, tag: comment.split(" ").join("") },
+    ]);
     setOpenCommentAddMemeberModal(false);
   };
 
