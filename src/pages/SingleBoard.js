@@ -157,7 +157,6 @@ function SingleBoard() {
           setCardToAddDetail({ card, laneId });
         }}
         onCardClick={(cardid, meta, laneId) => {
-          console.log("card click");
           handleCardClick(cardid, meta, laneId);
         }}
         components={{

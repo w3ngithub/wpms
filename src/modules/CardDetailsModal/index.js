@@ -608,8 +608,11 @@ function CardDetailsModal({
   };
 
   const handleCommentToShowMember = (e) => {
-    setCommentToAdd(e.target.value);
     const commentInput = e.target.value.split(" ");
+    // const commentInputCleaned = commentInput
+    //   .map((c) => (c[0] === "@" ? c[0] : c))
+    //   .join(" ");
+    setCommentToAdd(e.target.value);
     const hasSpecialLletter = commentInput.find((val) => val[0] === "@");
     if (
       hasSpecialLletter &&
@@ -630,7 +633,12 @@ function CardDetailsModal({
   };
 
   const handleAddMemberInComment = (comment) => {
-    setCommentToAdd(commentToAdd + comment);
+    setCommentToAdd(
+      commentToAdd
+        .split(" ")
+        .map((c) => (c[0] === "@" ? c[0] : c))
+        .join(" ") + comment.split(" ").join("")
+    );
     setOpenCommentAddMemeberModal(false);
   };
 
@@ -1115,7 +1123,17 @@ function CardDetailsModal({
                           </div>
                         ) : (
                           <>
-                            <div className="comment">{comment.comment}</div>
+                            <div className="comment">
+                              {comment.comment
+                                .split(" ")
+                                .map((c) =>
+                                  c[0] === "@" ? (
+                                    <strong> {c} </strong>
+                                  ) : (
+                                    <span> {c} </span>
+                                  )
+                                )}
+                            </div>
                             <div style={{ marginTop: "7px" }}>
                               <span
                                 className="comment_action"

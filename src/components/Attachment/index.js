@@ -15,7 +15,12 @@ function AttachmentDetail({
 }) {
   return (
     <div className="attachment_file">
-      <a href={file.downloadURL} target="_blank" rel="noreferrer">
+      <a
+        href={file.downloadURL}
+        target="_blank"
+        rel="noreferrer"
+        style={{ textDecoration: "none" }}
+      >
         {file.isImage ? (
           <img
             src={file.downloadURL}
@@ -29,24 +34,7 @@ function AttachmentDetail({
             }}
           />
         ) : (
-          <div
-            style={{
-              height: "70px",
-              backgroundColor: "#ffff",
-              borderRadius: "10px",
-              padding: "5px",
-              width: "100px",
-              textDecoration: "none",
-              color: "black",
-              textAlign: "center",
-              fontSize: "14px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {file.name}
-          </div>
+          <div className="attachment_file_name">{file.name}</div>
         )}
       </a>
       <div
@@ -57,9 +45,11 @@ function AttachmentDetail({
         }}
       >
         <div>
-          <a href={file.downloadURL} target="_blank" rel="noreferrer">
-            {file.name}
-          </a>
+          <div>
+            <a href={file.downloadURL} target="_blank" rel="noreferrer">
+              {file.name}
+            </a>
+          </div>
           <small> Added {dayjs(file.uploadedDate).format("LLL")}</small>
           <span> - </span>
           <span

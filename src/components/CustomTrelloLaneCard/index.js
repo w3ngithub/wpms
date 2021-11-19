@@ -3,6 +3,7 @@ import { CgDetailsMore } from "@react-icons/all-files/cg/CgDetailsMore";
 import { FaRegComment } from "@react-icons/all-files/fa/FaRegComment";
 import { GrAttachment } from "@react-icons/all-files/gr/GrAttachment";
 import { BsFolderCheck } from "@react-icons/all-files/bs/BsFolderCheck";
+import CloseIcon from "@material-ui/icons/Close";
 import "./style.css";
 
 function CustomTrelloLaneCard(props) {
@@ -15,6 +16,7 @@ function CustomTrelloLaneCard(props) {
     attachments = [],
     checklist = [],
     description = "",
+    onDelete,
   } = props;
   return (
     <div
@@ -22,6 +24,15 @@ function CustomTrelloLaneCard(props) {
       style={{ backgroundColor: backgroundColor }}
       onClick={onClick}
     >
+      <div
+        onClick={(e) => {
+          onDelete();
+          e.stopPropagation();
+        }}
+        className="card_delete_container"
+      >
+        <CloseIcon style={{ fontSize: "16px" }} />
+      </div>
       <div
         style={{
           display: "flex",

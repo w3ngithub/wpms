@@ -5,6 +5,10 @@
   cursor: pointer;
   width: 250px;
   height: auto;
+  position: relative;
+}
+.card_container:hover > .card_delete_container {
+  visibility: visible;
 }
 
 .card_footer {
@@ -12,4 +16,12 @@
   gap: 20px;
   align-items: center;
   margin: 5px 0 5px 0;
+}
+
+.card_delete_container {
+  position: absolute;
+  top: 7px;
+  right: 3px;
+  font-size: 5px;
+  visibility: hidden;
 }
