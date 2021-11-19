@@ -10,7 +10,7 @@ import {
   Button as MuiButton,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Avatar } from "@material-ui/core";
+import Avatar from "react-avatar";
 import Button from "../../components/Button";
 import MenuList from "../../components/MenuList";
 import EditableTextField from "../../components/EditableTextField";
@@ -121,9 +121,7 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <div className="project_memebers">
           {[boardUser, ...members].map((name, i) => (
-            <Avatar key={name + i} alt={name} className={classes.avatar}>
-              {name?.[0].toUpperCase()}
-            </Avatar>
+            <Avatar key={name + i} name={name} size={35} round />
           ))}
         </div>
 

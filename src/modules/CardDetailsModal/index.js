@@ -638,7 +638,7 @@ function CardDetailsModal({
     <>
       <div className="modal_container">
         <div className="modal_close" onClick={onClose}>
-          <CloseIcon />
+          <CloseIcon style={{ fontSize: "18px" }} />
         </div>
         {clickedCardDetail.coverImage && clickedCardDetail.coverImage !== "" && (
           <div style={{ width: "100%" }}>

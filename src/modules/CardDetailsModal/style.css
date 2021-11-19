@@ -55,7 +55,7 @@
 .card_content {
   display: flex;
   justify-content: space-between;
-  padding: 30px;
+  padding: 50px 30px 0 30px;
   gap: 30px;
 }
 
@@ -68,8 +68,8 @@
   border-radius: 50%;
   transition: all 0.3s;
   cursor: pointer;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
