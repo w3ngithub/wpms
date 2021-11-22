@@ -57,11 +57,8 @@ export const addNewMemberToBoard = (id, member) =>
     .doc(id)
     .update({ members: firebase.firestore.FieldValue.arrayUnion(member) });
 
-export const addFavouriteBoard = (id, user) =>
-  fireStore
-    .collection("boards")
-    .doc(id)
-    .update({ favourite: firebase.firestore.FieldValue.arrayUnion(user) });
+export const addFavouriteBoard = (id, favourite) =>
+  fireStore.collection("boards").doc(id).update({ favourite });
 
 export const addNewLabelsToBoard = (id, label) =>
   fireStore

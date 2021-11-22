@@ -105,7 +105,6 @@ function SingleBoard() {
         });
     }
   };
-  console.log(dataTopass);
 
   const onDataChange = (updatedData) => {
     setData(updatedData);

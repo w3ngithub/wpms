@@ -38,7 +38,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
+function ProjectDetailsNavbar({
+  projectTitle,
+  user,
+  members,
+  boardUser,
+  favourite,
+}) {
   const classes = useStyles();
   const [openMenu, setOpenMenu] = useState(null);
   const [editedTitle, setEditedTitle] = useState(projectTitle);
@@ -93,7 +99,13 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
   };
 
   const handleFavouriteBoard = () => {
-    addFavouriteBoard(projectId, user);
+    let favouriteUsers = [];
+    if (favourite.includes(user)) {
+      favouriteUsers = favourite.filter((fav) => fav !== user);
+    } else {
+      favouriteUsers.push(user);
+    }
+    addFavouriteBoard(projectId, favouriteUsers);
   };
 
   const projectNameFieldCss = {
@@ -126,11 +138,19 @@ function ProjectDetailsNavbar({ projectTitle, user, members, boardUser }) {
           save={onSaveEditedTitle}
         />
 
-        <Icon
-          Icon={StarBorderIcon}
-          style={{ backgroundColor: "lightblue" }}
-          onClick={handleFavouriteBoard}
-        />
+        {favourite.includes(user) ? (
+          <Icon
+            Icon={StarBorderIcon}
+            style={{ backgroundColor: "rgb(218 218 136)" }}
+            onClick={handleFavouriteBoard}
+          />
+        ) : (
+          <Icon
+            Icon={StarBorderIcon}
+            style={{ backgroundColor: "lightblue" }}
+            onClick={handleFavouriteBoard}
+          />
+        )}
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
         <ProjectNameField
           title={`${user}'s workspace`}
