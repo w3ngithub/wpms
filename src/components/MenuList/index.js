@@ -4,7 +4,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import "./style.css";
 
-function MenuList({ open, handleClose, items, css }) {
+function MenuList({ open, handleClose, items, css, paper = {} }) {
   const useStyles = makeStyles({
     menu: css,
   });
@@ -18,6 +18,7 @@ function MenuList({ open, handleClose, items, css }) {
       open={Boolean(open)}
       onClose={handleClose}
       className={classes.menu}
+      classes={{ paper }}
     >
       {items.map((item) => (
         <MenuItem onClick={item.onClick} key={item.name}>

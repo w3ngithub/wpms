@@ -73,6 +73,8 @@ function CardDetailsModal({
   const [commentMemebers, setCommentMemebers] = useState([]);
   const [commentToAdd, setCommentToAdd] = useState("");
   const [tagToAdd, setTagToAdd] = useState([]);
+  const [progress, setProgess] = useState(0);
+  const [isprogressOpen, setProgressOpen] = useState(false);
 
   const oneditCardTitleChange = (e) => seteditCardTitle(e.target.value);
   const oneEditCardDetailChange = (e) => seteditCardDetail(e.target.value);
@@ -289,8 +291,10 @@ function CardDetailsModal({
       upload.on(
         "state_changed",
         (snapshot) => {
-          // const progress =
-          //   (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgess(progress);
+          setProgressOpen(true);
         },
         (error) => {
           // Handle unsuccessful uploads
@@ -1435,6 +1439,27 @@ function CardDetailsModal({
           )}
         </div>
       </Popover>
+      {progress !== 100 ? (
+        <Notification
+          message={`Upload processing... ${Math.floor(progress)}% completed`}
+          open={isprogressOpen}
+          setOpen={setProgressOpen}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        />
+      ) : (
+        <Notification
+          message="Upload completed"
+          open={isprogressOpen}
+          setOpen={setProgressOpen}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        />
+      )}
     </>
   );
 }

@@ -1,3 +1,7 @@
 .menu {
   top: 30px !important;
 }
+
+.MuiMenu-paper {
+  background-color: red;
+}

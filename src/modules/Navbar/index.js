@@ -10,8 +10,14 @@ import Avatar from "react-avatar";
 import MenuList from "../../components/MenuList";
 import { useHistory, useLocation } from "react-router";
 import { useEffect } from "react";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+  paper: { minWidth: "160px", right: "100px", top: "60px" },
+});
 
 function Navbar({ openCreateBoardModal, setSearchBoard }) {
+  const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -74,7 +80,8 @@ function Navbar({ openCreateBoardModal, setSearchBoard }) {
           open={openAccountMenuList}
           handleClose={handleClose}
           items={[{ name: "Logout", onClick: onLogout }]}
-          css={{ top: "30px !important" }}
+          css={{ top: "40px !important" }}
+          paper={classes.paper}
         />
       </div>
     </nav>
