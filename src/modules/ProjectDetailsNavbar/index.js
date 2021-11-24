@@ -20,6 +20,7 @@ import { useParams } from "react-router";
 import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 import Circle from "@uiw/react-color-circle";
 import { boardColor } from "../../constants/boardColors";
+import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     borderStyle: "inset",
     borderWidth: "1px",
     borderColor: "white",
+  },
+  IconRoot: {
+    color: "red",
   },
   avatar: {
     width: theme.spacing(4),
@@ -141,17 +145,14 @@ function ProjectDetailsNavbar({
         {favourite.includes(user) ? (
           <Icon
             Icon={StarBorderIcon}
-            style={{ backgroundColor: "rgb(218 218 136)" }}
+            style={{ fill: "yellow" }}
             onClick={handleFavouriteBoard}
           />
         ) : (
-          <Icon
-            Icon={StarBorderIcon}
-            style={{ backgroundColor: "lightblue" }}
-            onClick={handleFavouriteBoard}
-          />
+          <Icon Icon={StarBorderIcon} onClick={handleFavouriteBoard} />
         )}
         <Divider orientation="horizontal" classes={{ root: classes.root }} />
+
         <ProjectNameField
           title={`${user}'s workspace`}
           customCss={projectNameFieldCss}
