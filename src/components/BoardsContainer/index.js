@@ -103,6 +103,8 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                         backgroundColor={value?.data?.boardColor}
                         onClick={() => history.push(`/${name}/${value.id}`)}
                         removeCard={() => handleRemoveBoard(value.id)}
+                        user={value.data.user}
+                        loggedInUser={name}
                       />
                     </Grid>
                   ))
@@ -124,6 +126,8 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                           backgroundColor={value?.data?.boardColor}
                           onClick={() => history.push(`/${name}/${value.id}`)}
                           removeCard={() => handleRemoveBoard(value.id)}
+                          user={value.data.user}
+                          loggedInUser={name}
                         />
                       </Grid>
                     ))}
@@ -141,6 +145,8 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                       name={value.data.title}
                       backgroundColor={value?.data?.boardColor}
                       removeCard={() => handleRemoveBoard(value.id)}
+                      user={value.data.user}
+                      loggedInUser={name}
                     />
                   </Grid>
                 ))}

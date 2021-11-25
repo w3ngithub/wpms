@@ -3,7 +3,14 @@ import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 
 import "./style.css";
 
-function BoardCard({ onClick, removeCard, name, backgroundColor }) {
+function BoardCard({
+  onClick,
+  removeCard,
+  name,
+  backgroundColor,
+  user,
+  loggedInUser,
+}) {
   return (
     <div
       onClick={onClick}
@@ -11,7 +18,11 @@ function BoardCard({ onClick, removeCard, name, backgroundColor }) {
       className="BoardCard_container"
     >
       <div
-        className="BoardCard_removeIcon"
+        className={
+          user === loggedInUser
+            ? "BoardCard_removeIcon"
+            : "BoardIcon_removeIcon_not_user"
+        }
         onClick={(e) => {
           removeCard();
           e.stopPropagation();

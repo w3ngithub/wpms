@@ -27,3 +27,7 @@
   visibility: hidden;
   padding: 10px;
 }
+
+.BoardIcon_removeIcon_not_user {
+  display: none;
+}
