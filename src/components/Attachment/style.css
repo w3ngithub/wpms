@@ -17,14 +17,15 @@
 
 .attachment_file_name {
   height: 70px;
-  background-color: #ffff;
+  background-color: rgb(255, 255, 255);
   border-radius: 10px;
   padding: 5px;
   width: 100px;
   text-decoration: none;
-  color: black;
   text-align: center;
-  font-size: 14px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #95989abf;
   display: flex;
   align-items: center;
   justify-content: center;

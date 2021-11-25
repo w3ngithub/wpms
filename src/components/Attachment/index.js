@@ -34,7 +34,9 @@ function AttachmentDetail({
             }}
           />
         ) : (
-          <div className="attachment_file_name">{file.name}</div>
+          <div className="attachment_file_name">
+            {file?.name?.split(".")?.[1]}
+          </div>
         )}
       </a>
       <div
@@ -46,7 +48,16 @@ function AttachmentDetail({
       >
         <div>
           <div>
-            <a href={file.downloadURL} target="_blank" rel="noreferrer">
+            <a
+              href={file.downloadURL}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                textDecoration: "none",
+                color: "#000",
+                fontWeight: "600",
+              }}
+            >
               {file.name}
             </a>
           </div>

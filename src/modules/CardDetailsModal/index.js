@@ -796,7 +796,6 @@ function CardDetailsModal({
                   onChange={oneEditCardDetailChange}
                   save={onSaveeditCardDetail}
                   style={{
-                    // minWidth: "230px",
                     width: "100%",
                     fontSize: "14px",
                     color: "#000",

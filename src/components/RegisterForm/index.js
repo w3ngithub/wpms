@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  getUser,
+  getUserFromEmail,
   setUser,
   setUserFormSocialSignUp,
 } from "../../api-config/login";
@@ -45,12 +45,14 @@ export default function SignUp() {
     let newInputs = {},
       isEmpty = false;
 
-    ["username", "email", "password"].forEach((property) => {
-      if (!inputDetails[property]?.value || inputDetails.value === "") {
-        newInputs = { ...newInputs, [property]: { error: "Required" } };
-        isEmpty = true;
+    ["firstname", "lastname", "username", "email", "password"].forEach(
+      (property) => {
+        if (!inputDetails[property]?.value || inputDetails.value === "") {
+          newInputs = { ...newInputs, [property]: { error: "Required" } };
+          isEmpty = true;
+        }
       }
-    });
+    );
 
     if (isEmpty) {
       setInputDetails(newInputs);
@@ -89,7 +91,7 @@ export default function SignUp() {
       user: { email, displayName },
       additionalUserInfo: { username },
     } = res;
-    const user = await getUser(email);
+    const user = await getUserFromEmail(email);
     if (user === null) {
       await setUserFormSocialSignUp({
         email: email,
@@ -140,7 +142,7 @@ export default function SignUp() {
       });
   };
 
-  const { username, email, password } = inputDetails;
+  const { username, email, password, lastname, firstname } = inputDetails;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -160,6 +162,41 @@ export default function SignUp() {
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={1}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "20px",
+              }}
+            >
+              <Grid item xs={6}>
+                <TextField
+                  autoComplete="fname"
+                  name="firstname"
+                  autoFocus
+                  required
+                  fullWidth
+                  label="First name"
+                  error={Boolean(firstname?.error)}
+                  value={firstname?.value ?? ""}
+                  helperText={firstname?.error}
+                  onChange={onInputChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  autoComplete="lname"
+                  name="lastname"
+                  required
+                  fullWidth
+                  label="Last name"
+                  error={Boolean(lastname?.error)}
+                  value={lastname?.value ?? ""}
+                  helperText={lastname?.error}
+                  onChange={onInputChange}
+                />
+              </Grid>
+            </div>
             <Grid item xs={12}>
               <TextField
                 autoComplete="fname"
@@ -167,7 +204,6 @@ export default function SignUp() {
                 required
                 fullWidth
                 label="Username"
-                autoFocus
                 error={Boolean(username?.error)}
                 value={username?.value ?? ""}
                 helperText={username?.error}
@@ -199,7 +235,7 @@ export default function SignUp() {
                 autoComplete="new-password"
                 error={Boolean(password?.error)}
                 value={password?.value ?? ""}
-                helperText={password?.error}
+                helperText="Minimum length is 8 characters."
                 onChange={onInputChange}
               />
             </Grid>

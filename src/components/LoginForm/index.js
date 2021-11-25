@@ -11,7 +11,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { getUser, setUserFormSocialSignUp } from "../../api-config/login";
+import {
+  getUserFromEmail,
+  getUserFromUsername,
+  setUserFormSocialSignUp,
+} from "../../api-config/login";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import GitHubIcon from "@material-ui/icons/GitHub";
@@ -63,12 +67,14 @@ export default function SignIn() {
 
     const { email, password } = loginDetails;
 
-    const user = await getUser(email || "");
+    const userEmail = await getUserFromEmail(email || "");
+    const userUsername = await getUserFromUsername(email || "");
 
-    if (user === null) {
+    if (userEmail === null && userUsername === null) {
       alert("No user found");
       return;
     }
+    const user = userEmail ?? userUsername;
 
     if (user.password !== password) {
       alert("Password incorrect");
@@ -92,7 +98,7 @@ export default function SignIn() {
       user: { email, displayName },
       additionalUserInfo: { username },
     } = res;
-    const user = await getUser(email);
+    const user = await getUserFromEmail(email);
     if (user === null) {
       await setUserFormSocialSignUp({
         email: email,
@@ -160,7 +166,7 @@ export default function SignIn() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email Address or username"
             name="email"
             autoComplete="email"
             autoFocus
