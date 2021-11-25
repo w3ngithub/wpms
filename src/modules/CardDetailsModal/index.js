@@ -72,6 +72,8 @@ function CardDetailsModal({
   const [commentToEdit, setCommentToEdit] = useState({ editComment: false });
   const [openCommentAddMemeberModal, setOpenCommentAddMemeberModal] =
     useState(false);
+  const [openCommentAddMemebeEditrModal, setOpenCommentAddMemeberEditModal] =
+    useState(false);
   const [commentMemebers, setCommentMemebers] = useState([]);
   const [commentToAdd, setCommentToAdd] = useState("");
   const [tagToAdd, setTagToAdd] = useState([]);
@@ -91,6 +93,32 @@ function CardDetailsModal({
       setFilteredBoardLables(boardLabels);
     }
   }, [labelToSearch, boardLabels]);
+
+  useEffect(() => {
+    if (commentToEdit.comment) {
+      const commentInput = commentToEdit.comment.split(" ");
+      // setCommentToAdd(commentToEdit.comment);
+      const hasSpecialLletter = commentInput.find((val) => val[0] === "@");
+      if (
+        hasSpecialLletter &&
+        hasSpecialLletter.length > 1 &&
+        [boardUser, ...members].filter((name) =>
+          name.includes(hasSpecialLletter.substring(1))
+        ).length > 0
+      ) {
+        setCommentMemebers(
+          [...members, boardUser].filter((name) =>
+            name
+              .toLowerCase()
+              .includes(hasSpecialLletter.substring(1).toLowerCase())
+          )
+        );
+        setOpenCommentAddMemeberEditModal(true);
+      } else {
+        setOpenCommentAddMemeberEditModal(false);
+      }
+    }
+  }, [commentToEdit.comment, boardUser, members]);
 
   const handleClickPopOver = (event) => {
     setAnchorEl(event.currentTarget);
@@ -244,6 +272,7 @@ function CardDetailsModal({
                         ? {
                             ...cmt,
                             comment: commentToEdit.comment,
+                            tags: [...tagToAdd, ...cmt.tags],
                           }
                         : cmt
                     ),
@@ -260,6 +289,7 @@ function CardDetailsModal({
       clickedCardDetail.laneId,
       "special"
     );
+    setTagToAdd([]);
     setCommentToEdit({ editComment: false });
   };
 
@@ -642,9 +672,6 @@ function CardDetailsModal({
 
   const handleCommentToShowMember = (e) => {
     const commentInput = e.target.value.split(" ");
-    // const commentInputCleaned = commentInput
-    //   .map((c) => (c[0] === "@" ? c[0] : c))
-    //   .join(" ");
     setCommentToAdd(e.target.value);
     const hasSpecialLletter = commentInput.find((val) => val[0] === "@");
     if (
@@ -667,18 +694,30 @@ function CardDetailsModal({
     }
   };
 
-  const handleAddMemberInComment = (comment) => {
-    setCommentToAdd(
-      commentToAdd
-        .split(" ")
-        .map((c) => (c[0] === "@" ? c[0] : c))
-        .join(" ") + comment.split(" ").join("")
-    );
+  const handleAddMemberInComment = (comment, action = "Add") => {
+    if (action === "Add") {
+      setCommentToAdd(
+        commentToAdd
+          .split(" ")
+          .map((c) => (c[0] === "@" ? c[0] : c))
+          .join(" ") + comment.split(" ").join("")
+      );
+
+      setOpenCommentAddMemeberModal(false);
+    } else {
+      setCommentToEdit({
+        ...commentToEdit,
+        comment:
+          commentToEdit?.comment
+            ?.split(" ")
+            .map((c) => (c[0] === "@" ? c[0] : c))
+            .join(" ") + comment.split(" ").join(""),
+      });
+    }
     setTagToAdd([
       ...tagToAdd,
       { user: comment, tag: comment.split(" ").join("") },
     ]);
-    setOpenCommentAddMemeberModal(false);
   };
 
   return (
@@ -1048,8 +1087,6 @@ function CardDetailsModal({
                         onFocus={() => setShowSaveComment(true)}
                         onChange={(e) => handleCommentToShowMember(e)}
                         value={commentToAdd}
-
-                        // onBlur={() => setShowSaveComment(false)}
                       />
                       {openCommentAddMemeberModal && (
                         <CommentPopover
@@ -1116,7 +1153,9 @@ function CardDetailsModal({
                             marginBottom: "10px",
                           }}
                         >
-                          <h5>{comment.commentBy}</h5>
+                          <p style={{ fontWeight: "700", fontSize: "14px" }}>
+                            {comment.commentBy}
+                          </p>
                           <small>{dayjs(comment.id).from(new Date())}</small>
                         </div>
                         {commentToEdit.editComment &&
@@ -1133,6 +1172,21 @@ function CardDetailsModal({
                                 })
                               }
                             />
+                            {openCommentAddMemebeEditrModal && (
+                              <CommentPopover
+                                user={user}
+                                members={members}
+                                commentMemebers={commentMemebers}
+                                onClose={() =>
+                                  setOpenCommentAddMemeberEditModal(false)
+                                }
+                                action="edit"
+                                handleAddMemberInComment={
+                                  handleAddMemberInComment
+                                }
+                              />
+                            )}
+
                             <div
                               style={{
                                 display: "flex",

@@ -20,6 +20,7 @@ function Popover({
   onClose,
   commentMemebers,
   handleAddMemberInComment,
+  action = "Add",
 }) {
   const classes = useStyles();
   return (
@@ -52,7 +53,7 @@ function Popover({
           style={{
             padding: "5px",
           }}
-          onClick={() => handleAddMemberInComment(member)}
+          onClick={() => handleAddMemberInComment(member, action)}
         >
           <Avatar alt="PM" className={classes.Memberavatar}>
             {member[0]}
