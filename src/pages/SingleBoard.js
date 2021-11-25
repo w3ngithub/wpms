@@ -5,9 +5,11 @@ import { updateBoard } from "../api-config/boards";
 import { useParams } from "react-router";
 import Modal from "@material-ui/core/Modal";
 import Circle from "@uiw/react-color-circle";
+import CloseIcon from "@material-ui/icons/Close";
 import { fireStore } from "../firebase/config";
 import CardDetailsModal from "../modules/CardDetailsModal";
 import CustomTrelloLaneCard from "../components/CustomTrelloLaneCard";
+import { laneColors } from "../constants/boardColors";
 
 const labelColor = {
   backgroundColor: "#fff",
@@ -175,25 +177,12 @@ function SingleBoard() {
             style={{ textAlign: "right", fontSize: "24px", cursor: "pointer" }}
             onClick={() => setModelOpen(false)}
           >
-            X
+            <CloseIcon />
           </div>
 
-          <h2>Add Label </h2>
+          <h2 style={{ marginBottom: "10px" }}>Add Label </h2>
           <Circle
-            colors={[
-              "#F44E3B",
-              "#FE9200",
-              "#FCDC00",
-              "#DBDF00",
-              "#F44E3B",
-              "#FE9200",
-              "#FCDC00",
-              "#DBDF00",
-              "#F44E3B",
-              "#FE9200",
-              "#FCDC00",
-              "#DBDF00",
-            ]}
+            colors={laneColors}
             onChange={(color) => handleSetLaneColor(color)}
           />
         </div>
@@ -204,25 +193,12 @@ function SingleBoard() {
             style={{ textAlign: "right", fontSize: "24px", cursor: "pointer" }}
             onClick={() => setCardModelOpen(false)}
           >
-            X
+            <CloseIcon />
           </div>
 
-          <h2>Add Label </h2>
+          <h2 style={{ marginBottom: "10px" }}>Add Label </h2>
           <Circle
-            colors={[
-              "#F44E3B",
-              "#FE9200",
-              "#FCDC00",
-              "#DBDF00",
-              "#F44E3B",
-              "#FE9200",
-              "#FCDC00",
-              "#DBDF00",
-              "#F44E3B",
-              "#FE9200",
-              "#FCDC00",
-              "#DBDF00",
-            ]}
+            colors={laneColors}
             onChange={(color) => handleSetCardColor(color)}
           />
         </div>

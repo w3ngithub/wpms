@@ -54,7 +54,7 @@ function CustomTrelloLaneCard(props) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#080808cb",
+                color: "#fff",
                 fontSize: "14px",
               }}
               key={i}

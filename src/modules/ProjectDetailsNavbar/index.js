@@ -3,6 +3,7 @@ import Icon from "../../components/Icon";
 import ProjectNameField from "../../components/ProjectNameField";
 import "./style.css";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
+import StarIcon from "@material-ui/icons/Star";
 import {
   Divider,
   Popover,
@@ -20,7 +21,6 @@ import { useParams } from "react-router";
 import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 import Circle from "@uiw/react-color-circle";
 import { boardColor } from "../../constants/boardColors";
-import { AiOutlineStar } from "@react-icons/all-files/ai/AiOutlineStar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -144,7 +144,7 @@ function ProjectDetailsNavbar({
 
         {favourite.includes(user) ? (
           <Icon
-            Icon={StarBorderIcon}
+            Icon={StarIcon}
             style={{ fill: "yellow" }}
             onClick={handleFavouriteBoard}
           />

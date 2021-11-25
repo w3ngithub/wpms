@@ -30,7 +30,7 @@ import Circle from "@uiw/react-color-circle";
 import AttachmentDetail from "../../components/Attachment";
 import CommentPopover from "../../components/Popover";
 import "./style.css";
-import { labelColors } from "../../constants/boardColors";
+import { labelColors, laneColors } from "../../constants/boardColors";
 
 dayjs.extend(relativeTime);
 
@@ -62,6 +62,7 @@ function CardDetailsModal({
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
   const [anchorE3, setAnchorE3] = useState(null);
+  const [anchorE4, setAnchorE4] = useState(null);
 
   const [labelToSearch, setLabelToSearch] = useState("");
   const [newLabel, setNewLabel] = useState(false);
@@ -114,12 +115,23 @@ function CardDetailsModal({
     setAnchorE3(null);
   };
 
+  const handleClickCardColor = (event) => {
+    setAnchorE4(event.currentTarget);
+  };
+
+  const handleCloseCardColor = () => {
+    setAnchorE4(null);
+  };
+
   const open = Boolean(anchorEl);
   const openShare = Boolean(anchorE2);
   const openLabel = Boolean(anchorE3);
+  const openCardColor = Boolean(anchorE4);
+
   const id = open ? "simple-popover" : undefined;
   const idShare = openShare ? "simple-popover" : undefined;
   const idLabel = openLabel ? "simple-popover" : undefined;
+  const idCardColor = openCardColor ? "simple-popover" : undefined;
 
   const onSaveeditCardTitle = () => {
     const updatedCardData = data.lanes.map((lane) =>
@@ -447,6 +459,32 @@ function CardDetailsModal({
     );
   };
 
+  const handleSetCardColor = async (color) => {
+    const updatedCardData = data.lanes.map((lane) =>
+      lane.id === clickedCardDetail.laneId
+        ? {
+            ...lane,
+            cards: lane.cards.map((card) =>
+              card.id === clickedCardDetail.id
+                ? {
+                    ...card,
+                    style: { backgroundColor: color.hex },
+                  }
+                : card
+            ),
+          }
+        : lane
+    );
+    handleCloseCardColor();
+    await updateBoard(projectId, "lanes", updatedCardData);
+    handleCardClick(
+      clickedCardDetail.id,
+      null,
+      clickedCardDetail.laneId,
+      "special"
+    );
+  };
+
   const handleChangeCheckListItemChecked = async (
     checked,
     itemId,
@@ -712,6 +750,7 @@ function CardDetailsModal({
                           borderRadius: "8px",
                           display: "inline-block",
                           height: "40px",
+                          color: "#fff",
                         }}
                         key={i}
                       >
@@ -1167,7 +1206,7 @@ function CardDetailsModal({
           </div>
           <div className="card_options">
             <div className="card_options">
-              <h5>Add to cart</h5>
+              <h5>Add to card</h5>
               <div
                 className="add_to_cart"
                 id={idLabel}
@@ -1185,6 +1224,16 @@ function CardDetailsModal({
               >
                 <BsCardChecklist />
                 CheckList
+                <span></span>{" "}
+              </div>
+              <div
+                className="add_to_cart"
+                id={idCardColor}
+                onClick={handleClickCardColor}
+                style={{ paddingRight: "30px" }}
+              >
+                <BsCardChecklist />
+                Card Color
                 <span></span>{" "}
               </div>
             </div>
@@ -1308,13 +1357,26 @@ function CardDetailsModal({
             <strong>Share link to this card</strong>
             <BsFillPeopleFill />
           </div>
-          <TextField
-            id="outlined-basic"
-            variant="outlined"
-            fullWidth
-            autoFocus
-            value="https://trello.com/c/yhBgSWFC"
-          />
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              fullWidth
+              size="small"
+              autoFocus
+              value="https://trello.com/c/yhBgSWFC"
+            />
+            <Button
+              type="button"
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                navigator.clipboard.writeText("https://trello.com/c/yhBgSWFC");
+              }}
+            >
+              Copy
+            </Button>
+          </div>
         </div>
       </Popover>
       <Popover
@@ -1437,6 +1499,47 @@ function CardDetailsModal({
               </div>
             </>
           )}
+        </div>
+      </Popover>
+      <Popover
+        id={idCardColor}
+        open={openCardColor}
+        anchorEl={anchorE4}
+        onClose={handleCloseCardColor}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <div
+          style={{
+            width: "300px",
+            padding: "10px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <div
+            style={{
+              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
+              marginBottom: "5px",
+              padding: "0 10px 10px 0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <p>Card Color</p>
+            <div onClick={handleCloseCardColor} style={{ cursor: "pointer" }}>
+              <CloseIcon />
+            </div>
+          </div>
+          <p>Select color</p>
+          <Circle
+            colors={laneColors}
+            onChange={(color) => handleSetCardColor(color)}
+          />
         </div>
       </Popover>
       {progress !== 100 ? (
