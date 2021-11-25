@@ -20,6 +20,7 @@ import { addFavouriteBoard, updateBoard } from "../../api-config/boards";
 import { useParams } from "react-router";
 import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 import Circle from "@uiw/react-color-circle";
+import CloseIcon from "@material-ui/icons/Close";
 import { boardColor } from "../../constants/boardColors";
 
 const useStyles = makeStyles((theme) => ({
@@ -195,14 +196,14 @@ function ProjectDetailsNavbar({
             <div
               style={{
                 position: "absolute",
-                top: "5px",
+                top: "8px",
                 right: "9px",
                 fontSize: "20px",
                 cursor: "pointer",
               }}
               onClick={handleClosePopOver}
             >
-              x
+              <CloseIcon style={{ fontSize: "18px" }} />
             </div>
             <TextField
               id="outlined-basic"
@@ -310,14 +311,14 @@ function ProjectDetailsNavbar({
             <div
               style={{
                 position: "absolute",
-                top: "5px",
+                top: "8px",
                 right: "9px",
                 fontSize: "20px",
                 cursor: "pointer",
               }}
               onClick={handleBGColorClosePopOver}
             >
-              x
+              <CloseIcon style={{ fontSize: "18px" }} />
             </div>
             <Circle
               colors={boardColor}

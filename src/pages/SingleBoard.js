@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import ProjectDetailsNavbar from "../modules/ProjectDetailsNavbar";
 import Board from "react-trello";
-import { updateBoard } from "../api-config/boards";
-import { useParams } from "react-router";
+import {
+  getUsersBoards,
+  getUsersFromFeatureBoards,
+  updateBoard,
+} from "../api-config/boards";
+import { useHistory, useParams } from "react-router";
 import Modal from "@material-ui/core/Modal";
 import Circle from "@uiw/react-color-circle";
 import CloseIcon from "@material-ui/icons/Close";
@@ -10,6 +14,7 @@ import { fireStore } from "../firebase/config";
 import CardDetailsModal from "../modules/CardDetailsModal";
 import CustomTrelloLaneCard from "../components/CustomTrelloLaneCard";
 import { laneColors } from "../constants/boardColors";
+import "../App.css";
 
 const labelColor = {
   backgroundColor: "#fff",
@@ -19,8 +24,9 @@ const labelColor = {
   padding: "30px",
 };
 
-function SingleBoard() {
+function SingleBoard({ isFocused, searchBoard }) {
   const user = JSON.parse(localStorage.getItem("user"));
+  const history = useHistory();
 
   const [data, setData] = useState({ lanes: [] });
   const [dataTopass, setDatatoPass] = useState(null);
@@ -35,6 +41,7 @@ function SingleBoard() {
   const [editCardDetail, seteditCardDetail] = useState(
     clickedCardDetail?.description
   );
+  const [allboards, setallBoard] = useState([]);
 
   const onConfirmCardDelete = (params) => {
     const doDelete = window.confirm("Are you sure?");
@@ -42,6 +49,17 @@ function SingleBoard() {
       params();
     }
   };
+
+  useEffect(() => {
+    const fecthAll = async () => {
+      const result = await Promise.all([
+        getUsersBoards(user.name),
+        getUsersFromFeatureBoards("members", user.name),
+      ]);
+      setallBoard([...result.flat()]);
+    };
+    fecthAll();
+  }, []);
 
   const handleSetLaneColor = (color) => {
     updateBoard(
@@ -128,6 +146,7 @@ function SingleBoard() {
       style={{
         backgroundColor: dataTopass?.boardColor,
         padding: "60px 25px 30px 20px",
+        postion: "relative",
       }}
     >
       <ProjectDetailsNavbar
@@ -166,6 +185,33 @@ function SingleBoard() {
           },
         }}
       />
+      {isFocused && (
+        <div className="popupsearchedboards">
+          <h5 style={{ marginBottom: "10px" }}>Searched Boards</h5>
+          {allboards.filter((board) =>
+            board.data.title.toUpperCase().includes(searchBoard.toUpperCase())
+          ).length === 0 ? (
+            <h4>No boards to show</h4>
+          ) : (
+            searchBoard !== "" &&
+            allboards
+              .filter((board) =>
+                board.data.title
+                  .toUpperCase()
+                  .includes(searchBoard.toUpperCase())
+              )
+              .map((item) => (
+                <p
+                  key={item.id}
+                  className="boards_inside_popover"
+                  onClick={() => history.push(`/${user.name}/${item.id}`)}
+                >
+                  {item.data.title}
+                </p>
+              ))
+          )}
+        </div>
+      )}
       <Modal
         open={modelOpen}
         onClose={() => {

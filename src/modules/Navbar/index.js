@@ -16,9 +16,15 @@ const useStyles = makeStyles({
   paper: { minWidth: "160px", right: "100px", top: "60px" },
 });
 
-function Navbar({ openCreateBoardModal, setSearchBoard }) {
+function Navbar({
+  openCreateBoardModal,
+  setSearchBoard,
+  setIsFocused,
+  searchBoard,
+}) {
   const classes = useStyles();
   const [openAccountMenuList, setOpenAccountMenuList] = useState(null);
+
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem("user"));
   const location = useLocation();
@@ -67,6 +73,14 @@ function Navbar({ openCreateBoardModal, setSearchBoard }) {
         <SearchInputField
           onChange={(e) => {
             setSearchBoard(e.target.value);
+          }}
+          value={searchBoard}
+          onFocus={() => {
+            setIsFocused(true);
+          }}
+          onBlur={() => {
+            setSearchBoard("");
+            setIsFocused(false);
           }}
         />
         <Icon Icon={AddIcon} onClick={openCreateBoardModal} />

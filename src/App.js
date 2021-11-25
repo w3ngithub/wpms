@@ -18,6 +18,7 @@ function App() {
   const user = JSON.parse(localStorage.getItem("user"));
   const [openModal, setOpenModal] = useState(false);
   const [searchBoard, setSearchBoard] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className="App">
@@ -32,6 +33,8 @@ function App() {
         <Navbar
           openCreateBoardModal={() => setOpenModal(true)}
           setSearchBoard={setSearchBoard}
+          setIsFocused={setIsFocused}
+          searchBoard={searchBoard}
         />
         <Switch>
           <Route
@@ -71,7 +74,13 @@ function App() {
             )}
             exact
           />
-          <Route path="/:userName/:projectId/" component={SingleBoard} exact />
+          <Route
+            path="/:userName/:projectId/"
+            exact
+            render={() => (
+              <SingleBoard isFocused={isFocused} searchBoard={searchBoard} />
+            )}
+          />
         </Switch>
       </Router>
     </div>

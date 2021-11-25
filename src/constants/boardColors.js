@@ -43,4 +43,5 @@ export const laneColors = [
   "#EF7B6B",
   "#5D6A82",
   "#F44E3B",
+  "#FFFFFF",
 ];
