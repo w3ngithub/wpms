@@ -7,9 +7,7 @@ import {
   styled,
   TextField,
 } from "@material-ui/core";
-import Avatar from "react-avatar";
 import CloseIcon from "@material-ui/icons/Close";
-import { MdLocalActivity } from "@react-icons/all-files/md/MdLocalActivity";
 import { MdSubtitles } from "@react-icons/all-files/md/MdSubtitles";
 import EditableTextField from "../../components/EditableTextField";
 import { CgDetailsMore } from "@react-icons/all-files/cg/CgDetailsMore";
@@ -26,12 +24,12 @@ import { addNewLabelsToBoard, updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import Notification from "../../components/Notification";
 import AttachmentDetail from "../../components/Attachment";
-import CommentPopover from "../../components/Popover";
 import AddCardColor from "./AddCardColor";
 import AddCardLabels from "./AddCardLabels";
-import "./style.css";
 import ShareCard from "./ShareCard";
+import Comment from "./Comment";
 import AddCardChecklist from "./AddCardChecklist";
+import "./style.css";
 
 dayjs.extend(relativeTime);
 
@@ -1038,220 +1036,30 @@ function CardDetailsModal({
                   ))}
                 </div>
               )}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                gap: "10px",
-                flexDirection: "column",
-                // width: "100%",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  marginBottom: "10px",
-                }}
-              >
-                <MdLocalActivity style={{ fontSize: "24px" }} />
-                <h4>Activity</h4>
-              </div>
-              <div style={{ width: "100%" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    marginBottom: "15px",
-                  }}
-                >
-                  <Avatar name={user?.name} size={30} round />
-                  <form
-                    onSubmit={handleSubmitComment}
-                    style={{
-                      display: "flex",
-                      gap: "10px",
-                      flexDirection: "column",
-                      flex: "1",
-                    }}
-                    id="commentForm"
-                  >
-                    <div className={"comment_container"}>
-                      {" "}
-                      <textarea
-                        type="text"
-                        name="comment"
-                        placeholder="Write a comment..."
-                        className="comment"
-                        onFocus={() => setShowSaveComment(true)}
-                        onChange={(e) => handleCommentToShowMember(e)}
-                        value={commentToAdd}
-                      />
-                      {openCommentAddMemeberModal && (
-                        <CommentPopover
-                          user={user}
-                          members={members}
-                          commentMemebers={commentMemebers}
-                          onClose={() => setOpenCommentAddMemeberModal(false)}
-                          handleAddMemberInComment={handleAddMemberInComment}
-                        />
-                      )}
-                    </div>
-                    {showSaveComment && (
-                      <div style={{ display: "flex", gap: "10px" }}>
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          type="submit"
-                          size="small"
-                        >
-                          Save
-                        </Button>
-                        <label htmlFor="contained-button-file">
-                          <Input
-                            id="contained-button-file"
-                            type="file"
-                            onChange={(e) => {
-                              handleUploadFile(e);
-                            }}
-                          />
-                          <Button
-                            variant="contained"
-                            component="span"
-                            size="small"
-                          >
-                            Add Attachment
-                          </Button>
-                        </label>
-                      </div>
-                    )}
-                  </form>
-                </div>
-              </div>
-              <div style={{ width: "100%" }}>
-                {clickedCardDetail?.comments
-                  ?.slice()
-                  .reverse()
-                  .map?.((comment) => (
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "10px",
-                        alignItems: "flex-start",
-                        marginBottom: "20px",
-                      }}
-                      key={comment.id}
-                    >
-                      <Avatar name={comment?.commentBy} size={30} round />
-
-                      <div style={{ flex: "1" }}>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "20px",
-                            marginBottom: "10px",
-                          }}
-                        >
-                          <p style={{ fontWeight: "700", fontSize: "14px" }}>
-                            {comment.commentBy}
-                          </p>
-                          <small>{dayjs(comment.id).from(new Date())}</small>
-                        </div>
-                        {commentToEdit.editComment &&
-                        commentToEdit.id === comment.id ? (
-                          <div className="edit_comment_form">
-                            <textarea
-                              className="comment"
-                              type="text"
-                              value={commentToEdit.comment}
-                              onChange={(e) =>
-                                setCommentToEdit({
-                                  ...commentToEdit,
-                                  comment: e.target.value,
-                                })
-                              }
-                            />
-                            {openCommentAddMemebeEditrModal && (
-                              <CommentPopover
-                                user={user}
-                                members={members}
-                                commentMemebers={commentMemebers}
-                                onClose={() =>
-                                  setOpenCommentAddMemeberEditModal(false)
-                                }
-                                action="edit"
-                                handleAddMemberInComment={
-                                  handleAddMemberInComment
-                                }
-                              />
-                            )}
-
-                            <div
-                              style={{
-                                display: "flex",
-                                gap: "10px",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Button
-                                variant="contained"
-                                type="button"
-                                color="primary"
-                                onClick={handleEditComment}
-                              >
-                                Save
-                              </Button>
-                              <div
-                                style={{ cursor: "pointer" }}
-                                onClick={() =>
-                                  setCommentToEdit({ editComment: false })
-                                }
-                              >
-                                X
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <>
-                            <div className="comment">
-                              {comment.comment
-                                .split(" ")
-                                .map((c) =>
-                                  c[0] === "@" ? (
-                                    <strong> {c} </strong>
-                                  ) : (
-                                    <span> {c} </span>
-                                  )
-                                )}
-                            </div>
-                            <div style={{ marginTop: "7px" }}>
-                              <span
-                                className="comment_action"
-                                onClick={() =>
-                                  setCommentToEdit({
-                                    ...comment,
-                                    editComment: true,
-                                  })
-                                }
-                              >
-                                Edit
-                              </span>{" "}
-                              -{" "}
-                              <span
-                                className="comment_action"
-                                onClick={() => handleDeleteComment(comment.id)}
-                              >
-                                Delete
-                              </span>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
+            <Comment
+              user={user}
+              handleSubmitComment={handleSubmitComment}
+              setShowSaveComment={setShowSaveComment}
+              handleCommentToShowMember={handleCommentToShowMember}
+              commentToAdd={commentToAdd}
+              openCommentAddMemeberModal={openCommentAddMemeberModal}
+              members={members}
+              commentMemebers={commentMemebers}
+              setOpenCommentAddMemeberModal={setOpenCommentAddMemeberModal}
+              clickedCardDetail={clickedCardDetail}
+              commentToEdit={commentToEdit}
+              setCommentToEdit={setCommentToEdit}
+              openCommentAddMemebeEditrModal={openCommentAddMemebeEditrModal}
+              setOpenCommentAddMemeberEditModal={
+                setOpenCommentAddMemeberEditModal
+              }
+              handleAddMemberInComment={handleAddMemberInComment}
+              handleEditComment={handleEditComment}
+              handleDeleteComment={handleDeleteComment}
+              showSaveComment={showSaveComment}
+              handleUploadFile={handleUploadFile}
+              boardUser={boardUser}
+            />
             <Notification
               message="Invalid file"
               open={validFile}
