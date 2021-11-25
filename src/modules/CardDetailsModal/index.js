@@ -18,7 +18,6 @@ import { GoChecklist } from "@react-icons/all-files/go/GoChecklist";
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
 import { AiOutlineShareAlt } from "@react-icons/all-files/ai/AiOutlineShareAlt";
 import { BsCardChecklist } from "@react-icons/all-files/bs/BsCardChecklist";
-import { BsFillPeopleFill } from "@react-icons/all-files/bs/BsFillPeopleFill";
 import { GrAdd } from "@react-icons/all-files/gr/GrAdd";
 import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
@@ -26,11 +25,13 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { addNewLabelsToBoard, updateBoard } from "../../api-config/boards";
 import { removeFile, uploadFile } from "../../api-config/uploadFile";
 import Notification from "../../components/Notification";
-import Circle from "@uiw/react-color-circle";
 import AttachmentDetail from "../../components/Attachment";
 import CommentPopover from "../../components/Popover";
+import AddCardColor from "./AddCardColor";
+import AddCardLabels from "./AddCardLabels";
 import "./style.css";
-import { labelColors, laneColors } from "../../constants/boardColors";
+import ShareCard from "./ShareCard";
+import AddCardChecklist from "./AddCardChecklist";
 
 dayjs.extend(relativeTime);
 
@@ -1262,55 +1263,10 @@ function CardDetailsModal({
           horizontal: "left",
         }}
       >
-        <div
-          style={{
-            width: "300px",
-            padding: "10px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
-              marginBottom: "15px",
-              padding: "0 10px 10px 0",
-            }}
-          >
-            <p>Add Checklist</p>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              top: "7px",
-              right: "9px",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-            onClick={handleClosePopOver}
-          >
-            <CloseIcon />
-          </div>
-          <p>Title</p>
-          <form
-            onSubmit={handleSubmitCheckListTitle}
-            id="checklisttitle"
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-          >
-            <TextField
-              id="outlined-basic"
-              label="Checklist"
-              variant="outlined"
-              name="checklistTitle"
-              fullWidth
-            />
-            <Button variant="contained" fullWidth color="primary" type="submit">
-              Add
-            </Button>
-          </form>
-        </div>
+        <AddCardChecklist
+          handleClosePopOver={handleClosePopOver}
+          handleSubmitCheckListTitle={handleSubmitCheckListTitle}
+        />
       </Popover>
       <Popover
         id={idShare}
@@ -1322,62 +1278,7 @@ function CardDetailsModal({
           horizontal: "left",
         }}
       >
-        <div
-          style={{
-            width: "300px",
-            padding: "10px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <div
-            style={{
-              textAlign: "center",
-              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
-              marginBottom: "15px",
-              padding: "0 10px 10px 0",
-            }}
-          >
-            <p>Share and more...</p>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              top: "7px",
-              right: "9px",
-              fontSize: "20px",
-              cursor: "pointer",
-            }}
-            onClick={handleCloseSharePopOver}
-          >
-            <CloseIcon />
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <strong>Share link to this card</strong>
-            <BsFillPeopleFill />
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <TextField
-              id="outlined-basic"
-              variant="outlined"
-              fullWidth
-              size="small"
-              autoFocus
-              value="https://trello.com/c/yhBgSWFC"
-            />
-            <Button
-              type="button"
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                navigator.clipboard.writeText("https://trello.com/c/yhBgSWFC");
-              }}
-            >
-              Copy
-            </Button>
-          </div>
-        </div>
+        <ShareCard handleCloseSharePopOver={handleCloseSharePopOver} />
       </Popover>
       <Popover
         id={idLabel}
@@ -1389,117 +1290,19 @@ function CardDetailsModal({
           horizontal: "left",
         }}
       >
-        <div
-          style={{
-            width: "300px",
-            padding: "10px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <div
-            style={{
-              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
-              marginBottom: "15px",
-              padding: "0 10px 10px 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <p>Labels</p>
-            <div
-              onClick={handleCloseLabelPopOver}
-              style={{ cursor: "pointer" }}
-            >
-              <CloseIcon />
-            </div>
-          </div>
-
-          {newLabel ? (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                gap: "15px",
-              }}
-            >
-              <form onSubmit={handleSubmitNewLabel}>
-                <div>
-                  <p>Name</p>
-                  <TextField
-                    id="outlined-basic"
-                    variant="outlined"
-                    fullWidth
-                    name="newLabelName"
-                    size="small"
-                  />
-                </div>
-                <div
-                  style={{
-                    marginTop: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "10px",
-                  }}
-                >
-                  <p>Select a color</p>
-                  <Circle
-                    color={newlabelColor.hex}
-                    colors={labelColors}
-                    onChange={(color) => setLabelColor(color)}
-                  />
-                  <Button
-                    variant="contained"
-                    fullWidth
-                    color="primary"
-                    type="submit"
-                  >
-                    Create
-                  </Button>
-                </div>
-              </form>
-            </div>
-          ) : (
-            <>
-              <TextField
-                id="outlined-basic"
-                variant="outlined"
-                label="Search labels"
-                fullWidth
-                name="searchLabel"
-                value={labelToSearch}
-                onChange={(e) => setLabelToSearch(e.target.value)}
-              />
-              <p>Labels</p>
-              {boardLabels &&
-                boardLabels.length &&
-                filteredBoardLabels?.map((label, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      backgroundColor: label.color,
-                      borderRadius: "5px",
-                      padding: "10px",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleAddLabelFromBoardLabel(label)}
-                  >
-                    {label.name}
-                  </div>
-                ))}
-              <div
-                className="add_to_cart"
-                style={{ justifyContent: "center" }}
-                onClick={() => setNewLabel(true)}
-              >
-                Create new label
-              </div>
-            </>
-          )}
-        </div>
+        <AddCardLabels
+          handleCloseLabelPopOver={handleCloseLabelPopOver}
+          newLabel={newLabel}
+          newlabelColor={newlabelColor}
+          setLabelColor={setLabelColor}
+          handleSubmitNewLabel={handleSubmitNewLabel}
+          labelToSearch={labelToSearch}
+          setLabelToSearch={setLabelToSearch}
+          boardLabels={boardLabels}
+          filteredBoardLabels={filteredBoardLabels}
+          handleAddLabelFromBoardLabel={handleAddLabelFromBoardLabel}
+          setNewLabel={setNewLabel}
+        />
       </Popover>
       <Popover
         id={idCardColor}
@@ -1511,36 +1314,10 @@ function CardDetailsModal({
           horizontal: "left",
         }}
       >
-        <div
-          style={{
-            width: "300px",
-            padding: "10px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          <div
-            style={{
-              borderBottom: "2px solid rgba(0, 0, 0, 0.23)",
-              marginBottom: "5px",
-              padding: "0 10px 10px 0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <p>Card Color</p>
-            <div onClick={handleCloseCardColor} style={{ cursor: "pointer" }}>
-              <CloseIcon />
-            </div>
-          </div>
-          <p>Select color</p>
-          <Circle
-            colors={laneColors}
-            onChange={(color) => handleSetCardColor(color)}
-          />
-        </div>
+        <AddCardColor
+          handleCloseCardColor={handleCloseCardColor}
+          handleSetCardColor={handleSetCardColor}
+        />
       </Popover>
       {progress !== 100 ? (
         <Notification
