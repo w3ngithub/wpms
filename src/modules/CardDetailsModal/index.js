@@ -16,6 +16,8 @@ import { GoChecklist } from "@react-icons/all-files/go/GoChecklist";
 import { MdCancel } from "@react-icons/all-files/md/MdCancel";
 import { AiOutlineShareAlt } from "@react-icons/all-files/ai/AiOutlineShareAlt";
 import { BsCardChecklist } from "@react-icons/all-files/bs/BsCardChecklist";
+import LabelIcon from "@material-ui/icons/Label";
+import PaletteIcon from "@material-ui/icons/Palette";
 import { GrAdd } from "@react-icons/all-files/gr/GrAdd";
 import ProgressBar from "@ramonak/react-progress-bar";
 import dayjs from "dayjs";
@@ -29,6 +31,7 @@ import AddCardLabels from "./AddCardLabels";
 import ShareCard from "./ShareCard";
 import Comment from "./Comment";
 import AddCardChecklist from "./AddCardChecklist";
+
 import "./style.css";
 
 dayjs.extend(relativeTime);
@@ -1073,30 +1076,38 @@ function CardDetailsModal({
                 className="add_to_cart"
                 id={idLabel}
                 onClick={handleClickLabelPopOver}
-                style={{ paddingRight: "30px" }}
+                style={{
+                  padding: "10px 20px 10px 10px",
+                  // justifyContent: "space-between",
+                }}
               >
-                <BsCardChecklist />
+                <LabelIcon />
                 <span>Labels</span>
               </div>
               <div
                 className="add_to_cart"
                 id={id}
                 onClick={handleClickPopOver}
-                style={{ paddingRight: "30px" }}
+                style={{
+                  padding: "10px 20px 10px 10px",
+                  // justifyContent: "space-between",
+                }}
               >
                 <BsCardChecklist />
-                CheckList
-                <span></span>{" "}
+                <span>CheckList</span>{" "}
               </div>
               <div
                 className="add_to_cart"
                 id={idCardColor}
                 onClick={handleClickCardColor}
-                style={{ paddingRight: "30px" }}
+                style={{
+                  padding: "10px 20px 10px 10px",
+                  // justifyContent: "space-between",
+                }}
               >
-                <BsCardChecklist />
-                Card Color
-                <span></span>{" "}
+                <PaletteIcon />
+
+                <span>Background</span>
               </div>
             </div>
             <div className="card_options">
@@ -1105,7 +1116,10 @@ function CardDetailsModal({
                 className="add_to_cart"
                 id={handleClickSharePopOver}
                 onClick={handleClickSharePopOver}
-                style={{ paddingRight: "30px" }}
+                style={{
+                  padding: "10px 20px 10px 10px",
+                  // justifyContent: "space-between",
+                }}
               >
                 <AiOutlineShareAlt />
                 <span>Share</span>

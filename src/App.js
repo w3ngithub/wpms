@@ -78,7 +78,11 @@ function App() {
             path="/:userName/:projectId/"
             exact
             render={() => (
-              <SingleBoard isFocused={isFocused} searchBoard={searchBoard} />
+              <SingleBoard
+                isFocused={isFocused}
+                searchBoard={searchBoard}
+                setIsFocused={setIsFocused}
+              />
             )}
           />
         </Switch>

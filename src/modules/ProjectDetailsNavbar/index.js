@@ -21,6 +21,7 @@ import { useParams } from "react-router";
 import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 import Circle from "@uiw/react-color-circle";
 import CloseIcon from "@material-ui/icons/Close";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import { boardColor } from "../../constants/boardColors";
 
 const useStyles = makeStyles((theme) => ({
@@ -169,8 +170,12 @@ function ProjectDetailsNavbar({
           aria-describedby={id}
           variant="contained"
           onClick={handleClickPopOver}
+          style={{
+            backgroundColor: "rgb(240 240 240)",
+          }}
         >
-          Invite
+          <GroupAddIcon style={{ color: "#000" }} />
+          <span style={{ color: "#000" }}>Invite</span>
         </Button>
         <Popover
           id={id}
@@ -234,7 +239,9 @@ function ProjectDetailsNavbar({
                 {!createLink ? "Create link" : "Disable link"}
               </div>
             </div>
-            <div style={{ fontSize: "12px", color: "#5e6c84" }}>
+            <div
+              style={{ fontSize: "12px", color: "#5e6c84", marginTop: "6px" }}
+            >
               Anyone with link can join as board member
             </div>
             {createLink && (
@@ -261,7 +268,7 @@ function ProjectDetailsNavbar({
                 </MuiButton>
               </div>
             )}
-            <div style={{ marginTop: "50px" }}>
+            <div style={{ marginTop: "30px" }}>
               <MuiButton variant="contained" fullWidth color="primary">
                 Send Invitation
               </MuiButton>

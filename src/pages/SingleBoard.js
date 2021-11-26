@@ -24,7 +24,7 @@ const labelColor = {
   padding: "30px",
 };
 
-function SingleBoard({ isFocused, searchBoard }) {
+function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const history = useHistory();
 
@@ -186,7 +186,7 @@ function SingleBoard({ isFocused, searchBoard }) {
         }}
       />
       {isFocused && (
-        <div className="popupsearchedboards">
+        <div className="popupsearchedboards" onClick={() => setIsFocused(true)}>
           <h5 style={{ marginBottom: "10px" }}>Searched Boards</h5>
           {allboards.filter((board) =>
             board.data.title.toUpperCase().includes(searchBoard.toUpperCase())
