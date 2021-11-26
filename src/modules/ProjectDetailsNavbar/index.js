@@ -277,7 +277,11 @@ function ProjectDetailsNavbar({
         </Popover>
       </div>
       <div className="projectdetailsnavbar__last">
-        <Button onClick={handleOpenMenu} id={openBgColor}>
+        <Button
+          onClick={handleOpenMenu}
+          id={openBgColor}
+          style={{ width: "100px" }}
+        >
           Show Menu
         </Button>
         <MenuList
