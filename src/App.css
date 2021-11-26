@@ -5,7 +5,8 @@
 }
 
 .App {
-  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
 }
 
 .comPlainTextContentEditable {
@@ -45,4 +46,39 @@
 
 .boards_inside_popover:hover {
   background-color: #e4f0f6;
+}
+
+.kTEdEo {
+  max-height: 68vh !important;
+  overflow: scroll;
+}
+
+.kTEdEo::-webkit-scrollbar {
+  width: 5px;
+  /* // height: 13px; */
+}
+
+.kTEdEo::-webkit-scrollbar-thumb {
+  background: linear-gradient(13deg, #5f5f5f 14%, #535050 64%);
+  border-radius: 10px;
+}
+.kTEdEo::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(13deg, #aca8a8 14%, #a39d9d 64%);
+}
+.kTEdEo::-webkit-scrollbar-track {
+  background: #d8cdbe;
+  border-radius: 10px;
+  box-shadow: inset 7px 10px 12px #e6d9cc;
+}
+
+@media only screen and (max-width: 710px) {
+  .fpRPem {
+    max-height: 73vh !important;
+  }
+}
+
+@media only screen and (max-width: 414px) {
+  .fpRPem {
+    max-height: 68vh !important;
+  }
 }

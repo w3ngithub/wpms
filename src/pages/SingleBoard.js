@@ -15,16 +15,39 @@ import CardDetailsModal from "../modules/CardDetailsModal";
 import CustomTrelloLaneCard from "../components/CustomTrelloLaneCard";
 import { laneColors } from "../constants/boardColors";
 import "../App.css";
+import { makeStyles } from "@material-ui/core/styles";
+import { media } from "../constants/mobileView";
+import "../App.css";
 
-const labelColor = {
-  backgroundColor: "#fff",
-  position: "absolute",
-  top: "40%",
-  left: "30%",
-  padding: "30px",
-};
+const useStyles = makeStyles((theme) => ({
+  mainBackground: {
+    padding: "60px 25px 30px 20px",
+    postion: "relative",
+    [media]: {
+      padding: "60px 15px 30px 15px",
+    },
+  },
+  labelColor: {
+    backgroundColor: "#fff",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    padding: "30px",
+    transform: "translate(-50%,-50%)",
+    [media]: {
+      width: "90%",
+    },
+  },
+  lane: {
+    // maxHeight: "50vh",
+    // overflow: "scroll",
+    // overflowX: "hidden",
+  },
+}));
 
 function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
+  const classes = useStyles();
+
   const user = JSON.parse(localStorage.getItem("user"));
   const history = useHistory();
 
@@ -143,10 +166,11 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
 
   return (
     <div
+      className={classes.mainBackground}
       style={{
         backgroundColor: dataTopass?.boardColor,
-        padding: "60px 25px 30px 20px",
-        postion: "relative",
+        // padding: "60px 25px 30px 20px",
+        // postion: "relative",
       }}
     >
       <ProjectDetailsNavbar
@@ -159,6 +183,7 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
       />
 
       <Board
+        className={classes.lane}
         data={{ lanes: data?.lanes || [] }}
         draggable
         canAddLanes
@@ -218,7 +243,7 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
           setClickedCardDetail({});
         }}
       >
-        <div style={labelColor}>
+        <div className={classes.labelColor}>
           <div
             style={{ textAlign: "right", fontSize: "24px", cursor: "pointer" }}
             onClick={() => setModelOpen(false)}
@@ -234,7 +259,7 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
         </div>
       </Modal>
       <Modal open={cardModelOPen} onClose={() => setCardModelOpen(false)}>
-        <div style={labelColor}>
+        <div className={classes.labelColor}>
           <div
             style={{ textAlign: "right", fontSize: "24px", cursor: "pointer" }}
             onClick={() => setCardModelOpen(false)}
