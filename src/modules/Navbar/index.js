@@ -79,7 +79,6 @@ function Navbar({
             setIsFocused(true);
           }}
           onBlur={() => {
-            setSearchBoard("");
             setIsFocused(false);
           }}
         />
