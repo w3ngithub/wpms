@@ -112,3 +112,14 @@
   gap: 10px;
   position: relative;
 }
+
+@media only screen and (max-width: 414px) {
+  .card_content {
+    flex-direction: column;
+    gap: 0px;
+  }
+
+  .card_options {
+    margin-bottom: 20px;
+  }
+}

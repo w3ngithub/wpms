@@ -6,6 +6,7 @@
   width: 250px;
   height: auto;
   position: relative;
+  margin-right: 3px;
 }
 .card_container:hover > .card_delete_container {
   visibility: visible;
