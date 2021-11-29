@@ -1,0 +1,33 @@
+.BoardCard_container {
+  cursor: pointer;
+  height: 100px;
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: 600;
+  position: relative;
+}
+
+.BoardCard_container:hover {
+  opacity: 0.9;
+}
+
+.BoardCard_container:hover > .BoardCard_removeIcon {
+  visibility: visible;
+}
+
+.BoardCard_removeIcon {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  visibility: hidden;
+  padding: 10px;
+}
+
+.BoardIcon_removeIcon_not_user {
+  display: none;
+}

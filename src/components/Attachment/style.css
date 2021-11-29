@@ -1,0 +1,32 @@
+.attachment_file {
+  padding: 20px;
+  background-color: #e4f0f6;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-radius: 5px;
+  padding-right: 100px;
+}
+
+.attachment_actions {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.attachment_file_name {
+  height: 70px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 5px;
+  width: 100px;
+  text-decoration: none;
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  color: #95989abf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
