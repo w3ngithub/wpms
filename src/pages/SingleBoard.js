@@ -14,7 +14,7 @@ import { fireStore } from "../firebase/config";
 import CardDetailsModal from "../modules/CardDetailsModal";
 import CustomTrelloLaneCard from "../components/CustomTrelloLaneCard";
 import { laneColors } from "../constants/boardColors";
-import "../App.css";
+import { useOutSideClick } from "../hooks/useOutsideClick";
 import { makeStyles } from "@material-ui/core/styles";
 import { media } from "../constants/mobileView";
 import "../App.css";
@@ -83,6 +83,14 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
     };
     fecthAll();
   }, []);
+
+  useOutSideClick(
+    ["popupsearchedboards", "input"],
+    () => {
+      setIsFocused(false);
+    },
+    false
+  );
 
   const handleSetLaneColor = (color) => {
     updateBoard(
@@ -211,7 +219,7 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
         }}
       />
       {isFocused && (
-        <div className="popupsearchedboards" onClick={() => setIsFocused(true)}>
+        <div className="popupsearchedboards">
           <h5 style={{ marginBottom: "10px" }}>Searched Boards</h5>
           {allboards.filter((board) =>
             board.data.title.toUpperCase().includes(searchBoard.toUpperCase())
@@ -229,7 +237,10 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
                 <p
                   key={item.id}
                   className="boards_inside_popover"
-                  onClick={() => history.push(`/${user.name}/${item.id}`)}
+                  onClick={() => {
+                    history.push(`/${user.name}/${item.id}`);
+                    setIsFocused(false);
+                  }}
                 >
                   {item.data.title}
                 </p>
