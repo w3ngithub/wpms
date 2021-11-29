@@ -43,7 +43,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BoardsContainer({ openCreateBoardModal, searchBoard }) {
+function BoardsContainer({
+  openCreateBoardModal,
+  searchBoard,
+  setSearchBoard,
+}) {
   const [listOfBoards, setListOfBoards] = useState([]);
   const [listOfFavouriteBoards, setListOfFavouriteBoards] = useState([]);
   const [searchListOfBoard, setSearchListOfBoards] = useState([]);
@@ -84,6 +88,10 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
       )
     );
   }, [searchBoard, listOfBoards]);
+
+  useEffect(() => {
+    setSearchBoard("");
+  }, []);
 
   useEffect(() => {
     fetchBoards();
