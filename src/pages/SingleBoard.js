@@ -84,14 +84,6 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
     fecthAll();
   }, []);
 
-  useOutSideClick(
-    ["popupsearchedboards", "input"],
-    () => {
-      setIsFocused(false);
-    },
-    false
-  );
-
   const handleSetLaneColor = (color) => {
     updateBoard(
       projectId,
@@ -219,7 +211,7 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
         }}
       />
       {isFocused && (
-        <div className="popupsearchedboards">
+        <div className="popupsearchedboards" onClick={() => setIsFocused(true)}>
           <h5 style={{ marginBottom: "10px" }}>Searched Boards</h5>
           {allboards.filter((board) =>
             board.data.title.toUpperCase().includes(searchBoard.toUpperCase())
@@ -237,10 +229,7 @@ function SingleBoard({ isFocused, searchBoard, setIsFocused }) {
                 <p
                   key={item.id}
                   className="boards_inside_popover"
-                  onClick={() => {
-                    history.push(`/${user.name}/${item.id}`);
-                    setIsFocused(false);
-                  }}
+                  onClick={() => history.push(`/${user.name}/${item.id}`)}
                 >
                   {item.data.title}
                 </p>
