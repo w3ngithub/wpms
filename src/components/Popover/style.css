@@ -1,0 +1,19 @@
+.popover_container {
+  width: 300px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  /* left: 20px; */
+  right: -50px;
+  /* margin-top: -150px; */
+  top: -125px;
+  margin-left: auto;
+  overflow: visible;
+  z-index: 99999999;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+    0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+  border-radius: 5px;
+}

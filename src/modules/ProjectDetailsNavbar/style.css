@@ -1,0 +1,25 @@
+.projectdetailsnavbar {
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.projectdetailsnavbar__front {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project_memebers {
+  display: flex;
+  align-items: center;
+}
+
+@media only screen and (max-width: 414px) {
+  .projectdetailsnavbar {
+    align-items: flex-end;
+  }
+
+}

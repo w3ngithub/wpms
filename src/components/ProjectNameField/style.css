@@ -1,0 +1,17 @@
+.projectName {
+  font-size: 18px;
+  color: #ffffff;
+
+  cursor: pointer;
+}
+
+.projectName .inputfield {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  width: 181px;
+  height: 30px;
+  font-size: 18px;
+  color: #ffffff;
+  width: fit-content;
+}
