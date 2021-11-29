@@ -1,0 +1,11 @@
+.card {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 8px 0;
+  white-space: normal;
+}
+
+.card > p {
+  color: black;
+}

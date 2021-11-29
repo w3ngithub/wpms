@@ -1,0 +1,28 @@
+.card_container {
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  width: 250px;
+  height: auto;
+  position: relative;
+  margin-right: 3px;
+}
+.card_container:hover > .card_delete_container {
+  visibility: visible;
+}
+
+.card_footer {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 5px 0 5px 0;
+}
+
+.card_delete_container {
+  position: absolute;
+  top: 7px;
+  right: 3px;
+  font-size: 5px;
+  visibility: hidden;
+}
