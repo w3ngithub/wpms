@@ -78,9 +78,6 @@ function Navbar({
           onFocus={() => {
             setIsFocused(true);
           }}
-          onBlur={() => {
-            setIsFocused(false);
-          }}
         />
         <Icon Icon={AddIcon} onClick={openCreateBoardModal} />
         <Avatar
