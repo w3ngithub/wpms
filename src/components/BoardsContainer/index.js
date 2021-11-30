@@ -43,10 +43,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function BoardsContainer({ openCreateBoardModal, searchBoard }) {
+function BoardsContainer({
+  openCreateBoardModal,
+  searchBoard,
+  setSearchBoard,
+}) {
   const [listOfBoards, setListOfBoards] = useState([]);
   const [listOfFavouriteBoards, setListOfFavouriteBoards] = useState([]);
   const [searchListOfBoard, setSearchListOfBoards] = useState([]);
+  const [listofGuestBoard, setListOfGuestBoard] = useState([]);
+  const [listOfWorkSpaceBoard, setListOfWorkSpaceBoard] = useState([]);
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const history = useHistory();
@@ -62,6 +68,8 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
     const favouriteBoards = await getUsersFromFeatureBoards("favourite", name);
     setListOfBoards([...result.flat()]);
     setListOfFavouriteBoards(favouriteBoards);
+    setListOfWorkSpaceBoard([...result[0]]);
+    setListOfGuestBoard([...result[1]]);
     setLoading(false);
   }, [name]);
 
@@ -69,6 +77,7 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
     await removeBoard(boardId);
     const removeBoardFormList = (board) => board.id !== boardId;
     setListOfFavouriteBoards(listOfFavouriteBoards.filter(removeBoardFormList));
+    setListOfWorkSpaceBoard(listOfWorkSpaceBoard.filter(removeBoardFormList));
     setListOfBoards(listOfBoards.filter(removeBoardFormList));
   };
 
@@ -79,6 +88,10 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
       )
     );
   }, [searchBoard, listOfBoards]);
+
+  useEffect(() => {
+    setSearchBoard("");
+  }, []);
 
   useEffect(() => {
     fetchBoards();
@@ -138,7 +151,7 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                 Your WorkSpaces
               </h2>
               <Grid container justifyContent="flex-start" spacing={4}>
-                {listOfBoards.map((value) => (
+                {listOfWorkSpaceBoard.map((value) => (
                   <Grid key={value.id} item>
                     <BoardCard
                       onClick={() => history.push(`/${name}/${value.id}`)}
@@ -162,6 +175,27 @@ function BoardsContainer({ openCreateBoardModal, searchBoard }) {
                   </Paper>
                 </Grid>
               </Grid>
+              {listofGuestBoard.length !== 0 && (
+                <>
+                  <h2 className="boards__header" style={{ marginTop: "25px" }}>
+                    Guest WorkSpaces
+                  </h2>
+                  <Grid container justifyContent="flex-start" spacing={4}>
+                    {listofGuestBoard.map((value) => (
+                      <Grid key={value.id} item>
+                        <BoardCard
+                          onClick={() => history.push(`/${name}/${value.id}`)}
+                          name={value.data.title}
+                          backgroundColor={value?.data?.boardColor}
+                          removeCard={() => handleRemoveBoard(value.id)}
+                          user={value.data.user}
+                          loggedInUser={name}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </>
+              )}
             </Grid>
           )}
         </div>

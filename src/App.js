@@ -70,6 +70,7 @@ function App() {
               <Boards
                 openCreateBoardModal={() => setOpenModal(true)}
                 searchBoard={searchBoard}
+                setSearchBoard={setSearchBoard}
               />
             )}
             exact
